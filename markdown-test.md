@@ -1,3 +1,13 @@
+---
+layout: post
+title: "마크다운 문법 정리"
+date: 2026-08-26
+categories: [markdown]
+---
+
+
+
+
 # 마크다운 문법
 
 ## 제목은 # 개수로 단계를 만들 수 있다.

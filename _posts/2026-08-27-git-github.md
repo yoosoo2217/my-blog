@@ -1,9 +1,10 @@
 ---
 layout: post
-title: "오늘 배운 Git 정리"
-date: 2026-08-28
+title: "리눅스 셸(Shell) 기초 정리"
+date: 2026-08-27
 categories: [git]
 ---
+
 # 이론
 ## CLI 환경 
  - 유닉스 (CLI 기반의 운영체제) ↔ Windows, MacOS(그래픽 기반의 운영체제)
