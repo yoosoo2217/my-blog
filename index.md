@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: home
 title: 학습 노트
 list_title: 지금까지 쓴 글
 ---
