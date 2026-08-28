@@ -5,6 +5,6 @@ baseurl: "/my-blog"
 plugins:
   - jekyll-remote-theme
 
-remote_theme: sylvaindurand/type-on-strap
+remote_theme: sylhare/Type-on-Strap
 
 
