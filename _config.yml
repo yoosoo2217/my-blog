@@ -1,11 +1,10 @@
+
 title: 유수의 학습 노트
 
 baseurl: "/my-blog"
 
-
-
-remote_theme: karloespiritu/BlackDoc@3.00
-
+remote_theme: sylhare/Type-on-Strap
+color_theme: dark
 
 plugins:
   - jekyll-remote-theme
