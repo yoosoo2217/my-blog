@@ -1,15 +1,10 @@
 title: 유수의 학습 노트
 
-remote_theme: "mmistakes/minimal-mistakes@4.28.1"
-
 baseurl: "/my-blog"
 
 plugins:
   - jekyll-remote-theme
-  - jekyll-include-cache
 
-search: true
-
-minimal_mistakes_skin: "default"
+remote_theme: qwtel/hydejack
 
 
