@@ -4,7 +4,7 @@ baseurl: "/my-blog"
 
 
 
-remote_theme: sylhare/Type-on-Strap
+remote_theme: karloespiritu/BlackDoc@3.00
 
 
 plugins:
