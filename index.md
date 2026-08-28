@@ -1,9 +1,8 @@
 ---
-layout: home
+layout: blog
 title: 학습 노트
-list_title: 지금까지 쓴 글
-author_profile: true
 ---
+
 
 # 유수의 개발 블로그
 
