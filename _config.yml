@@ -1,5 +1,7 @@
 title: 유수의 학습 노트
-remote_theme: sylvaindurand/type-on-strap
+remote_theme: abhinavs/moonwalk
+
 baseurl: "/my-blog"
 plugins:
   - jekyll-remote-theme
+
