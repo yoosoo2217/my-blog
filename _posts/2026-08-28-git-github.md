@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "오늘 배운 Git 정리"
+title: "20260828"
 date: 2026-08-28
 categories: [git]
 ---
