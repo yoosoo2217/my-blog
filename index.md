@@ -88,31 +88,28 @@ nav_order: 1
 
 ## 📝 최근 학습 기록
 
-<div style="
-  margin: 1rem 0 2rem;
-">
+<div style="margin: 1rem 0 2rem;">
 
-{% for post in site.posts limit:5 %}
+  <div style="padding:0.8rem 1rem; border-bottom:1px solid #eee;">
+    <span style="font-size:0.85rem; color:#777;">2026.08.31</span><br>
+    <a href="{{ '/20260831-git-' | relative_url }}">
+      <strong>Git 학습 기록</strong>
+    </a>
+  </div>
 
-<div style="
-  padding: 0.8rem 1rem;
-  margin-bottom: 0.6rem;
-  border-bottom: 1px solid #eeeeee;
-">
+  <div style="padding:0.8rem 1rem; border-bottom:1px solid #eee;">
+    <span style="font-size:0.85rem; color:#777;">2026.08.30</span><br>
+    <a href="{{ '/git-add-commit-' | relative_url }}">
+      <strong>Git add & commit</strong>
+    </a>
+  </div>
 
-  <span style="font-size:0.85rem; color:#777;">
-    {{ post.date | date: "%Y.%m.%d" }}
-  </span>
-
-  <br>
-
-  <a href="{{ post.url }}">
-    <strong>{{ post.title }}</strong>
-  </a>
-
-</div>
-
-{% endfor %}
+  <div style="padding:0.8rem 1rem; border-bottom:1px solid #eee;">
+    <span style="font-size:0.85rem; color:#777;">2026.08.29</span><br>
+    <a href="{{ '/git-branch-strategy' | relative_url }}">
+      <strong>Git Branch 전략</strong>
+    </a>
+  </div>
 
 </div>
 
@@ -168,7 +165,7 @@ nav_order: 1
 
 ## 😺 GitHub 활동
 
-![GitHub Streak](https://streak-stats.demolab.com/?user=yoosoo2217)
+![GitHub Streak](https://streak-stats.demolab.com/?user=yoosoo2217&ring=7253ED&fire=7253ED&currStreakLabel=7253ED)
 
 
 <!-- ==================== 방문자 수 ==================== -->
