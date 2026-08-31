@@ -92,22 +92,29 @@ nav_order: 1
 
   <div style="padding:0.8rem 1rem; border-bottom:1px solid #eee;">
     <span style="font-size:0.85rem; color:#777;">2026.08.31</span><br>
-    <a href="{{ '/20260831-git-' | relative_url }}">
+    <a href="{{ '/20260831-git-명령어-정리.html' | relative_url }}">
       <strong>Git 학습 기록</strong>
     </a>
   </div>
 
   <div style="padding:0.8rem 1rem; border-bottom:1px solid #eee;">
     <span style="font-size:0.85rem; color:#777;">2026.08.30</span><br>
-    <a href="{{ '/git-add-commit-' | relative_url }}">
+    <a href="{{ '/git-add-commit-push.html' | relative_url }}">
       <strong>Git add & commit</strong>
     </a>
   </div>
 
   <div style="padding:0.8rem 1rem; border-bottom:1px solid #eee;">
     <span style="font-size:0.85rem; color:#777;">2026.08.29</span><br>
-    <a href="{{ '/git-branch-strategy' | relative_url }}">
+    <a href="{{ '/git-branch-strategy.html' | relative_url }}">
       <strong>Git Branch 전략</strong>
+    </a>
+  </div>
+
+  <div style="padding:0.8rem 1rem; border-bottom:1px solid #eee;">
+    <span style="font-size:0.85rem; color:#777;">2026.08.28</span><br>
+    <a href="{{ '/markdown-syntax.html' | relative_url }}">
+      <strong>마크다운 문법 정리</strong>
     </a>
   </div>
 

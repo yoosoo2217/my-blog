@@ -1,8 +1,9 @@
 ---
 layout: post
-title: "마크다운 문법 정리"
+title: "markdown list"
 date: 2026-08-26
 categories: [markdown]
+nav_exclude: true
 ---
 
 
