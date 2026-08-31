@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+	<link rel="stylesheet" href="/assets/css/atom-one-light.css">
+    
+        <title>commit, push, PR 정리</title>
+		<link rel="stylesheet" type="text/css" href="/assets/css/002.css">
+    
+	<link rel="stylesheet" href="/assets/css/font-awesome.min.css">
+	<link rel="shortcut icon" href="/assets/img/favicon.ico" type="image/x-icon">
+	<link rel="icon" href="/assets/img/favicon.ico" type="image/x-icon">
+	<script src="/assets/js/highlight.pack.js"></script>
+	<script>hljs.initHighlightingOnLoad();</script>
+</head>
+<body>
+	<div class="wrapper">
+		<div class="default_title">
+			<img src="/assets/img/mycomputer.png" />
+			
+				<h1>유수의 학습 블로그</h1>
+			
+		</div>
+		<ul class="topbar">
+	<a href="/me"><li><u>A</u>bout</li></a>
+	<a href="http://twitter.com/h01000110" target="_blank"><li><u>T</u>witter</li></a>
+	<a href="http://soundcloud.com/h01000110" target="_blank"><li><u>S</u>oundcloud</li></a>
+</ul>
+		<div class="tag_list">
+			<ul id="tag-list">
+				<li><a href="/" ><img src="/assets/img/disk.png" />(C:)</a>
+			<ul>
+				
+				
+				<li><a href="/tag/branch/" title="Branch"><img src="/assets/img/folder.ico" />Branch</a></li>
+				
+				<li><a href="/tag/git/" title="Git"><img src="/assets/img/folder.ico" />Git</a></li>
+				
+				<li><a href="/tag/github/" title="GitHub"><img src="/assets/img/folder.ico" />GitHub</a></li>
+				
+				<li><a href="/tag/linux/" title="Linux"><img src="/assets/img/folder.ico" />Linux</a></li>
+				
+				<li><a href="/tag/markdown/" title="Markdown"><img src="/assets/img/folder.ico" />Markdown</a></li>
+				
+				<li><a href="/tag/shell/" title="Shell"><img src="/assets/img/folder.ico" />Shell</a></li>
+				
+				<li><a href="/tag/명령어/" title="명령어"><img src="/assets/img/folder.ico" />명령어</a></li>
+				
+			</ul>
+				</li>
+			</ul>
+		</div>
+		<div class="post_list">
+			
+				<ul>
+					
+					<li><a href="/git-%EB%AA%85%EB%A0%B9%EC%96%B4-%EC%A0%95%EB%A6%AC.html" title="Git 명령어 정리"><img src="/assets/img/file.ico" title="Git 명령어 정리" />Git 명령어 정리</a></li>
+					
+					<li><a href="/commit-push-pr.html" title="commit, push, PR 정리"><img src="/assets/img/file.ico" title="commit, push, PR 정리" />commit, push, PR 정리</a></li>
+					
+					<li><a href="/git-add-commit-push.html" title="Git add, commit, push"><img src="/assets/img/file.ico" title="Git add, commit, push" />Git add, commit, push</a></li>
+					
+					<li><a href="/git-branch-strategy.html" title="Git 브랜치 전략"><img src="/assets/img/file.ico" title="Git 브랜치 전략" />Git 브랜치 전략</a></li>
+					
+					<li><a href="/markdown-syntax.html" title="마크다운 문법 정리"><img src="/assets/img/file.ico" title="마크다운 문법 정리" />마크다운 문법 정리</a></li>
+					
+					<li><a href="/git-linux-shell-basics.html" title="리눅스 셸(Shell) 기초 정리"><img src="/assets/img/file.ico" title="리눅스 셸(Shell) 기초 정리" />리눅스 셸(Shell) 기초 정리</a></li>
+					
+				</ul>
+			
+		</div>
+		<div class="post_total">
+			
+				<div class="left">6 object(s)</div>
+			
+			<div class="right">&nbsp;</div>
+		</div>
+	</div>
+	
+        <div class="content">
+			<div class="post_title">
+				<img src="/assets/img/file.png" />
+				<h1>commit, push, PR 정리</h1>
+				<a href="/"><div class="btn"><span class="fa fa-times"></span></div></a>
+				<div class="btn btn_max"><span class="fa fa-window-maximize"></span></div>
+				<div class="btn"><span class="fa fa-window-minimize"></span></div>
+			</div>
+			<ul class="topbar">
+				<li>August 31, 2026</li>
+			</ul>
+			<div class="post_content">
+        		<h2 id="오늘-배운-것">오늘 배운 것</h2>
+
+<p>commit, push가 각각 뭘 하는 건지, 그리고 언제 쓰는 건지 정리했다.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>명령</th>
+      <th>하는 일</th>
+      <th>언제 쓰나</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>git commit</code></td>
+      <td>스테이징한 변경 내용을 Local Repository에 저장 지점으로 남긴다</td>
+      <td>작업 하나가 의미 있는 단위로 끝났을 때마다</td>
+    </tr>
+    <tr>
+      <td><code>git push</code></td>
+      <td>Local Repository에 쌓인 커밋들을 GitHub(원격 저장소)로 올린다</td>
+      <td>로컬 작업을 GitHub에 반영하거나, 다른 사람과 공유하고 싶을 때</td>
+    </tr>
+  </tbody>
+</table>
+
+<pre><code class="language-mermaid">flowchart LR
+    W[작업 중인 파일] -- add --&gt; S[스테이징]
+    S -- commit --&gt; L[Local Repository]
+    L -- push --&gt; R[GitHub 원격 저장소]
+</code></pre>
+
+<h2 id="막혔던-것-prpull-request이-뭔지-몰랐다">막혔던 것: PR(Pull Request)이 뭔지 몰랐다</h2>
+
+<p>commit과 push까지는 이해했는데, PR은 정확히 뭘 하는 건지 몰라서 찾아봤다.</p>
+
+<p>PR은 <strong>“내 브랜치에서 작업한 내용을 다른 브랜치(보통 main)에 합쳐달라고 요청하는 것”</strong>이다.
+그냥 <code>git merge</code>로 바로 합치는 것과 다른 점은, PR을 올리면 합치기 전에 <strong>코드 리뷰와 논의</strong>를 거칠 수 있다는 것이다.</p>
+
+<pre><code class="language-mermaid">flowchart LR
+    A[feature 브랜치에서 커밋] --&gt; B[push로 GitHub에 올리기]
+    B --&gt; C[GitHub에서 PR 생성]
+    C --&gt; D[리뷰어가 코드 확인 및 코멘트]
+    D --&gt; E[승인되면 main에 merge]
+</code></pre>
+
+<p>즉 순서로 보면 <strong>commit(로컬에 저장) → push(GitHub에 올림) → PR(합쳐달라고 요청 + 리뷰) → merge(실제로 합침)</strong> 흐름이다.
+push까지는 내 브랜치를 GitHub에 올리는 것뿐이고, PR을 만들어야 비로소 “리뷰 받고 합치는” 절차가 시작된다는 점이 헷갈렸던 부분이다.</p>
+
+<h2 id="오늘-정리">오늘 정리</h2>
+
+<ul>
+  <li>commit은 로컬 저장, push는 GitHub 업로드라는 것까지는 알고 있었다.</li>
+  <li>PR은 merge 전에 리뷰/논의를 거치기 위한 절차라는 걸 새로 알게 됐다.</li>
+  <li>다음엔 실제로 PR을 하나 만들어보면서 리뷰 코멘트가 어떻게 남는지 확인해봐야겠다.</li>
+</ul>
+
+<h2 id="참고-자료">참고 자료</h2>
+
+<ul>
+  <li><a href="https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests">GitHub Docs - About pull requests</a></li>
+</ul>
+
+				
+					<br>
+<hr>
+<br>
+<div class="donate">
+	<p>Did you like of something here? How about helping me buy some game?<br>
+	I'll appreciate it!</p>
+	<p>Bitcoin Wallet <i class="fa fa-btc"></i> 1Agt7r7aCAeWk5DyXXNyJXAXC4xxysiWjJ<br>Ethereum Wallet <i class="fa fa-money"></i> 0x19BD447c94499BdcA154Dc1BeF9FCf1f4c427C16</p>
+</div>
+				
+			</div>
+		</div>
+    
+	<script src="/assets/js/001.js"></script>
+	<script src="/assets/js/002.js"></script>
+	<div class="footer">
+		<p>Created by <a href="http://github.com/h01000110" target="_blank">h01000110 (hi)</a> | Code licensed under <a href="https://github.com/h01000110/h01000110.github.io/blob/master/LICENSE" target="_blank">MIT License</a></p>
+	</div>
+</body>
+</html>

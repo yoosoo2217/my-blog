@@ -1,8 +1,82 @@
-title: 유수의 학습 노트
-description: 부트캠프에서 배우는 내용을 기록하는 학습 노트입니다.
-baseurl: "/my-blog"
+# Windows 95 Jekyll Theme
 
-remote_theme: just-the-docs/just-the-docs
+name: "유수의 학습 블로그"
+title: "유수의 학습 블로그"
+description: "부트캠프에서 배우는 내용을 기록하고 정리하는 학습 블로그입니다."
 
+url: ""
+baseurl: ""
+
+# Social
+github: yoosoo2217
+twitter: default
+facebook: default
+instagram: default
+
+# Personal
+location: ""
+phone: ""
+email: ""
+
+# Jekyll
+permalink: /:title.html
+markdown: kramdown
+highlighter: rouge
+
+kramdown:
+  input: GFM
+  syntax_highlighter_opts:
+    disable: true
+
+# Sass
+sass:
+  sass_dir: _sass
+  style: compressed
+
+# Gems
 plugins:
-  - jekyll-remote-theme
+  - jekyll-mentions
+  - jekyll-sitemap
+  - jekyll-feed
+  - jekyll-gist
+  - jekyll-paginate
+
+paginate: 6
+paginate_path: "/blog/page:num/"
+
+jekyll-mentions:
+  base_url: https://github.com
+
+# Posts always use the theme's single layout
+defaults:
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: default
+
+# Exclude
+exclude:
+  - README.md
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - gulpfile.js
+  - package.json
+  - _site
+  - src
+  - vendor
+  - CNAME
+  - LICENSE
+  - Rakefile
+  - old
+  - win95-theme
+  - windows95-theme
+  - _includes-backup
+  - _layouts-backup
+  - assets-backup
+  - _config-backup.yml
+  - index-backup.txt
+  - CLAUDE.md
+  - git.md
+  - markdown.md

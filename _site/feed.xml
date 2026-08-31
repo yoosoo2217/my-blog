@@ -1,0 +1,452 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="4.4.1">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2026-08-31T17:08:28+09:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">유수의 학습 블로그</title><subtitle>부트캠프에서 배우는 내용을 기록하고 정리하는 학습 블로그입니다.</subtitle><entry><title type="html">Git 명령어 정리</title><link href="http://localhost:4000/git-%EB%AA%85%EB%A0%B9%EC%96%B4-%EC%A0%95%EB%A6%AC.html" rel="alternate" type="text/html" title="Git 명령어 정리" /><published>2026-08-31T00:00:00+09:00</published><updated>2026-08-31T00:00:00+09:00</updated><id>http://localhost:4000/git-%EB%AA%85%EB%A0%B9%EC%96%B4-%EC%A0%95%EB%A6%AC</id><content type="html" xml:base="http://localhost:4000/git-%EB%AA%85%EB%A0%B9%EC%96%B4-%EC%A0%95%EB%A6%AC.html"><![CDATA[<h1 id="git-명령어-정리">Git 명령어 정리</h1>
+
+<p>오늘 배운 Git 명령어를 정리합니다.</p>
+
+<h2 id="오늘-배운-것">오늘 배운 것</h2>
+<p>이번 주는 Git으로 “내가 만든 파일을 저장하고, 되돌리고, GitHub와 주고받는” 전체 흐름을 배웠다.
+아직 처음이라 헷갈릴 수 있으니, 오늘은 <strong>딱 이번 주에 배운 명령어만</strong> 순서대로 정리해본다.</p>
+
+<h3 id="전체-흐름-한눈에-보기">전체 흐름 한눈에 보기</h3>
+
+<pre><code class="language-mermaid">flowchart TD
+    A[저장소 만들기] --&gt; B[파일을 수정한다]
+    B --&gt; C[스테이징: 커밋할 것을 고른다]
+    C --&gt; D[커밋: Local Repository에 저장]
+    D --&gt; E{다음엔 뭘 할까?}
+    E --&gt; F[브랜치를 만들어 따로 작업]
+    E --&gt; G[push: GitHub로 올리기]
+    E --&gt; H[되돌리기: 이전 상태로]
+    G --&gt; I[GitHub 원격 저장소]
+    I --&gt; J[pull: 최신 내용 받아오기]
+    F --&gt; K[merge: 브랜치 합치기]
+</code></pre>
+
+<h2 id="명령어-정리표">명령어 정리표</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>명령어</th>
+      <th>언제 쓰나</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>git init</td>
+      <td>새 프로젝트를 Git으로 관리하기 시작할 때 (저장소 만들기)</td>
+    </tr>
+    <tr>
+      <td>git add</td>
+      <td>고친 파일 중에서 커밋할 것만 골라 담고 싶을 때 (스테이징)</td>
+    </tr>
+    <tr>
+      <td>git commit</td>
+      <td>스테이징한 내용을 Local Repository에 저장 지점으로 남기고 싶을 때</td>
+    </tr>
+    <tr>
+      <td>git branch</td>
+      <td>지금 작업과 별개로 새로운 갈래(브랜치)를 만들고 싶을 때</td>
+    </tr>
+    <tr>
+      <td>git push</td>
+      <td>내 컴퓨터(Local Repository)의 기록을 GitHub로 올리고 싶을 때</td>
+    </tr>
+    <tr>
+      <td>git pull</td>
+      <td>GitHub에 있는 최신 기록을 내 컴퓨터로 받아오고 싶을 때</td>
+    </tr>
+    <tr>
+      <td>git merge</td>
+      <td>서로 다른 브랜치에서 한 작업을 하나로 합치고 싶을 때</td>
+    </tr>
+    <tr>
+      <td>git reset</td>
+      <td>스테이징하거나 커밋한 걸 취소하고 이전 상태로 되돌리고 싶을 때</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="하나씩-자세히-보기">하나씩 자세히 보기</h2>
+
+<h3 id="1-저장소-만들기-git-init">1. 저장소 만들기 (git init)</h3>
+
+<p><code>git init</code>을 실행하면 그 폴더가 “Git이 지켜보는 폴더”가 된다.
+비유하자면, 앨범을 하나 새로 만드는 것과 같다. 이 앨범 안에서만 사진(저장 지점)을 찍어 모을 수 있다.</p>
+
+<h3 id="2-스테이징-git-add">2. 스테이징 (git add)</h3>
+
+<p>파일을 여러 개 고쳤어도, 한 번에 다 커밋할 필요는 없다.
+<code>git add</code>는 “이번 저장 지점에는 이 파일들만 넣을래” 하고 고르는 단계다.</p>
+
+<h3 id="3-local-repository란">3. Local Repository란?</h3>
+
+<p><code>git commit</code>을 하면 그 결과가 저장되는 곳이 바로 <strong>Local Repository</strong>, 즉 내 컴퓨터 안의 저장소다.
+아직 GitHub(원격 저장소)에는 올라가지 않은, 내 컴퓨터 안에서만의 기록이라는 점이 중요하다.</p>
+
+<h3 id="4-커밋-git-commit">4. 커밋 (git commit)</h3>
+
+<p>스테이징한 파일들을 하나의 저장 지점으로 확정 짓는 단계다.
+<code>git commit</code>을 하고 나면 그 순간의 모습이 Local Repository에 사진처럼 남는다.</p>
+
+<h3 id="5-브랜치-git-branch">5. 브랜치 (git branch)</h3>
+
+<p>브랜치는 “원래 작업은 그대로 둔 채로, 따로 실험해볼 수 있는 갈래”다.
+아래 그림처럼, 갈라져 나간 브랜치는 나중에 merge로 다시 합칠 수 있다.</p>
+
+<pre><code class="language-mermaid">flowchart LR
+    M1[main: 커밋 A] --&gt; M2[main: 커밋 B]
+    M2 --&gt; N[브랜치 생성: feature]
+    N --&gt; F1[feature: 커밋 C]
+    M2 --&gt; Merge[merge: feature를 main에 합치기]
+    F1 --&gt; Merge
+    Merge --&gt; M3[main: 커밋 B와 C가 합쳐진 상태]
+</code></pre>
+
+<h3 id="6-push">6. push</h3>
+
+<p><code>git push</code>는 Local Repository에 쌓아둔 커밋들을 GitHub(원격 저장소)로 올리는 것이다.
+이걸 해야 다른 사람도, 그리고 다른 컴퓨터에서도 내 기록을 볼 수 있다.</p>
+
+<h3 id="7-pull">7. pull</h3>
+
+<p><code>git pull</code>은 반대로 GitHub에 있는 최신 기록을 내 Local Repository로 가져오는 것이다.
+같이 작업하거나, 다른 컴퓨터에서 작업했을 때 꼭 먼저 해줘야 하는 명령이다.</p>
+
+<h3 id="8-merge">8. merge</h3>
+
+<p><code>git merge</code>는 서로 다른 브랜치에서 만든 커밋들을 하나로 합치는 작업이다.
+브랜치에서 실험한 결과가 마음에 들면, main 브랜치로 합쳐서 정식으로 반영한다.</p>
+
+<h3 id="push와-pull의-흐름">push와 pull의 흐름</h3>
+
+<pre><code class="language-mermaid">flowchart LR
+    W[작업 중인 파일] -- 스테이징 --&gt; S[스테이징 영역]
+    S -- 커밋 --&gt; L[Local Repository]
+    L -- push --&gt; R[GitHub 원격 저장소]
+    R -- pull --&gt; L
+</code></pre>
+
+<h3 id="9-되돌리기-git-reset">9. 되돌리기 (git reset)</h3>
+
+<p>작업하다 보면 “아, 이거 아까로 되돌리고 싶다” 하는 순간이 온다.
+<code>git reset</code>은 스테이징하거나 커밋한 것을 취소하고 이전 상태로 돌아가게 해준다.</p>
+
+<pre><code class="language-mermaid">flowchart LR
+    S[스테이징 영역] -- "되돌리기(git reset)" --&gt; W[작업 중인 파일]
+    L[Local Repository] -- "되돌리기(git reset)" --&gt; S
+</code></pre>
+
+<h2 id="막혔던-것">막혔던 것</h2>
+
+<p>저장소 만들기, 스테이징, 커밋까지는 한 컴퓨터 안에서 끝나는 일이고,
+push와 pull부터는 GitHub라는 원격 저장소와 주고받는 일이라는 걸 구분하는 게 처음엔 헷갈렸다.
+“Local Repository까지는 내 컴퓨터, push를 해야 비로소 GitHub”라고 기억하니 정리가 됐다.</p>
+
+<h2 id="이번-주-정리">이번 주 정리</h2>
+
+<ul>
+  <li>저장소 만들기 → 스테이징 → 커밋(Local Repository) → 브랜치 → push/pull → merge → 되돌리기, 이 순서를 한 그림으로 이해했다.</li>
+  <li>Local Repository와 GitHub(원격 저장소)는 다른 곳이며, push/pull로 서로 연결된다는 것을 배웠다.</li>
+</ul>]]></content><author><name></name></author><category term="Git" /><category term="명령어" /><summary type="html"><![CDATA[Git 명령어 정리]]></summary></entry><entry><title type="html">commit, push, PR 정리</title><link href="http://localhost:4000/commit-push-pr.html" rel="alternate" type="text/html" title="commit, push, PR 정리" /><published>2026-08-31T00:00:00+09:00</published><updated>2026-08-31T00:00:00+09:00</updated><id>http://localhost:4000/commit-push-pr</id><content type="html" xml:base="http://localhost:4000/commit-push-pr.html"><![CDATA[<h2 id="오늘-배운-것">오늘 배운 것</h2>
+
+<p>commit, push가 각각 뭘 하는 건지, 그리고 언제 쓰는 건지 정리했다.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>명령</th>
+      <th>하는 일</th>
+      <th>언제 쓰나</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code>git commit</code></td>
+      <td>스테이징한 변경 내용을 Local Repository에 저장 지점으로 남긴다</td>
+      <td>작업 하나가 의미 있는 단위로 끝났을 때마다</td>
+    </tr>
+    <tr>
+      <td><code>git push</code></td>
+      <td>Local Repository에 쌓인 커밋들을 GitHub(원격 저장소)로 올린다</td>
+      <td>로컬 작업을 GitHub에 반영하거나, 다른 사람과 공유하고 싶을 때</td>
+    </tr>
+  </tbody>
+</table>
+
+<pre><code class="language-mermaid">flowchart LR
+    W[작업 중인 파일] -- add --&gt; S[스테이징]
+    S -- commit --&gt; L[Local Repository]
+    L -- push --&gt; R[GitHub 원격 저장소]
+</code></pre>
+
+<h2 id="막혔던-것-prpull-request이-뭔지-몰랐다">막혔던 것: PR(Pull Request)이 뭔지 몰랐다</h2>
+
+<p>commit과 push까지는 이해했는데, PR은 정확히 뭘 하는 건지 몰라서 찾아봤다.</p>
+
+<p>PR은 <strong>“내 브랜치에서 작업한 내용을 다른 브랜치(보통 main)에 합쳐달라고 요청하는 것”</strong>이다.
+그냥 <code>git merge</code>로 바로 합치는 것과 다른 점은, PR을 올리면 합치기 전에 <strong>코드 리뷰와 논의</strong>를 거칠 수 있다는 것이다.</p>
+
+<pre><code class="language-mermaid">flowchart LR
+    A[feature 브랜치에서 커밋] --&gt; B[push로 GitHub에 올리기]
+    B --&gt; C[GitHub에서 PR 생성]
+    C --&gt; D[리뷰어가 코드 확인 및 코멘트]
+    D --&gt; E[승인되면 main에 merge]
+</code></pre>
+
+<p>즉 순서로 보면 <strong>commit(로컬에 저장) → push(GitHub에 올림) → PR(합쳐달라고 요청 + 리뷰) → merge(실제로 합침)</strong> 흐름이다.
+push까지는 내 브랜치를 GitHub에 올리는 것뿐이고, PR을 만들어야 비로소 “리뷰 받고 합치는” 절차가 시작된다는 점이 헷갈렸던 부분이다.</p>
+
+<h2 id="오늘-정리">오늘 정리</h2>
+
+<ul>
+  <li>commit은 로컬 저장, push는 GitHub 업로드라는 것까지는 알고 있었다.</li>
+  <li>PR은 merge 전에 리뷰/논의를 거치기 위한 절차라는 걸 새로 알게 됐다.</li>
+  <li>다음엔 실제로 PR을 하나 만들어보면서 리뷰 코멘트가 어떻게 남는지 확인해봐야겠다.</li>
+</ul>
+
+<h2 id="참고-자료">참고 자료</h2>
+
+<ul>
+  <li><a href="https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests">GitHub Docs - About pull requests</a></li>
+</ul>]]></content><author><name></name></author><category term="Git" /><category term="GitHub" /><summary type="html"><![CDATA[오늘 배운 것]]></summary></entry><entry><title type="html">Git add, commit, push</title><link href="http://localhost:4000/git-add-commit-push.html" rel="alternate" type="text/html" title="Git add, commit, push" /><published>2026-08-30T00:00:00+09:00</published><updated>2026-08-30T00:00:00+09:00</updated><id>http://localhost:4000/git-add-commit-push</id><content type="html" xml:base="http://localhost:4000/git-add-commit-push.html"><![CDATA[<h1 id="git-add-commit-push">Git add, commit, push</h1>
+
+<p>오늘 배운 내용을 정리합니다.</p>
+
+<h2 id="오늘-배운-것">오늘 배운 것</h2>
+
+<p>Git은 <strong>저장 지점을 남기고 되돌릴 수 있게</strong> 해주는 도구다.</p>
+
+<h3 id="커밋까지의-세-단계">커밋까지의 세 단계</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>단계</th>
+      <th>명령</th>
+      <th>하는 일</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td><code>git add</code></td>
+      <td>커밋에 담을 것을 고른다</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td><code>git commit</code></td>
+      <td>고른 것을 한 덩어리로 기록한다</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td><code>git push</code></td>
+      <td>기록을 GitHub로 올린다</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>가장 헷갈렸던 건 <code>add</code>와 <code>commit</code>이 왜 나뉘어 있는가였다.
+파일을 두 개 고쳤는데 <strong>하나만 커밋하고 싶을 때</strong>가 있기 때문이었다.</p>
+
+<h2 id="막혔던-것">막혔던 것</h2>
+
+<p><code>git log</code>를 쳤더니 화면이 멈춘 것처럼 보였다.
+알고 보니 기록을 보여주는 화면이 열린 것이었고, <code>q</code>를 누르면 빠져나온다.</p>
+
+<h2 id="내일-볼-것">내일 볼 것</h2>
+
+<ul>
+  <li>마크다운으로 글 쓰기</li>
+  <li>만든 것을 인터넷에 올리기</li>
+</ul>]]></content><author><name></name></author><category term="Git" /><category term="GitHub" /><summary type="html"><![CDATA[Git add, commit, push]]></summary></entry><entry><title type="html">Git 브랜치 전략</title><link href="http://localhost:4000/git-branch-strategy.html" rel="alternate" type="text/html" title="Git 브랜치 전략" /><published>2026-08-29T00:00:00+09:00</published><updated>2026-08-29T00:00:00+09:00</updated><id>http://localhost:4000/git-branch-strategy</id><content type="html" xml:base="http://localhost:4000/git-branch-strategy.html"><![CDATA[<h2 id="오늘-배운-것">오늘 배운 것</h2>
+
+<p>브랜치를 만들 줄은 알게 됐는데, “그래서 언제, 어떻게 나눠 써야 하나”가 궁금해서 초보자용 기본 전략을 정리해봤다.
+큰 규칙은 하나다. <strong>main은 항상 안전한 상태로 두고, 새 작업은 브랜치에서 한다.</strong></p>
+
+<h3 id="기본-흐름">기본 흐름</h3>
+
+<pre><code class="language-mermaid">flowchart LR
+    A[main: 항상 잘 돌아가는 상태] --&gt; B[새 기능 브랜치 생성]
+    B --&gt; C[브랜치에서 작업 + 커밋]
+    C --&gt; D[main과 잘 맞는지 확인]
+    D --&gt; E[merge: main에 합치기]
+    E --&gt; F[다 쓴 브랜치는 삭제]
+</code></pre>
+
+<h2 id="왜-브랜치를-나눠서-쓰나">왜 브랜치를 나눠서 쓰나</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>상황</th>
+      <th>main에서 바로 작업하면</th>
+      <th>브랜치에서 작업하면</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>기능을 만들다가 실수함</td>
+      <td>main 자체가 망가짐</td>
+      <td>그 브랜치만 지우면 그만</td>
+    </tr>
+    <tr>
+      <td>여러 기능을 동시에 진행</td>
+      <td>서로 코드가 뒤섞임</td>
+      <td>브랜치별로 분리됨</td>
+    </tr>
+    <tr>
+      <td>완성 안 된 걸 남에게 보여줘야 함</td>
+      <td>main이 불안정해서 곤란함</td>
+      <td>main은 그대로 안전함</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="기본-규칙-표">기본 규칙 표</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>규칙</th>
+      <th>언제 지키나</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>main은 직접 건드리지 않는다</td>
+      <td>새로운 작업을 시작할 때</td>
+    </tr>
+    <tr>
+      <td>브랜치 하나에는 작업 하나만</td>
+      <td>브랜치를 만들 때</td>
+    </tr>
+    <tr>
+      <td>이름은 무슨 작업인지 알 수 있게 짓는다</td>
+      <td>브랜치를 만들 때 (예: <code>login-form</code>, <code>fix-typo</code>)</td>
+    </tr>
+    <tr>
+      <td>작업이 끝나면 바로 main에 합친다</td>
+      <td>merge할 때</td>
+    </tr>
+    <tr>
+      <td>합친 브랜치는 지운다</td>
+      <td>merge가 끝난 직후</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="브랜치-하나의-일생">브랜치 하나의 일생</h2>
+
+<pre><code class="language-mermaid">flowchart TD
+    A[브랜치 생성] --&gt; B[작업 + 커밋 여러 번]
+    B --&gt; C[main에 merge]
+    C --&gt; D[브랜치 삭제]
+</code></pre>
+
+<h2 id="막혔던-것">막혔던 것</h2>
+
+<p>브랜치를 계속 살려두고 여러 개 동시에 작업하다 보니, 어떤 브랜치가 뭘 하던 건지 헷갈렸다.
+찾아보니 이유는 <strong>브랜치를 너무 오래 들고 있어서</strong>였다.
+작업 하나 끝나면 바로바로 merge하고 지우는 습관을 들이면 이런 문제가 줄어든다고 한다.</p>
+
+<h2 id="오늘-정리">오늘 정리</h2>
+
+<ul>
+  <li>브랜치 전략의 핵심은 “main은 안전하게, 새 작업은 브랜치에서”였다.</li>
+  <li>브랜치는 작업 단위로 짧게 만들고, 끝나면 바로 merge 후 삭제하는 게 초보자에게 가장 헷갈리지 않는 방식이다.</li>
+</ul>]]></content><author><name></name></author><category term="Git" /><category term="Branch" /><summary type="html"><![CDATA[오늘 배운 것]]></summary></entry><entry><title type="html">리눅스 셸(Shell) 기초 정리</title><link href="http://localhost:4000/git-linux-shell-basics.html" rel="alternate" type="text/html" title="리눅스 셸(Shell) 기초 정리" /><published>2026-08-28T00:00:00+09:00</published><updated>2026-08-28T00:00:00+09:00</updated><id>http://localhost:4000/git-linux-shell-basics</id><content type="html" xml:base="http://localhost:4000/git-linux-shell-basics.html"><![CDATA[<h1 id="이론">이론</h1>
+<h2 id="cli-환경">CLI 환경</h2>
+<ul>
+  <li>유닉스 (CLI 기반의 운영체제) ↔ Windows, MacOS(그래픽 기반의 운영체제)</li>
+  <li>하드웨어(os) &lt; 커널(kernel) &lt; 운영체제(os) &lt; 셸(shell) &lt; 애플리케이션(application)
+    <h2 id="셸-shell">셸 (Shell)</h2>
+  </li>
+  <li>CLI를 통해 사람과 컴퓨터 연결해주는 것</li>
+  <li>종류
+    <ul>
+      <li>sh (Bourne Shell) : 가장 초창기 기본 셸</li>
+      <li>bash (Bourne Again Shell) : 지금도 많이 쓰이는 강력한 셸</li>
+      <li>csh, ksh, zsh 등: 각각의 철학과 기능을 가진 다양한 셸들</li>
+    </ul>
+  </li>
+</ul>]]></content><author><name></name></author><category term="Git" /><category term="Linux" /><category term="Shell" /><summary type="html"><![CDATA[이론 CLI 환경 유닉스 (CLI 기반의 운영체제) ↔ Windows, MacOS(그래픽 기반의 운영체제) 하드웨어(os) &lt; 커널(kernel) &lt; 운영체제(os) &lt; 셸(shell) &lt; 애플리케이션(application) 셸 (Shell) CLI를 통해 사람과 컴퓨터 연결해주는 것 종류 sh (Bourne Shell) : 가장 초창기 기본 셸 bash (Bourne Again Shell) : 지금도 많이 쓰이는 강력한 셸 csh, ksh, zsh 등: 각각의 철학과 기능을 가진 다양한 셸들]]></summary></entry><entry><title type="html">마크다운 문법 정리</title><link href="http://localhost:4000/markdown-syntax.html" rel="alternate" type="text/html" title="마크다운 문법 정리" /><published>2026-08-28T00:00:00+09:00</published><updated>2026-08-28T00:00:00+09:00</updated><id>http://localhost:4000/markdown-syntax</id><content type="html" xml:base="http://localhost:4000/markdown-syntax.html"><![CDATA[<h1 id="마크다운-문법">마크다운 문법</h1>
+
+<h2 id="제목은--개수로-단계를-만들-수-있다">제목은 # 개수로 단계를 만들 수 있다.</h2>
+<h3 id="개수에-따라-글씨가-점점-작아진다">#개수에 따라 글씨가 점점 작아진다.</h3>
+
+<p><strong>굵은 글씨</strong>
+<em>기울여</em> 쓸 수 있다.</p>
+
+<p>순서가 없는 목록 만들기</p>
+<ul>
+  <li>첫 번째</li>
+  <li>두 번째</li>
+  <li>세 번째</li>
+  <li>네 번째
+    <ul>
+      <li>4-1번째</li>
+    </ul>
+  </li>
+</ul>
+
+<p>순서가 있는 목록 만들기</p>
+<ol>
+  <li>하나</li>
+  <li>두울</li>
+</ol>
+
+<p>링크 첨부 방법</p>
+<ul>
+  <li><a href="https://github.com/yoosoo2217/GitGui-Test.git">나의 깃허브</a></li>
+</ul>
+
+<p>이미지 첨부 방법</p>
+<ul>
+  <li><img src="image.png" alt="인력사무소 8월 28일 점심" /></li>
+</ul>
+
+<blockquote>
+  <p>인용하는 구문은 꺽쇠로 만든다.
+남의 말이나 정의를 옮길 때 사용한다.</p>
+</blockquote>
+
+<ul>
+  <li>`은 1 옆에 있는 것으로 (백틱)이라고 명칭</li>
+  <li>백틱 내부에는 코드나 명령어 적음</li>
+</ul>
+
+<pre><code>git status
+git init
+</code></pre>
+
+<ul>
+  <li>마크다운 문법으로 표 만들기</li>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td>표시는 개발 쪽에서는 OR 연산자라고도 불린다</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+</ul>
+
+<table>
+  <thead>
+    <tr>
+      <th>명령어</th>
+      <th>하는 일</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>git add</td>
+      <td>스테이징 영역에 파일 추가</td>
+    </tr>
+    <tr>
+      <td>git commit</td>
+      <td>로컬 저장소에 저장</td>
+    </tr>
+  </tbody>
+</table>]]></content><author><name></name></author><category term="Markdown" /><summary type="html"><![CDATA[마크다운 문법]]></summary></entry></feed>

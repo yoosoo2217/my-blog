@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+	<link rel="stylesheet" href="/assets/css/atom-one-light.css">
+    
+        <title>Git 브랜치 전략</title>
+		<link rel="stylesheet" type="text/css" href="/assets/css/002.css">
+    
+	<link rel="stylesheet" href="/assets/css/font-awesome.min.css">
+	<link rel="shortcut icon" href="/assets/img/favicon.ico" type="image/x-icon">
+	<link rel="icon" href="/assets/img/favicon.ico" type="image/x-icon">
+	<script src="/assets/js/highlight.pack.js"></script>
+	<script>hljs.initHighlightingOnLoad();</script>
+</head>
+<body>
+	<div class="wrapper">
+		<div class="default_title">
+			<img src="/assets/img/mycomputer.png" />
+			
+				<h1>유수의 학습 블로그</h1>
+			
+		</div>
+		<ul class="topbar">
+	<a href="/me"><li><u>A</u>bout</li></a>
+	<a href="http://twitter.com/h01000110" target="_blank"><li><u>T</u>witter</li></a>
+	<a href="http://soundcloud.com/h01000110" target="_blank"><li><u>S</u>oundcloud</li></a>
+</ul>
+		<div class="tag_list">
+			<ul id="tag-list">
+				<li><a href="/" ><img src="/assets/img/disk.png" />(C:)</a>
+			<ul>
+				
+				
+				<li><a href="/tag/branch/" title="Branch"><img src="/assets/img/folder.ico" />Branch</a></li>
+				
+				<li><a href="/tag/git/" title="Git"><img src="/assets/img/folder.ico" />Git</a></li>
+				
+				<li><a href="/tag/github/" title="GitHub"><img src="/assets/img/folder.ico" />GitHub</a></li>
+				
+				<li><a href="/tag/linux/" title="Linux"><img src="/assets/img/folder.ico" />Linux</a></li>
+				
+				<li><a href="/tag/markdown/" title="Markdown"><img src="/assets/img/folder.ico" />Markdown</a></li>
+				
+				<li><a href="/tag/shell/" title="Shell"><img src="/assets/img/folder.ico" />Shell</a></li>
+				
+				<li><a href="/tag/명령어/" title="명령어"><img src="/assets/img/folder.ico" />명령어</a></li>
+				
+			</ul>
+				</li>
+			</ul>
+		</div>
+		<div class="post_list">
+			
+				<ul>
+					
+					<li><a href="/git-%EB%AA%85%EB%A0%B9%EC%96%B4-%EC%A0%95%EB%A6%AC.html" title="Git 명령어 정리"><img src="/assets/img/file.ico" title="Git 명령어 정리" />Git 명령어 정리</a></li>
+					
+					<li><a href="/commit-push-pr.html" title="commit, push, PR 정리"><img src="/assets/img/file.ico" title="commit, push, PR 정리" />commit, push, PR 정리</a></li>
+					
+					<li><a href="/git-add-commit-push.html" title="Git add, commit, push"><img src="/assets/img/file.ico" title="Git add, commit, push" />Git add, commit, push</a></li>
+					
+					<li><a href="/git-branch-strategy.html" title="Git 브랜치 전략"><img src="/assets/img/file.ico" title="Git 브랜치 전략" />Git 브랜치 전략</a></li>
+					
+					<li><a href="/markdown-syntax.html" title="마크다운 문법 정리"><img src="/assets/img/file.ico" title="마크다운 문법 정리" />마크다운 문법 정리</a></li>
+					
+					<li><a href="/git-linux-shell-basics.html" title="리눅스 셸(Shell) 기초 정리"><img src="/assets/img/file.ico" title="리눅스 셸(Shell) 기초 정리" />리눅스 셸(Shell) 기초 정리</a></li>
+					
+				</ul>
+			
+		</div>
+		<div class="post_total">
+			
+				<div class="left">6 object(s)</div>
+			
+			<div class="right">&nbsp;</div>
+		</div>
+	</div>
+	
+        <div class="content">
+			<div class="post_title">
+				<img src="/assets/img/file.png" />
+				<h1>Git 브랜치 전략</h1>
+				<a href="/"><div class="btn"><span class="fa fa-times"></span></div></a>
+				<div class="btn btn_max"><span class="fa fa-window-maximize"></span></div>
+				<div class="btn"><span class="fa fa-window-minimize"></span></div>
+			</div>
+			<ul class="topbar">
+				<li>August 29, 2026</li>
+			</ul>
+			<div class="post_content">
+        		<h2 id="오늘-배운-것">오늘 배운 것</h2>
+
+<p>브랜치를 만들 줄은 알게 됐는데, “그래서 언제, 어떻게 나눠 써야 하나”가 궁금해서 초보자용 기본 전략을 정리해봤다.
+큰 규칙은 하나다. <strong>main은 항상 안전한 상태로 두고, 새 작업은 브랜치에서 한다.</strong></p>
+
+<h3 id="기본-흐름">기본 흐름</h3>
+
+<pre><code class="language-mermaid">flowchart LR
+    A[main: 항상 잘 돌아가는 상태] --&gt; B[새 기능 브랜치 생성]
+    B --&gt; C[브랜치에서 작업 + 커밋]
+    C --&gt; D[main과 잘 맞는지 확인]
+    D --&gt; E[merge: main에 합치기]
+    E --&gt; F[다 쓴 브랜치는 삭제]
+</code></pre>
+
+<h2 id="왜-브랜치를-나눠서-쓰나">왜 브랜치를 나눠서 쓰나</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>상황</th>
+      <th>main에서 바로 작업하면</th>
+      <th>브랜치에서 작업하면</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>기능을 만들다가 실수함</td>
+      <td>main 자체가 망가짐</td>
+      <td>그 브랜치만 지우면 그만</td>
+    </tr>
+    <tr>
+      <td>여러 기능을 동시에 진행</td>
+      <td>서로 코드가 뒤섞임</td>
+      <td>브랜치별로 분리됨</td>
+    </tr>
+    <tr>
+      <td>완성 안 된 걸 남에게 보여줘야 함</td>
+      <td>main이 불안정해서 곤란함</td>
+      <td>main은 그대로 안전함</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="기본-규칙-표">기본 규칙 표</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>규칙</th>
+      <th>언제 지키나</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>main은 직접 건드리지 않는다</td>
+      <td>새로운 작업을 시작할 때</td>
+    </tr>
+    <tr>
+      <td>브랜치 하나에는 작업 하나만</td>
+      <td>브랜치를 만들 때</td>
+    </tr>
+    <tr>
+      <td>이름은 무슨 작업인지 알 수 있게 짓는다</td>
+      <td>브랜치를 만들 때 (예: <code>login-form</code>, <code>fix-typo</code>)</td>
+    </tr>
+    <tr>
+      <td>작업이 끝나면 바로 main에 합친다</td>
+      <td>merge할 때</td>
+    </tr>
+    <tr>
+      <td>합친 브랜치는 지운다</td>
+      <td>merge가 끝난 직후</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="브랜치-하나의-일생">브랜치 하나의 일생</h2>
+
+<pre><code class="language-mermaid">flowchart TD
+    A[브랜치 생성] --&gt; B[작업 + 커밋 여러 번]
+    B --&gt; C[main에 merge]
+    C --&gt; D[브랜치 삭제]
+</code></pre>
+
+<h2 id="막혔던-것">막혔던 것</h2>
+
+<p>브랜치를 계속 살려두고 여러 개 동시에 작업하다 보니, 어떤 브랜치가 뭘 하던 건지 헷갈렸다.
+찾아보니 이유는 <strong>브랜치를 너무 오래 들고 있어서</strong>였다.
+작업 하나 끝나면 바로바로 merge하고 지우는 습관을 들이면 이런 문제가 줄어든다고 한다.</p>
+
+<h2 id="오늘-정리">오늘 정리</h2>
+
+<ul>
+  <li>브랜치 전략의 핵심은 “main은 안전하게, 새 작업은 브랜치에서”였다.</li>
+  <li>브랜치는 작업 단위로 짧게 만들고, 끝나면 바로 merge 후 삭제하는 게 초보자에게 가장 헷갈리지 않는 방식이다.</li>
+</ul>
+
+				
+					<br>
+<hr>
+<br>
+<div class="donate">
+	<p>Did you like of something here? How about helping me buy some game?<br>
+	I'll appreciate it!</p>
+	<p>Bitcoin Wallet <i class="fa fa-btc"></i> 1Agt7r7aCAeWk5DyXXNyJXAXC4xxysiWjJ<br>Ethereum Wallet <i class="fa fa-money"></i> 0x19BD447c94499BdcA154Dc1BeF9FCf1f4c427C16</p>
+</div>
+				
+			</div>
+		</div>
+    
+	<script src="/assets/js/001.js"></script>
+	<script src="/assets/js/002.js"></script>
+	<div class="footer">
+		<p>Created by <a href="http://github.com/h01000110" target="_blank">h01000110 (hi)</a> | Code licensed under <a href="https://github.com/h01000110/h01000110.github.io/blob/master/LICENSE" target="_blank">MIT License</a></p>
+	</div>
+</body>
+</html>

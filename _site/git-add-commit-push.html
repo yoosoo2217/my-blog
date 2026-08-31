@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+	<link rel="stylesheet" href="/assets/css/atom-one-light.css">
+    
+        <title>Git add, commit, push</title>
+		<link rel="stylesheet" type="text/css" href="/assets/css/002.css">
+    
+	<link rel="stylesheet" href="/assets/css/font-awesome.min.css">
+	<link rel="shortcut icon" href="/assets/img/favicon.ico" type="image/x-icon">
+	<link rel="icon" href="/assets/img/favicon.ico" type="image/x-icon">
+	<script src="/assets/js/highlight.pack.js"></script>
+	<script>hljs.initHighlightingOnLoad();</script>
+</head>
+<body>
+	<div class="wrapper">
+		<div class="default_title">
+			<img src="/assets/img/mycomputer.png" />
+			
+				<h1>유수의 학습 블로그</h1>
+			
+		</div>
+		<ul class="topbar">
+	<a href="/me"><li><u>A</u>bout</li></a>
+	<a href="http://twitter.com/h01000110" target="_blank"><li><u>T</u>witter</li></a>
+	<a href="http://soundcloud.com/h01000110" target="_blank"><li><u>S</u>oundcloud</li></a>
+</ul>
+		<div class="tag_list">
+			<ul id="tag-list">
+				<li><a href="/" ><img src="/assets/img/disk.png" />(C:)</a>
+			<ul>
+				
+				
+				<li><a href="/tag/branch/" title="Branch"><img src="/assets/img/folder.ico" />Branch</a></li>
+				
+				<li><a href="/tag/git/" title="Git"><img src="/assets/img/folder.ico" />Git</a></li>
+				
+				<li><a href="/tag/github/" title="GitHub"><img src="/assets/img/folder.ico" />GitHub</a></li>
+				
+				<li><a href="/tag/linux/" title="Linux"><img src="/assets/img/folder.ico" />Linux</a></li>
+				
+				<li><a href="/tag/markdown/" title="Markdown"><img src="/assets/img/folder.ico" />Markdown</a></li>
+				
+				<li><a href="/tag/shell/" title="Shell"><img src="/assets/img/folder.ico" />Shell</a></li>
+				
+				<li><a href="/tag/명령어/" title="명령어"><img src="/assets/img/folder.ico" />명령어</a></li>
+				
+			</ul>
+				</li>
+			</ul>
+		</div>
+		<div class="post_list">
+			
+				<ul>
+					
+					<li><a href="/git-%EB%AA%85%EB%A0%B9%EC%96%B4-%EC%A0%95%EB%A6%AC.html" title="Git 명령어 정리"><img src="/assets/img/file.ico" title="Git 명령어 정리" />Git 명령어 정리</a></li>
+					
+					<li><a href="/commit-push-pr.html" title="commit, push, PR 정리"><img src="/assets/img/file.ico" title="commit, push, PR 정리" />commit, push, PR 정리</a></li>
+					
+					<li><a href="/git-add-commit-push.html" title="Git add, commit, push"><img src="/assets/img/file.ico" title="Git add, commit, push" />Git add, commit, push</a></li>
+					
+					<li><a href="/git-branch-strategy.html" title="Git 브랜치 전략"><img src="/assets/img/file.ico" title="Git 브랜치 전략" />Git 브랜치 전략</a></li>
+					
+					<li><a href="/markdown-syntax.html" title="마크다운 문법 정리"><img src="/assets/img/file.ico" title="마크다운 문법 정리" />마크다운 문법 정리</a></li>
+					
+					<li><a href="/git-linux-shell-basics.html" title="리눅스 셸(Shell) 기초 정리"><img src="/assets/img/file.ico" title="리눅스 셸(Shell) 기초 정리" />리눅스 셸(Shell) 기초 정리</a></li>
+					
+				</ul>
+			
+		</div>
+		<div class="post_total">
+			
+				<div class="left">6 object(s)</div>
+			
+			<div class="right">&nbsp;</div>
+		</div>
+	</div>
+	
+        <div class="content">
+			<div class="post_title">
+				<img src="/assets/img/file.png" />
+				<h1>Git add, commit, push</h1>
+				<a href="/"><div class="btn"><span class="fa fa-times"></span></div></a>
+				<div class="btn btn_max"><span class="fa fa-window-maximize"></span></div>
+				<div class="btn"><span class="fa fa-window-minimize"></span></div>
+			</div>
+			<ul class="topbar">
+				<li>August 30, 2026</li>
+			</ul>
+			<div class="post_content">
+        		<h1 id="git-add-commit-push">Git add, commit, push</h1>
+
+<p>오늘 배운 내용을 정리합니다.</p>
+
+<h2 id="오늘-배운-것">오늘 배운 것</h2>
+
+<p>Git은 <strong>저장 지점을 남기고 되돌릴 수 있게</strong> 해주는 도구다.</p>
+
+<h3 id="커밋까지의-세-단계">커밋까지의 세 단계</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>단계</th>
+      <th>명령</th>
+      <th>하는 일</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td><code>git add</code></td>
+      <td>커밋에 담을 것을 고른다</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td><code>git commit</code></td>
+      <td>고른 것을 한 덩어리로 기록한다</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td><code>git push</code></td>
+      <td>기록을 GitHub로 올린다</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>가장 헷갈렸던 건 <code>add</code>와 <code>commit</code>이 왜 나뉘어 있는가였다.
+파일을 두 개 고쳤는데 <strong>하나만 커밋하고 싶을 때</strong>가 있기 때문이었다.</p>
+
+<h2 id="막혔던-것">막혔던 것</h2>
+
+<p><code>git log</code>를 쳤더니 화면이 멈춘 것처럼 보였다.
+알고 보니 기록을 보여주는 화면이 열린 것이었고, <code>q</code>를 누르면 빠져나온다.</p>
+
+<h2 id="내일-볼-것">내일 볼 것</h2>
+
+<ul>
+  <li>마크다운으로 글 쓰기</li>
+  <li>만든 것을 인터넷에 올리기</li>
+</ul>
+
+				
+					<br>
+<hr>
+<br>
+<div class="donate">
+	<p>Did you like of something here? How about helping me buy some game?<br>
+	I'll appreciate it!</p>
+	<p>Bitcoin Wallet <i class="fa fa-btc"></i> 1Agt7r7aCAeWk5DyXXNyJXAXC4xxysiWjJ<br>Ethereum Wallet <i class="fa fa-money"></i> 0x19BD447c94499BdcA154Dc1BeF9FCf1f4c427C16</p>
+</div>
+				
+			</div>
+		</div>
+    
+	<script src="/assets/js/001.js"></script>
+	<script src="/assets/js/002.js"></script>
+	<div class="footer">
+		<p>Created by <a href="http://github.com/h01000110" target="_blank">h01000110 (hi)</a> | Code licensed under <a href="https://github.com/h01000110/h01000110.github.io/blob/master/LICENSE" target="_blank">MIT License</a></p>
+	</div>
+</body>
+</html>

@@ -8,11 +8,13 @@
 * CLAUDE.md 파일은 작업지시서로서, workspace 맨 위에 두는 파일이다.
 * workspace에서 작업을 시작할 때, 해당 파일을 매번 먼저 읽는다.
 
-# CLAUDE.md — 기술 블로그 작성 가이드 (Just the Docs 기반)
+# CLAUDE.md — 기술 블로그 작성 가이드 (Windows 95 Jekyll 테마 기반)
 
 이 문서는 AI Agent(Claude)가 기술 블로그 초안 작성 및 리뷰를 도울 때 반드시 따라야 하는 규칙을 정의합니다.
 
-이 블로그는 **GitHub Pages + Jekyll + Just the Docs 테마**로 만들어져 있습니다. `_posts` 폴더를 쓰지 않고, 일반 페이지 + `parent`/`nav_order`로 카테고리를 구성하는 방식입니다. 이 문서의 5번 항목은 그 구조에 맞춰져 있으니, 다른 Jekyll 블로그 가이드(예: `_posts/YYYY-MM-DD-제목.md`, `categories`, `tags` 방식)를 참고하지 않도록 주의하세요.
+이 블로그는 **GitHub Pages + Jekyll + Windows 95 테마**(h01000110/windows-95)로 만들어져 있습니다. `_posts` 폴더에 날짜가 들어간 파일명으로 글을 쓰고, `tags`로 사이드바 폴더 구조를 만드는 방식입니다. 이 문서의 5번 항목은 그 구조에 맞춰져 있으니, 예전에 쓰던 Just the Docs 방식(`parent`/`nav_order`, `_posts`를 안 쓰는 방식)을 참고하지 않도록 주의하세요.
+
+> 참고: 2026-08-31에 Just the Docs → Windows 95 테마로 전환하면서, 이 문서의 5번 항목도 함께 새 구조에 맞게 갱신했습니다.
 
 ---
 
@@ -158,77 +160,68 @@ Mermaid를 쓰려면 `_config.yml`에 아래 설정이 **한 번** 되어 있어
 
 ---
 
-## 5. GitHub Pages (Jekyll + Just the Docs) 게시 규칙
+## 5. GitHub Pages (Jekyll + Windows 95 테마) 게시 규칙
 
-이 블로그는 **`_posts` 폴더를 쓰지 않는다.** 대신 일반 페이지 파일 + front matter의 `parent`/`nav_order`로 사이드바 카테고리 구조를 만든다. Agent는 초안을 만들 때 반드시 이 규칙에 맞는 완성된 파일 형태로 제공한다.
+이 블로그는 **`_posts` 폴더를 쓴다.** 글은 `_posts/YYYY-MM-DD-제목.md` 형식의 파일로 만들고, front matter의 `tags`로 사이드바(탐색기 폴더 목록) 구조를 만든다. Agent는 초안을 만들 때 반드시 이 규칙에 맞는 완성된 파일 형태로 제공한다.
 
 ### 5.1 파일 위치와 파일명
 
-- 글은 **저장소 최상위(루트)**에 두거나, 정리용으로 원하는 하위 폴더(예: `git/`, `markdown/`)에 자유롭게 둘 수 있다. 폴더 위치는 사이트 구조에 아무 영향이 없다 — 오직 front matter의 `parent` 값만 본다.
-- 파일명에 **날짜를 넣을 필요가 없다.** `_posts`에서 요구하던 `YYYY-MM-DD-제목.md` 규칙은 이 테마에서 적용되지 않는다.
-- 파일명은 영문 소문자 + 하이픈(`-`) 조합을 권장한다 (예: `react-query-caching.md`). 한글 파일명도 동작은 하지만, 커밋 히스토리·링크 가독성을 위해 영문을 권장.
+- 글은 반드시 **`_posts/` 폴더 안**에 둔다.
+- 파일명은 `YYYY-MM-DD-제목.md` 형식이어야 한다 (Jekyll의 `_posts` 규칙). 예: `_posts/2026-09-01-react-query-caching.md`
+- 파일명은 영문 소문자 + 하이픈(`-`) 조합을 권장하지만, 한글 파일명도 정상 동작한다 (예: `_posts/2026-09-01-git-명령어-정리.md`).
 
-올바른 예: `react-query-caching.md`, `git/git-branch.md`
-지양할 예: `_posts/2026-08-30-react-query-caching.md` (이 테마에서는 이 폴더 자체를 쓰지 않음)
+올바른 예: `_posts/2026-09-01-react-query-caching.md`
+지양할 예: 루트에 바로 `react-query-caching.md`를 두는 것 (이 테마는 `_posts` 폴더 밖의 글은 인식하지 않음)
 
 ### 5.2 Front Matter (필수)
 
-모든 글의 **최상단**에 YAML Front Matter를 작성한다. 이 블록이 없거나 `parent` 값이 실제 카테고리 페이지의 `title`과 다르면, 글은 만들어지지만 사이드바 카테고리 밑에 나타나지 않는다.
+모든 글의 **최상단**에 YAML Front Matter를 작성한다. `layout`은 `_config.yml`의 `defaults` 설정으로 모든 글에 자동으로 `default`가 적용되므로 **글 front matter에 따로 넣지 않아도 된다.**
 
 ```yaml
 ---
 title: "브라우저 캐싱 문제를 React Query로 해결하기"
-layout: default
-parent: Frontend
-nav_order: 1
+date: 2026-09-01
+tags:
+  - Frontend
+  - React
 ---
 ```
 
 | 항목 | 필수 여부 | 규칙 |
 |------|-----------|------|
 | `title` | 필수 | 글 제목. 콜론(`:`) 등 특수문자 포함 시 반드시 따옴표로 감싼다 |
-| `layout` | 필수 | 항상 `default` |
-| `parent` | 필수 | **카테고리 페이지의 `title` 값과 정확히 동일해야 함** (파일명이 아니라 title 기준 매칭). 현재 존재하는 카테고리: `Git`, `Markdown` |
-| `nav_order` | 권장 | 같은 카테고리 안에서의 순서. 숫자가 작을수록 위에 표시됨 |
+| `date` | 필수 | 파일명의 날짜와 맞춘다 |
+| `tags` | 필수 | 리스트 형식. 사이드바에 각 태그가 폴더처럼 표시된다. 현재 존재하는 태그: `Git`, `Linux`, `Shell`, `GitHub`, `Markdown`, `Branch`, `명령어` |
 
-`layout: post`, `categories`, `tags`, `date`는 이 테마에서 아무 기능이 없으므로 **넣지 않는다.** 날짜를 기록해두고 싶으면 `title`이나 본문 첫 줄에 직접 적는다 (예: `title: "[8/30] 브라우저 캐싱 문제 해결기"`).
+`layout`, `parent`, `nav_order`, `categories`는 이 테마에서 별도로 넣지 않아도 된다 (`layout`은 defaults로 자동 적용, 나머지는 이 테마에서 쓰이지 않음).
 
-**새 카테고리가 필요할 때**: 루트에 `카테고리이름.md` 파일을 새로 만든다.
+**새 태그가 필요할 때**: 그냥 글의 `tags:` 목록에 새 태그 이름을 적으면 사이드바에 자동으로 나타난다. 다만 태그를 클릭했을 때 보여줄 목록 페이지가 있어야 하므로, `tag/` 폴더에 그 태그용 파일을 하나 만들어야 한다.
 
 ```yaml
 ---
-title: Frontend
-layout: default
-nav_order: 4
+layout: tag
+tag: Frontend
+permalink: /tag/frontend/
 ---
-
-# Frontend
-프론트엔드 관련 정리 모음입니다.
 ```
 
-그 다음 새 글의 `parent`에 이 `title`(`Frontend`)을 그대로 적으면 자동으로 그 카테고리 밑에 들어간다.
+파일명은 `tag/<태그 슬러그>.md` (영문 태그는 소문자, 한글 태그는 그대로 사용), `permalink`도 `/tag/<슬러그>/` 형식으로 맞춘다.
 
 ### 5.3 이미지 및 리소스 경로
 
-- 이미지는 `assets/images/` 같은 폴더에 저장한다.
-- 프로젝트 페이지(`username.github.io/repo명`)이므로 `baseurl` 문제를 피하기 위해 다음 형식을 권장한다.
+- 이미지는 `assets/img/` 같은 폴더에 저장한다.
+- `baseurl`은 빈 문자열(`""`)로 설정되어 있으므로, 이미지 경로는 절대경로로 바로 쓴다.
 
 ```markdown
-![캐시 흐름도]({{ site.baseurl }}/assets/images/cache-flow.png)
+![캐시 흐름도](/assets/img/cache-flow.png)
 ```
 
 - 로컬 파일 경로(`C:\Users\...`, `/Users/...`)는 절대 사용하지 않는다.
+- **파일을 저장할 때는 반드시 UTF-8 인코딩으로 저장한다.** (Windows 메모장 등 일부 에디터의 기본 인코딩으로 저장하면 한글이 깨진 상태로 커밋될 수 있다 — 실제로 2026-08-31에 이 문제로 `_config.yml`과 여러 글이 깨져서 복구한 적이 있다.)
 
 ### 5.4 Mermaid 사용 시 주의
 
-Just the Docs는 Mermaid를 지원하지만 **사이트 전체 설정을 한 번만** 켜주면 된다 (Chirpy 같은 테마처럼 글마다 `mermaid: true`를 넣을 필요 없음). `_config.yml`에 아래가 있는지 확인한다.
-
-```yaml
-mermaid:
-  version: "9.1.6"
-```
-
-이 설정이 되어 있다면, 어떤 글에서든 ` ```mermaid ` 코드블록을 쓰면 자동으로 다이어그램이 렌더링된다. 설정이 안 되어 있다면 Agent가 이 블록을 `_config.yml`에 추가하도록 안내한다.
+이 테마는 Mermaid 렌더링 스크립트를 자체적으로 내장하고 있지 않으므로, 글에서 ` ```mermaid ` 코드블록을 쓰려면 실제로 렌더링되는지 로컬 미리보기나 배포된 페이지에서 반드시 확인한다. (Just the Docs와 달리 `_config.yml`에 `mermaid:` 설정을 추가해도 자동으로 렌더링되지 않는다.)
 
 ### 5.5 게시 전 확인
 
@@ -240,6 +233,8 @@ bundle exec jekyll serve
 # http://localhost:4000 에서 확인
 ```
 
+- 커밋 전에 새로 쓴 `.md` 파일이 한글로 정상적으로 보이는지 (물음표나 깨진 문자가 없는지) 반드시 눈으로 확인한다.
+
 ---
 
 ## 6. 글 전체 템플릿
@@ -249,9 +244,10 @@ Agent는 초안 작성 시 아래 골격을 따른다. **Front Matter를 포함�
 ```markdown
 ---
 title: "[문제 중심의 제목 — 'OO 기술 사용기'가 아닌 'OO 문제를 OO로 해결하기']"
-layout: default
-parent: [카테고리 — 반드시 기존 카테고리 페이지의 title과 일치, 없으면 새로 생성]
-nav_order: [해당 카테고리 안에서의 순서]
+date: [YYYY-MM-DD — 파일명의 날짜와 동일하게]
+tags:
+  - [태그 1 — 기존 태그와 가능하면 일치, 없으면 새로 만들어도 됨]
+  - [태그 2]
 ---
 
 ## 들어가며 (Situation)
@@ -295,7 +291,9 @@ nav_order: [해당 카테고리 안에서의 순서]
 - [ ] "더 학습하면 좋은 개념" 섹션이 있는가?
 - [ ] 공식 문서 링크가 참고 자료에 포함되어 있는가?
 - [ ] 결과에 정량적 지표가 있는가?
-- [ ] front matter에 `title` / `layout: default` / `parent` / `nav_order`가 모두 있는가?
-- [ ] `parent` 값이 실제 카테고리 페이지의 `title`과 정확히 일치하는가? (없는 카테고리면 먼저 카테고리 페이지부터 생성)
-- [ ] 이미지 경로가 `{{ site.baseurl }}/assets/...` 형식인가?
-- [ ] Mermaid를 썼다면 `_config.yml`에 `mermaid:` 설정이 되어 있는지 확인했는가?
+- [ ] 파일이 `_posts/YYYY-MM-DD-제목.md` 형식으로 저장되어 있는가?
+- [ ] front matter에 `title` / `date` / `tags`가 모두 있는가?
+- [ ] 새 태그를 썼다면 `tag/<슬러그>.md` 목록 페이지도 함께 만들었는가?
+- [ ] 이미지 경로가 `/assets/img/...` 형식인가?
+- [ ] Mermaid를 썼다면 실제로 렌더링되는지 확인했는가?
+- [ ] 파일이 UTF-8로 저장되어 한글이 깨지지 않았는가?

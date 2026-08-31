@@ -1,0 +1,83 @@
+# Site
+title: "유수의 학습 노트"
+bio: "부트캠프에서 배우는 내용을 기록하는 학습 노트"
+description: "부트캠프에서 배우는 내용을 기록하는 학습 노트입니다."
+locale: ko_KR
+baseurl: ""
+url: ""
+
+# Comments
+disqus_shortname: default
+
+# Social
+analytics-id: default
+twitter: default
+facebook: default
+instagram: default
+github: yoosoo2217
+
+# personal
+location: ""
+phone: ""
+email: ""
+
+# Other
+background_image: /images/bg.jpg
+slapform_thankyou_page: /thank-you
+
+defaults:
+  - scope:
+      path: ""
+      type: posts
+    values:
+      permalink: "/blog/:title/"
+      layout: post
+      author:
+
+# Jekyll
+permalink: /blog/:title/
+markdown: kramdown
+highlighter: rouge
+
+kramdown:
+  auto_ids: true
+  footnote_nr: 1
+  entity_output: as_char
+  toc_levels: 1..6
+  enable_coderay: false
+
+mathjax: true
+
+sass:
+  sass_dir: _sass
+  style: compressed
+
+# Gems
+gems:
+  - jekyll-mentions
+  - jekyll-sitemap
+  - jekyll-feed
+  - jekyll-gist
+  - jekyll-paginate
+
+paginate: 6
+paginate_path: "/blog/page:num/"
+
+jekyll-mentions:
+  base_url: https://github.com
+
+# Exclude list
+exclude:
+  - README.md
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - gulpfile.js
+  - package.json
+  - _site
+  - src
+  - vendor
+  - CNAME
+  - LICENSE
+  - Rakefile
+  - old

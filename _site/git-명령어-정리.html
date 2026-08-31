@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+	<link rel="stylesheet" href="/assets/css/atom-one-light.css">
+    
+        <title>Git 명령어 정리</title>
+		<link rel="stylesheet" type="text/css" href="/assets/css/002.css">
+    
+	<link rel="stylesheet" href="/assets/css/font-awesome.min.css">
+	<link rel="shortcut icon" href="/assets/img/favicon.ico" type="image/x-icon">
+	<link rel="icon" href="/assets/img/favicon.ico" type="image/x-icon">
+	<script src="/assets/js/highlight.pack.js"></script>
+	<script>hljs.initHighlightingOnLoad();</script>
+</head>
+<body>
+	<div class="wrapper">
+		<div class="default_title">
+			<img src="/assets/img/mycomputer.png" />
+			
+				<h1>유수의 학습 블로그</h1>
+			
+		</div>
+		<ul class="topbar">
+	<a href="/me"><li><u>A</u>bout</li></a>
+	<a href="http://twitter.com/h01000110" target="_blank"><li><u>T</u>witter</li></a>
+	<a href="http://soundcloud.com/h01000110" target="_blank"><li><u>S</u>oundcloud</li></a>
+</ul>
+		<div class="tag_list">
+			<ul id="tag-list">
+				<li><a href="/" ><img src="/assets/img/disk.png" />(C:)</a>
+			<ul>
+				
+				
+				<li><a href="/tag/branch/" title="Branch"><img src="/assets/img/folder.ico" />Branch</a></li>
+				
+				<li><a href="/tag/git/" title="Git"><img src="/assets/img/folder.ico" />Git</a></li>
+				
+				<li><a href="/tag/github/" title="GitHub"><img src="/assets/img/folder.ico" />GitHub</a></li>
+				
+				<li><a href="/tag/linux/" title="Linux"><img src="/assets/img/folder.ico" />Linux</a></li>
+				
+				<li><a href="/tag/markdown/" title="Markdown"><img src="/assets/img/folder.ico" />Markdown</a></li>
+				
+				<li><a href="/tag/shell/" title="Shell"><img src="/assets/img/folder.ico" />Shell</a></li>
+				
+				<li><a href="/tag/명령어/" title="명령어"><img src="/assets/img/folder.ico" />명령어</a></li>
+				
+			</ul>
+				</li>
+			</ul>
+		</div>
+		<div class="post_list">
+			
+				<ul>
+					
+					<li><a href="/git-%EB%AA%85%EB%A0%B9%EC%96%B4-%EC%A0%95%EB%A6%AC.html" title="Git 명령어 정리"><img src="/assets/img/file.ico" title="Git 명령어 정리" />Git 명령어 정리</a></li>
+					
+					<li><a href="/commit-push-pr.html" title="commit, push, PR 정리"><img src="/assets/img/file.ico" title="commit, push, PR 정리" />commit, push, PR 정리</a></li>
+					
+					<li><a href="/git-add-commit-push.html" title="Git add, commit, push"><img src="/assets/img/file.ico" title="Git add, commit, push" />Git add, commit, push</a></li>
+					
+					<li><a href="/git-branch-strategy.html" title="Git 브랜치 전략"><img src="/assets/img/file.ico" title="Git 브랜치 전략" />Git 브랜치 전략</a></li>
+					
+					<li><a href="/markdown-syntax.html" title="마크다운 문법 정리"><img src="/assets/img/file.ico" title="마크다운 문법 정리" />마크다운 문법 정리</a></li>
+					
+					<li><a href="/git-linux-shell-basics.html" title="리눅스 셸(Shell) 기초 정리"><img src="/assets/img/file.ico" title="리눅스 셸(Shell) 기초 정리" />리눅스 셸(Shell) 기초 정리</a></li>
+					
+				</ul>
+			
+		</div>
+		<div class="post_total">
+			
+				<div class="left">6 object(s)</div>
+			
+			<div class="right">&nbsp;</div>
+		</div>
+	</div>
+	
+        <div class="content">
+			<div class="post_title">
+				<img src="/assets/img/file.png" />
+				<h1>Git 명령어 정리</h1>
+				<a href="/"><div class="btn"><span class="fa fa-times"></span></div></a>
+				<div class="btn btn_max"><span class="fa fa-window-maximize"></span></div>
+				<div class="btn"><span class="fa fa-window-minimize"></span></div>
+			</div>
+			<ul class="topbar">
+				<li>August 31, 2026</li>
+			</ul>
+			<div class="post_content">
+        		<h1 id="git-명령어-정리">Git 명령어 정리</h1>
+
+<p>오늘 배운 Git 명령어를 정리합니다.</p>
+
+<h2 id="오늘-배운-것">오늘 배운 것</h2>
+<p>이번 주는 Git으로 “내가 만든 파일을 저장하고, 되돌리고, GitHub와 주고받는” 전체 흐름을 배웠다.
+아직 처음이라 헷갈릴 수 있으니, 오늘은 <strong>딱 이번 주에 배운 명령어만</strong> 순서대로 정리해본다.</p>
+
+<h3 id="전체-흐름-한눈에-보기">전체 흐름 한눈에 보기</h3>
+
+<pre><code class="language-mermaid">flowchart TD
+    A[저장소 만들기] --&gt; B[파일을 수정한다]
+    B --&gt; C[스테이징: 커밋할 것을 고른다]
+    C --&gt; D[커밋: Local Repository에 저장]
+    D --&gt; E{다음엔 뭘 할까?}
+    E --&gt; F[브랜치를 만들어 따로 작업]
+    E --&gt; G[push: GitHub로 올리기]
+    E --&gt; H[되돌리기: 이전 상태로]
+    G --&gt; I[GitHub 원격 저장소]
+    I --&gt; J[pull: 최신 내용 받아오기]
+    F --&gt; K[merge: 브랜치 합치기]
+</code></pre>
+
+<h2 id="명령어-정리표">명령어 정리표</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>명령어</th>
+      <th>언제 쓰나</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>git init</td>
+      <td>새 프로젝트를 Git으로 관리하기 시작할 때 (저장소 만들기)</td>
+    </tr>
+    <tr>
+      <td>git add</td>
+      <td>고친 파일 중에서 커밋할 것만 골라 담고 싶을 때 (스테이징)</td>
+    </tr>
+    <tr>
+      <td>git commit</td>
+      <td>스테이징한 내용을 Local Repository에 저장 지점으로 남기고 싶을 때</td>
+    </tr>
+    <tr>
+      <td>git branch</td>
+      <td>지금 작업과 별개로 새로운 갈래(브랜치)를 만들고 싶을 때</td>
+    </tr>
+    <tr>
+      <td>git push</td>
+      <td>내 컴퓨터(Local Repository)의 기록을 GitHub로 올리고 싶을 때</td>
+    </tr>
+    <tr>
+      <td>git pull</td>
+      <td>GitHub에 있는 최신 기록을 내 컴퓨터로 받아오고 싶을 때</td>
+    </tr>
+    <tr>
+      <td>git merge</td>
+      <td>서로 다른 브랜치에서 한 작업을 하나로 합치고 싶을 때</td>
+    </tr>
+    <tr>
+      <td>git reset</td>
+      <td>스테이징하거나 커밋한 걸 취소하고 이전 상태로 되돌리고 싶을 때</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="하나씩-자세히-보기">하나씩 자세히 보기</h2>
+
+<h3 id="1-저장소-만들기-git-init">1. 저장소 만들기 (git init)</h3>
+
+<p><code>git init</code>을 실행하면 그 폴더가 “Git이 지켜보는 폴더”가 된다.
+비유하자면, 앨범을 하나 새로 만드는 것과 같다. 이 앨범 안에서만 사진(저장 지점)을 찍어 모을 수 있다.</p>
+
+<h3 id="2-스테이징-git-add">2. 스테이징 (git add)</h3>
+
+<p>파일을 여러 개 고쳤어도, 한 번에 다 커밋할 필요는 없다.
+<code>git add</code>는 “이번 저장 지점에는 이 파일들만 넣을래” 하고 고르는 단계다.</p>
+
+<h3 id="3-local-repository란">3. Local Repository란?</h3>
+
+<p><code>git commit</code>을 하면 그 결과가 저장되는 곳이 바로 <strong>Local Repository</strong>, 즉 내 컴퓨터 안의 저장소다.
+아직 GitHub(원격 저장소)에는 올라가지 않은, 내 컴퓨터 안에서만의 기록이라는 점이 중요하다.</p>
+
+<h3 id="4-커밋-git-commit">4. 커밋 (git commit)</h3>
+
+<p>스테이징한 파일들을 하나의 저장 지점으로 확정 짓는 단계다.
+<code>git commit</code>을 하고 나면 그 순간의 모습이 Local Repository에 사진처럼 남는다.</p>
+
+<h3 id="5-브랜치-git-branch">5. 브랜치 (git branch)</h3>
+
+<p>브랜치는 “원래 작업은 그대로 둔 채로, 따로 실험해볼 수 있는 갈래”다.
+아래 그림처럼, 갈라져 나간 브랜치는 나중에 merge로 다시 합칠 수 있다.</p>
+
+<pre><code class="language-mermaid">flowchart LR
+    M1[main: 커밋 A] --&gt; M2[main: 커밋 B]
+    M2 --&gt; N[브랜치 생성: feature]
+    N --&gt; F1[feature: 커밋 C]
+    M2 --&gt; Merge[merge: feature를 main에 합치기]
+    F1 --&gt; Merge
+    Merge --&gt; M3[main: 커밋 B와 C가 합쳐진 상태]
+</code></pre>
+
+<h3 id="6-push">6. push</h3>
+
+<p><code>git push</code>는 Local Repository에 쌓아둔 커밋들을 GitHub(원격 저장소)로 올리는 것이다.
+이걸 해야 다른 사람도, 그리고 다른 컴퓨터에서도 내 기록을 볼 수 있다.</p>
+
+<h3 id="7-pull">7. pull</h3>
+
+<p><code>git pull</code>은 반대로 GitHub에 있는 최신 기록을 내 Local Repository로 가져오는 것이다.
+같이 작업하거나, 다른 컴퓨터에서 작업했을 때 꼭 먼저 해줘야 하는 명령이다.</p>
+
+<h3 id="8-merge">8. merge</h3>
+
+<p><code>git merge</code>는 서로 다른 브랜치에서 만든 커밋들을 하나로 합치는 작업이다.
+브랜치에서 실험한 결과가 마음에 들면, main 브랜치로 합쳐서 정식으로 반영한다.</p>
+
+<h3 id="push와-pull의-흐름">push와 pull의 흐름</h3>
+
+<pre><code class="language-mermaid">flowchart LR
+    W[작업 중인 파일] -- 스테이징 --&gt; S[스테이징 영역]
+    S -- 커밋 --&gt; L[Local Repository]
+    L -- push --&gt; R[GitHub 원격 저장소]
+    R -- pull --&gt; L
+</code></pre>
+
+<h3 id="9-되돌리기-git-reset">9. 되돌리기 (git reset)</h3>
+
+<p>작업하다 보면 “아, 이거 아까로 되돌리고 싶다” 하는 순간이 온다.
+<code>git reset</code>은 스테이징하거나 커밋한 것을 취소하고 이전 상태로 돌아가게 해준다.</p>
+
+<pre><code class="language-mermaid">flowchart LR
+    S[스테이징 영역] -- "되돌리기(git reset)" --&gt; W[작업 중인 파일]
+    L[Local Repository] -- "되돌리기(git reset)" --&gt; S
+</code></pre>
+
+<h2 id="막혔던-것">막혔던 것</h2>
+
+<p>저장소 만들기, 스테이징, 커밋까지는 한 컴퓨터 안에서 끝나는 일이고,
+push와 pull부터는 GitHub라는 원격 저장소와 주고받는 일이라는 걸 구분하는 게 처음엔 헷갈렸다.
+“Local Repository까지는 내 컴퓨터, push를 해야 비로소 GitHub”라고 기억하니 정리가 됐다.</p>
+
+<h2 id="이번-주-정리">이번 주 정리</h2>
+
+<ul>
+  <li>저장소 만들기 → 스테이징 → 커밋(Local Repository) → 브랜치 → push/pull → merge → 되돌리기, 이 순서를 한 그림으로 이해했다.</li>
+  <li>Local Repository와 GitHub(원격 저장소)는 다른 곳이며, push/pull로 서로 연결된다는 것을 배웠다.</li>
+</ul>
+
+				
+					<br>
+<hr>
+<br>
+<div class="donate">
+	<p>Did you like of something here? How about helping me buy some game?<br>
+	I'll appreciate it!</p>
+	<p>Bitcoin Wallet <i class="fa fa-btc"></i> 1Agt7r7aCAeWk5DyXXNyJXAXC4xxysiWjJ<br>Ethereum Wallet <i class="fa fa-money"></i> 0x19BD447c94499BdcA154Dc1BeF9FCf1f4c427C16</p>
+</div>
+				
+			</div>
+		</div>
+    
+	<script src="/assets/js/001.js"></script>
+	<script src="/assets/js/002.js"></script>
+	<div class="footer">
+		<p>Created by <a href="http://github.com/h01000110" target="_blank">h01000110 (hi)</a> | Code licensed under <a href="https://github.com/h01000110/h01000110.github.io/blob/master/LICENSE" target="_blank">MIT License</a></p>
+	</div>
+</body>
+</html>
