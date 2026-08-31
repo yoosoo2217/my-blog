@@ -61,12 +61,12 @@ nav_order: 1
 
 <!-- ==================== 오늘의 학습 ==================== -->
 
-## 📚 오늘의 학습
+## 오늘의 학습
 
 <div style="
   padding: 1.2rem;
   margin: 1rem 0 2rem;
-  border: 1px solid #e5e7eb;
+  border: 1px solid #BFCBED;
   border-radius: 12px;
   background: #fafafa;
 ">
@@ -86,7 +86,7 @@ nav_order: 1
 
 <!-- ==================== 최근 학습 기록 ==================== -->
 
-## 📝 최근 학습 기록
+## 최근 학습 기록
 
 <div style="
   margin: 1rem 0 2rem;
@@ -119,7 +119,7 @@ nav_order: 1
 
 <!-- ==================== 학습 캘린더 ==================== -->
 
-## 📅 학습 캘린더
+## 학습 캘린더
 
 <p style="color:#777; font-size:0.9rem;">
 블로그에 학습 기록을 작성한 날이 표시됩니다.
@@ -128,7 +128,7 @@ nav_order: 1
 <div id="study-calendar" style="
   margin: 1rem 0 2rem;
   padding: 1rem;
-  border: 1px solid #e5e7eb;
+  border: 1px solid #BFCBED;
   border-radius: 12px;
 ">
 
@@ -173,7 +173,7 @@ nav_order: 1
 
 <!-- ==================== 방문자 수 ==================== -->
 
-## 👀 방문자 수
+* 방문자 수
 
 | 누적 방문자 |
 |:---:|
@@ -203,13 +203,13 @@ function renderCalendar() {
   var title = document.getElementById("calendar-title");
 
   title.textContent =
-    year + "년 " + (month + 1) + "월";
+    year + ". " + (month + 1) + ".";
 
   var grid = document.getElementById("calendar-grid");
 
   grid.innerHTML = "";
 
-  var days = ["일", "월", "화", "수", "목", "금", "토"];
+  var days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
   days.forEach(function(day) {
 
@@ -258,7 +258,7 @@ function renderCalendar() {
       cell.style.color = "white";
       cell.style.fontWeight = "600";
 
-      cell.title = "학습 기록이 있습니다 📚";
+      cell.title = "학습 완료";
 
     }
 
