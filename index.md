@@ -17,20 +17,19 @@ nav_order: 1
 
 <script>
 (function () {
-  var startDate = new Date('2026-08-26T00:00:00'); // 부트캠프 시작일
-  var endDate   = new Date('2027-02-16T00:00:00'); // 부트캠프 종료일
+  var startDate = new Date('2026-08-26T00:00:00'); /* 부트캠프 시작일 */
+  var endDate   = new Date('2027-02-16T00:00:00'); /* 부트캠프 종료일 */
   startDate.setHours(0,0,0,0);
   endDate.setHours(0,0,0,0);
   var totalDays = Math.floor((endDate - startDate) / 86400000) + 1;
 
   var today = new Date(); today.setHours(0,0,0,0);
   var day = Math.floor((today - startDate) / 86400000) + 1;
-  if (day < 1) day = 1;
-  if (day > totalDays) day = totalDays;
+  if (day < 1) { day = 1; }
+  if (day > totalDays) { day = totalDays; }
   var pct = Math.round((day / totalDays) * 100);
 
-  document.getElementById('progress-text').textContent =
-    '전체 진행률: ' + day + '일차 / ' + totalDays + '일 (' + pct + '%)';
+  document.getElementById('progress-text').textContent = '전체 진행률: ' + day + '일차 / ' + totalDays + '일 (' + pct + '%)';
   document.getElementById('progress-bar-fill').style.width = pct + '%';
 })();
 </script>
@@ -41,5 +40,5 @@ nav_order: 1
 
 * 방문자 수
 
-* 오늘 방문자: ![오늘 방문자](https://api.visitorbadge.io/api/daily?user=yoosoo2217&repo=my-blog)
-* 누적 방문자: ![누적 방문자](https://api.visitorbadge.io/api/visitors?user=yoosoo2217&repo=my-blog)
+|오늘 방문자| ![오늘 방문자](https://api.visitorbadge.io/api/daily?user=yoosoo2217&repo=my-blog)|
+|누적 방문자| ![누적 방문자](https://api.visitorbadge.io/api/visitors?user=yoosoo2217&repo=my-blog)|
