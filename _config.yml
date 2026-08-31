@@ -47,6 +47,12 @@ paginate_path: "/blog/page:num/"
 jekyll-mentions:
   base_url: https://github.com
 
+# GitHub Pages auto-enables this plugin even though it's not in the Gemfile.
+# It fills in page.title from the first heading when front matter has no
+# title (like index.md), which makes the theme render the homepage twice.
+jekyll-titles-from-headings:
+  enabled: false
+
 # Posts always use the theme's single layout
 defaults:
   - scope:
