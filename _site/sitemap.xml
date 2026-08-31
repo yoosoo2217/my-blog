@@ -43,7 +43,7 @@
 <loc>http://localhost:4000/tag/markdown/</loc>
 </url>
 <url>
-<loc>http://localhost:4000/me</loc>
+<loc>http://localhost:4000/me/</loc>
 </url>
 <url>
 <loc>http://localhost:4000/tag/shell/</loc>

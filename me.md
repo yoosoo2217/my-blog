@@ -1,6 +1,7 @@
 ---
 layout: me
 title: me
+permalink: /me/
 ---
 
 부트캠프에서 배우는 내용을 기록하고 정리하는 학습 블로그입니다.

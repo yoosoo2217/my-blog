@@ -202,20 +202,6 @@ layout: default
 ![GitHub Streak](https://streak-stats.demolab.com/?user=yoosoo2217&ring=7253ED&fire=7253ED&currStreakLabel=7253ED)
 
 
-<!-- ==================== 방문자 수 ==================== -->
-
-## 👀 방문자 수
-
-<div style="margin:1rem 0 2rem;">
-
-  <img
-    src="https://api.visitorbadge.io/api/visitors?path=yoosoo2217%2Fmy-blog&label=방문자"
-    alt="방문자 수"
-  >
-
-</div>
-
-
 <!-- ==================== 캘린더 JavaScript ==================== -->
 
 <script>
@@ -246,7 +232,7 @@ function renderCalendar() {
     document.getElementById("calendar-title");
 
   title.textContent =
-    year + "년 " + (month + 1) + "월";
+    year + "." + (month + 1) + ".";
 
   var grid =
     document.getElementById("calendar-grid");
@@ -255,13 +241,13 @@ function renderCalendar() {
 
 
   var days = [
-    "일",
-    "월",
-    "화",
-    "수",
-    "목",
-    "금",
-    "토"
+    "Sun",
+    "Mon",
+    "Tue",
+    "Wed",
+    "Thu",
+    "Fri",
+    "Sat"
   ];
 
 

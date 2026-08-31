@@ -4,8 +4,8 @@ name: "유수의 학습 블로그"
 title: "유수의 학습 블로그"
 description: "부트캠프에서 배우는 내용을 기록하고 정리하는 학습 블로그입니다."
 
-url: ""
-baseurl: ""
+url: "https://yoosoo2217.github.io"
+baseurl: "/my-blog"
 
 # Social
 github: yoosoo2217
