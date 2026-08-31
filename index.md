@@ -61,12 +61,12 @@ nav_order: 1
 
 <!-- ==================== 오늘의 학습 ==================== -->
 
-## 오늘의 학습
+## 📚 오늘의 학습
 
 <div style="
   padding: 1.2rem;
   margin: 1rem 0 2rem;
-  border: 1px solid #BFCBED;
+  border: 1px solid #e5e7eb;
   border-radius: 12px;
   background: #fafafa;
 ">
@@ -86,7 +86,7 @@ nav_order: 1
 
 <!-- ==================== 최근 학습 기록 ==================== -->
 
-## 최근 학습 기록
+## 📝 최근 학습 기록
 
 <div style="
   margin: 1rem 0 2rem;
@@ -119,7 +119,7 @@ nav_order: 1
 
 <!-- ==================== 학습 캘린더 ==================== -->
 
-## 학습 캘린더
+## 📅 학습 캘린더
 
 <p style="color:#777; font-size:0.9rem;">
 블로그에 학습 기록을 작성한 날이 표시됩니다.
@@ -128,7 +128,7 @@ nav_order: 1
 <div id="study-calendar" style="
   margin: 1rem 0 2rem;
   padding: 1rem;
-  border: 1px solid #BFCBED;
+  border: 1px solid #e5e7eb;
   border-radius: 12px;
 ">
 
@@ -166,18 +166,18 @@ nav_order: 1
 
 <!-- ==================== GitHub 활동 ==================== -->
 
-## GitHub 활동
+## 😺 GitHub 활동
 
 ![GitHub Streak](https://streak-stats.demolab.com/?user=yoosoo2217)
 
 
 <!-- ==================== 방문자 수 ==================== -->
 
-* 방문자 수
+## 👀 방문자 수
 
 | 누적 방문자 |
 |:---:|
-| <img src="https://api.visitorbadge.io/api/visitors?user=yoosoo2217&repo=my-blog" width="80"> |
+| <img src="https://api.visitorbadge.io/api/visitors?user=yoosoo2217&repo=my-blog" width="40"> |
 
 
 <!-- ==================== 캘린더 JavaScript ==================== -->
@@ -185,9 +185,11 @@ nav_order: 1
 <script>
 
 var studyDates = [
-  {% for post in site.posts %}
-    "{{ post.date | date: '%Y-%m-%d' }}",
-  {% endfor %}
+  "2026-08-26",
+  "2026-08-27",
+  "2026-08-28",
+  "2026-08-30",
+  "2026-08-31"
 ];
 
 var currentDate = new Date();
@@ -203,7 +205,7 @@ function renderCalendar() {
   var title = document.getElementById("calendar-title");
 
   title.textContent =
-    year + ". " + (month + 1) + ".";
+    year + "." + (month + 1) + ".";
 
   var grid = document.getElementById("calendar-grid");
 
@@ -258,7 +260,7 @@ function renderCalendar() {
       cell.style.color = "white";
       cell.style.fontWeight = "600";
 
-      cell.title = "학습 완료";
+      cell.title = "학습 기록이 있습니다 📚";
 
     }
 
@@ -284,4 +286,3 @@ function changeMonth(amount) {
 renderCalendar();
 
 </script>
-
