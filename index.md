@@ -39,6 +39,4 @@ nav_order: 1
 ![GitHub Streak](https://streak-stats.demolab.com/?user=yoosoo2217)
 
 * 방문자 수
-
-|오늘 방문자| ![오늘 방문자](https://api.visitorbadge.io/api/daily?user=yoosoo2217&repo=my-blog)|
-|누적 방문자| ![누적 방문자](https://api.visitorbadge.io/api/visitors?user=yoosoo2217&repo=my-blog)|
+|누적 방문자|<img src="https://api.visitorbadge.io/api/visitors?user=yoosoo2217&repo=my-blog" width="80">|
