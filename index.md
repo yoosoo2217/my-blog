@@ -179,9 +179,7 @@ nav_order: 1
 
 ## 👀 방문자 수
 
-| 누적 방문자 |
-|:---:|
-| <img src="https://api.visitorbadge.io/api/visitors?user=yoosoo2217&repo=my-blog" width="40"> |
+| 누적 방문자 | <img src="https://api.visitorbadge.io/api/visitors?user=yoosoo2217&repo=my-blog" width="80"> |
 
 
 <!-- ==================== 캘린더 JavaScript ==================== -->
