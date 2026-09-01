@@ -95,7 +95,7 @@ show_profile: true
   <pre>
     <em>
       
-      "No hay mal que por bien no venga."
+    "No hay mal que por bien no venga."
     </em>
   </pre>
 
@@ -104,7 +104,7 @@ show_profile: true
 
 <!-- ==================== 최근 학습 기록 ==================== -->
 
-## RECENT STUDY LOG
+## - RECENT STUDY LOG
 
 <div style="margin: 1rem 0 2rem;">
 
@@ -134,7 +134,7 @@ show_profile: true
 
 <!-- ==================== 학습 캘린더 ==================== -->
 
-## STUDY CALENDER
+## - STUDY CALENDER
 
 <p style="color:#777; font-size:0.9rem;">
 
@@ -195,14 +195,14 @@ show_profile: true
 
 <!-- ==================== GitHub 연동 ==================== -->
 
-## GITHUB WORKS
+## - GITHUB WORKS
 
 ![GitHub Streak](https://streak-stats.demolab.com/?user=yoosoo2217&ring=00007F&fire=00007F&currStreakLabel=00007F)
 
 
 <!-- ==================== 방문자 수 ==================== -->
 
-## VISITERS
+## - VISITERS
 
 <div style="margin:1rem 0 2rem;">
 
