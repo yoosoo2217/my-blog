@@ -8,14 +8,14 @@ show_profile: true
 
 <!-- ==================== 전체 진행률 ==================== -->
 
-<div style="margin: 2rem 0;">
+<div style="margin: 2rem 10px;">
 
   <p id="progress-text" style="font-size:1rem; font-weight:600;">
     loading...
   </p>
 
   <div style="
-    width:80%;
+    width:90%;
     height:10px;
     background:#e2e2e2;
     border-radius:999px;
@@ -25,7 +25,7 @@ show_profile: true
          style="
            height:100%;
            width:0%;
-           background:linear-gradient(90deg,#F59E0B,#F87519);
+           background:linear-gradient(90deg,#0D9488,#5EEAD4);
            border-radius:999px;
            transition:width .6s ease;
          ">
