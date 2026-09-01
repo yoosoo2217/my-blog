@@ -322,7 +322,7 @@ function renderCalendar() {
 
     if (studyDates.includes(fullDate)) {
 
-      cell.style.background = "#7253ED";
+      cell.style.background = "#018a91";
       cell.style.color = "white";
       cell.style.fontWeight = "600";
 
