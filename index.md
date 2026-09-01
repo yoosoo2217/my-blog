@@ -1,9 +1,8 @@
 ---
 layout: default
 title: 유수의 학습 블로그
+show_profile: true
 ---
-
-{% include cyworld-widget.html %}
 
 배운 내용을 기록하고 정리하는 학습 블로그입니다.
 
