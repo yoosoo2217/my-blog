@@ -10,12 +10,12 @@ show_profile: true
 
 <div style="margin: 2rem 0;">
 
-  <p id="progress-text" style="font-size:1.1rem; font-weight:600;">
+  <p id="progress-text" style="font-size:1rem; font-weight:600;">
     loading...
   </p>
 
   <div style="
-    width:100%;
+    width:80%;
     height:10px;
     background:#e2e2e2;
     border-radius:999px;
@@ -25,7 +25,7 @@ show_profile: true
          style="
            height:100%;
            width:0%;
-           background:linear-gradient(90deg,#3b82f6,#22c55e);
+           background:linear-gradient(90deg,#F59E0B,#F87519);
            border-radius:999px;
            transition:width .6s ease;
          ">
@@ -64,7 +64,7 @@ show_profile: true
     Math.round((day / totalDays) * 100);
 
   document.getElementById('progress-text').textContent =
-    ' DAY ' +
+    ' - DAY ' +
     day +
     ' / ' +
     totalDays +
