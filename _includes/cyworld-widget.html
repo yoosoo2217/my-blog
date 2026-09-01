@@ -1,77 +1,117 @@
 <div class="cy-window">
 	<div class="cy-titlebar">
-		<span class="cy-title-text">TODAY IS... <b>박유수</b></span>
+		<span class="cy-title-text">TODAY IS... 박유수</span>
 		<span class="cy-title-btn">▢</span>
 	</div>
 
-	<div class="cy-photo-frame">
-		<img class="cy-avatar" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAYCAYAAAD6S912AAAA30lEQVR4nGNgGOyAEZeEjYbcf3waj9x4hFUvEzmG4VODYSAxhuFTy4JN4eHNU4ky0NY3G0MMq5dhQNM5jUHTOQ0nHxvA6kIYuL53Fl4+NoDbhbvfniRHDreBrsLmMObJ+uUMJ+uXY5VDB1jTko2G3H9CEWPrm401LeJ0IbYYJEaO6jkFp4EMDAwM////x2ooIyMjTn04vYzLMEJyWG16EBBKVPZT2LCacKQQaxgutVi9/OTNG4Ynb95gNQRZjqALHwSE/kc2CJ2NyxJkgGIDKd5FBsguxVvakAOobuDgBwCSDV53RJ3wFwAAAABJRU5ErkJggg==" alt="미니미" />
+	<div class="cy-panel">
+		<div class="cy-photo-frame">
+			<img class="cy-avatar" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAYCAYAAAD6S912AAAA30lEQVR4nGNgGOyAEZeEjYbcf3waj9x4hFUvEzmG4VODYSAxhuFTy4JN4eHNU4ky0NY3G0MMq5dhQNM5jUHTOQ0nHxvA6kIYuL53Fl4+NoDbhbvfniRHDreBrsLmMObJ+uUMJ+uXY5VDB1jTko2G3H9CEWPrm401LeJ0IbYYJEaO6jkFp4EMDAwM////x2ooIyMjTn04vYzLMEJyWG16EBBKVPZT2LCacKQQaxgutVi9/OTNG4Ynb95gNQRZjqALHwSE/kc2CJ2NyxJkgGIDKd5FBsguxVvakAOobuDgBwCSDV53RJ3wFwAAAABJRU5ErkJggg==" alt="미니미" />
+		</div>
+
+		<div class="cy-caption">오늘의 TMI<br>유수는 오늘 술약속이 파토났지만<br>기쁘다. ^^;</div>
+
+		<div class="cy-music">
+			<audio id="cy-bgm" src="{{ site.baseurl }}/assets/audio/bgm.mp3" loop preload="none"></audio>
+			<button type="button" id="cy-music-btn" class="cy-music-btn">▶ BGM 재생</button>
+			<span id="cy-music-label" class="cy-music-label">배경음악</span>
+		</div>
+
+		<div class="cy-divider"></div>
+
+		<div class="cy-subrow">
+			<span class="cy-sublink">EDIT</span>
+			<span class="cy-sep">·</span>
+			<span class="cy-sublink">HISTORY</span>
+			<span class="cy-expand">▾</span>
+		</div>
 	</div>
 
-	<div class="cy-caption">오늘의 TMI<br>유수는 오늘 술약속이 파토났지만<br>기쁘다. ^^;</div>
-
-	<div class="cy-divider"></div>
-
-	<div class="cy-subrow">
-		<span class="cy-sublink">EDIT</span>
-		<span class="cy-sep">·</span>
-		<span class="cy-sublink">HISTORY</span>
-		<span class="cy-expand">▾</span>
-	</div>
-
-	<div class="cy-footer">
-		<span class="cy-footer-mark">◐</span>
-		<span class="cy-footer-brand">싸이월드</span>
-		<span class="cy-footer-mail">cyhelp@cyworld.com</span>
-	</div>
+	<div class="cy-statusbar">Document: Done</div>
 </div>
 
-<style>
-@import url('https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&display=swap');
+<script>
+(function () {
+	var audio = document.getElementById('cy-bgm');
+	var btn = document.getElementById('cy-music-btn');
+	if (!audio || !btn) return;
 
+	function setPlayingUI(isPlaying) {
+		btn.textContent = isPlaying ? '⏸ BGM 정지' : '▶ BGM 재생';
+	}
+
+	btn.addEventListener('click', function () {
+		if (audio.paused) {
+			audio.play().then(function () {
+				setPlayingUI(true);
+			}).catch(function () {
+				setPlayingUI(false);
+			});
+		} else {
+			audio.pause();
+			setPlayingUI(false);
+		}
+	});
+
+	audio.addEventListener('ended', function () {
+		setPlayingUI(false);
+	});
+})();
+</script>
+
+<style>
 .cy-window {
 	position: absolute;
 	top: 20px;
 	left: calc(50% + 420px);
 	width: 220px;
 	margin: 0;
-	background: #fdfbff;
-	border: 1px solid #c9bfe0;
-	border-radius: 6px;
-	box-shadow: 2px 3px 10px rgba(120, 100, 160, 0.25);
-	font-family: 'Gaegu', 'Malgun Gothic', sans-serif;
-	color: #4a3f5c;
-	overflow: hidden;
+	background: #bfb8bf;
+	border: 2px solid;
+	border-color: #fff8ff #000000 #000000 #fff8ff;
+	font-family: sans-serif, serif, monospace;
+	font-size: 12px;
+	color: #000000;
 }
 .cy-titlebar {
-	background: linear-gradient(90deg, #d8b7e8, #b7a8e8);
-	color: #3c2f52;
-	font-weight: 700;
+	background: #00007f;
+	color: #bfb8bf;
+	font-weight: bold;
 	font-size: 12px;
-	padding: 5px 8px;
+	padding: 3px 4px;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 }
-.cy-title-text b { color: #2c2140; }
 .cy-title-btn {
-	background: #fdfbff;
-	border: 1px solid #9c8bc0;
+	background: #cccccc;
+	color: #000000;
+	border: 2px solid;
+	border-color: #fff8ff #000000 #000000 #fff8ff;
 	font-size: 9px;
-	width: 14px;
-	height: 12px;
+	width: 13px;
+	height: 11px;
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	border-radius: 2px;
+	line-height: 1;
+}
+.cy-panel {
+	margin: 6px;
+	padding: 8px 6px;
+	background: #fff8ff;
+	border-width: 2px;
+	border-style: ridge groove groove ridge;
+	border-color: #7f787f #fff8ff #fff8ff #7f787f;
 }
 .cy-photo-frame {
-	margin: 10px auto 6px;
+	margin: 0 auto 8px;
 	width: 160px;
 	height: 192px;
-	background: #f3eefb;
-	border: 1px solid #d9cdec;
-	border-radius: 4px;
+	background: #fff8ff;
+	border-width: 2px;
+	border-style: ridge groove groove ridge;
+	border-color: #7f787f #fff8ff #fff8ff #7f787f;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -86,13 +126,37 @@
 	text-align: center;
 	font-size: 12px;
 	line-height: 1.5;
-	color: #5c4f70;
-	padding: 0 10px 8px;
+	color: #000000;
+	padding: 0 4px 8px;
+}
+.cy-music {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 6px;
+	padding-bottom: 8px;
+}
+.cy-music-btn {
+	background: #cccccc;
+	color: #000000;
+	border: 2px solid;
+	border-color: #fff8ff #000000 #000000 #fff8ff;
+	font-family: sans-serif, serif, monospace;
+	font-size: 11px;
+	padding: 2px 6px;
+	cursor: pointer;
+}
+.cy-music-btn:active {
+	border-color: #000000 #fff8ff #fff8ff #000000;
+}
+.cy-music-label {
+	font-size: 10px;
+	color: #444444;
 }
 .cy-divider {
 	height: 1px;
-	background: #e2d8f0;
-	margin: 0 8px;
+	background: #7f787f;
+	margin: 0 2px 6px;
 }
 .cy-subrow {
 	display: flex;
@@ -100,30 +164,18 @@
 	justify-content: flex-end;
 	gap: 4px;
 	font-size: 10px;
-	color: #9c8bc0;
-	padding: 6px 8px;
+	color: #000000;
 }
 .cy-sublink { cursor: pointer; }
 .cy-sublink:hover { text-decoration: underline; }
-.cy-sep { color: #cbbfe0; }
+.cy-sep { color: #7f787f; }
 .cy-expand { margin-left: 2px; font-size: 8px; }
-.cy-footer {
-	background: #efe7fa;
-	border-top: 1px solid #e2d8f0;
-	padding: 6px 8px;
-	display: flex;
-	align-items: center;
-	gap: 5px;
+.cy-statusbar {
+	border-top: 1px solid;
+	border-color: #7f787f #fff8ff #fff8ff #7f787f;
+	padding: 2px 6px;
 	font-size: 10px;
-	font-weight: 700;
-	color: #6a4fa0;
-}
-.cy-footer-mark { font-size: 11px; }
-.cy-footer-mail {
-	margin-left: auto;
-	font-weight: 400;
-	color: #9c8bc0;
-	font-size: 9px;
+	color: #000000;
 }
 
 @media (max-width: 1279px) {
