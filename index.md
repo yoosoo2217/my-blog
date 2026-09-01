@@ -3,6 +3,8 @@ layout: default
 title: 유수의 학습 블로그
 ---
 
+{% include thefacebook-widget.html %}
+
 배운 내용을 기록하고 정리하는 학습 블로그입니다.
 
 <!-- ==================== 전체 진행률 ==================== -->
@@ -198,7 +200,7 @@ title: 유수의 학습 블로그
 
 ## 🐙 GitHub 활동
 
-![GitHub Streak](https://streak-stats.demolab.com/?user=yoosoo2217&ring=008082&fire=008082&currStreakLabel=008082)
+![GitHub Streak](https://streak-stats.demolab.com/?user=yoosoo2217&ring=7253ED&fire=7253ED&currStreakLabel=7253ED)
 
 
 <!-- ==================== 방문자 수 ==================== -->
@@ -224,8 +226,7 @@ var studyDates = [
   "2026-08-27",
   "2026-08-28",
   "2026-08-30",
-  "2026-08-31",
-  "2026-09-01"
+  "2026-08-31"
 ];
 
 var currentDate = new Date();
@@ -323,7 +324,7 @@ function renderCalendar() {
 
     if (studyDates.includes(fullDate)) {
 
-      cell.style.background = "#018a91";
+      cell.style.background = "#7253ED";
       cell.style.color = "white";
       cell.style.fontWeight = "600";
 

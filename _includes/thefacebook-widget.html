@@ -1,0 +1,246 @@
+<div class="rfb-window">
+	<div class="rfb-titlebar">
+		<span class="rfb-titlebar-icon">🌐</span>
+		<span class="rfb-titlebar-text">Netscape - [ 박유수 ]</span>
+		<span class="rfb-titlebar-btns">
+			<span class="rfb-tb-btn">_</span>
+			<span class="rfb-tb-btn">▢</span>
+			<span class="rfb-tb-btn rfb-tb-close">×</span>
+		</span>
+	</div>
+	<div class="rfb-menubar">File&nbsp; Edit&nbsp; View&nbsp; Go&nbsp; Bookmarks&nbsp; Options</div>
+	<div class="rfb-toolbar">
+		<div class="rfb-tool">⬅ Back</div>
+		<div class="rfb-tool">➡ Forward</div>
+		<div class="rfb-tool">⟳ Reload</div>
+		<div class="rfb-tool">🏠 Home</div>
+	</div>
+	<div class="rfb-locationbar">
+		<span>Location:</span>
+		<div class="rfb-location-input">http://www.thefacebook.com</div>
+	</div>
+
+	<div class="rfb-page">
+		<div class="rfb-banner">
+			<span class="rfb-banner-title">[&nbsp;thefacebook&nbsp;]</span>
+			<span class="rfb-banner-nav">home&nbsp;·&nbsp;search&nbsp;·&nbsp;[logout]</span>
+		</div>
+
+		<div class="rfb-body">
+			<div class="rfb-profile">
+				<div class="rfb-profile-label">My Profile</div>
+				<div class="rfb-avatar">
+					<svg viewBox="0 0 64 64" width="72" height="72">
+						<rect width="64" height="64" fill="#e8e8e8"/>
+						<circle cx="32" cy="24" r="12" fill="#a9a9a9"/>
+						<path d="M8 60 C8 42 18 34 32 34 C46 34 56 42 56 60 Z" fill="#a9a9a9"/>
+					</svg>
+				</div>
+				<div class="rfb-name">박유수</div>
+				<a class="rfb-link" href="{{ site.baseurl }}/me/">View My Profile</a>
+			</div>
+
+			<div class="rfb-contacts">
+				<div class="rfb-contacts-title">Contacts&nbsp;<span class="rfb-count">[3]</span></div>
+				<ul class="rfb-contacts-list">
+					<li>류다연</li>
+					<li>김예린</li>
+					<li>양다연</li>
+				</ul>
+			</div>
+		</div>
+
+		<div class="rfb-feed">
+			<div class="rfb-feed-title">News Feed</div>
+			<div class="rfb-post">
+				<div class="rfb-post-avatar">
+					<svg viewBox="0 0 64 64" width="32" height="32">
+						<rect width="64" height="64" fill="#e8e8e8"/>
+						<circle cx="32" cy="24" r="12" fill="#a9a9a9"/>
+						<path d="M8 60 C8 42 18 34 32 34 C46 34 56 42 56 60 Z" fill="#a9a9a9"/>
+					</svg>
+				</div>
+				<div class="rfb-post-body">
+					<span class="rfb-post-name">박유수</span>
+					<div class="rfb-post-text">오늘의 TMI : 유수는 오늘 술약속이 파토났지만 기쁘다.</div>
+					<div class="rfb-post-meta">방금 전 · <span class="rfb-post-action">comment</span> · <span class="rfb-post-action">like</span></div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="rfb-statusbar">Document: Done</div>
+</div>
+
+<style>
+.rfb-window {
+	float: right;
+	clear: right;
+	width: 300px;
+	margin: 0 0 1.2rem 1.5rem;
+	background: #d4d0c8;
+	border: 2px solid;
+	border-color: #ffffff #404040 #404040 #ffffff;
+	box-shadow: 3px 3px 8px rgba(0,0,0,0.35);
+	font-family: Tahoma, Verdana, "Malgun Gothic", sans-serif;
+	font-size: 11px;
+	color: #000;
+	line-height: 1.4;
+}
+.rfb-titlebar {
+	background: linear-gradient(90deg, #000080, #1084d0);
+	color: #fff;
+	padding: 3px 4px;
+	display: flex;
+	align-items: center;
+	font-weight: bold;
+	font-size: 11px;
+}
+.rfb-titlebar-icon { margin-right: 4px; }
+.rfb-titlebar-text { flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.rfb-titlebar-btns { display: flex; gap: 2px; }
+.rfb-tb-btn {
+	background: #d4d0c8;
+	color: #000;
+	border: 1px solid;
+	border-color: #ffffff #404040 #404040 #ffffff;
+	width: 14px;
+	height: 12px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 9px;
+	line-height: 1;
+}
+.rfb-tb-close { font-weight: bold; }
+.rfb-menubar {
+	padding: 2px 6px;
+	border-bottom: 1px solid #808080;
+	color: #000;
+	font-size: 10px;
+}
+.rfb-toolbar {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 4px;
+	padding: 4px 6px;
+	border-bottom: 1px solid #808080;
+}
+.rfb-tool {
+	background: #d4d0c8;
+	border: 1px solid;
+	border-color: #ffffff #404040 #404040 #ffffff;
+	padding: 1px 5px;
+	font-size: 10px;
+	white-space: nowrap;
+}
+.rfb-locationbar {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	padding: 4px 6px;
+	border-bottom: 1px solid #808080;
+	font-size: 10px;
+}
+.rfb-location-input {
+	flex: 1;
+	background: #fff;
+	border: 1px solid;
+	border-color: #404040 #ffffff #ffffff #404040;
+	padding: 1px 4px;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+.rfb-page {
+	background: #fff;
+	margin: 6px;
+	border: 1px solid #808080;
+}
+.rfb-banner {
+	background: linear-gradient(90deg, #1a2f66, #3b5998);
+	color: #fff;
+	padding: 8px 8px;
+	display: flex;
+	justify-content: space-between;
+	align-items: baseline;
+	flex-wrap: wrap;
+}
+.rfb-banner-title { font-size: 16px; font-weight: bold; }
+.rfb-banner-nav { font-size: 9px; opacity: 0.9; }
+.rfb-body {
+	display: flex;
+	border-bottom: 1px solid #ddd;
+}
+.rfb-profile {
+	flex: 1;
+	padding: 8px;
+	text-align: center;
+	border-right: 1px solid #ddd;
+}
+.rfb-profile-label {
+	background: #3b5998;
+	color: #fff;
+	font-weight: bold;
+	font-size: 10px;
+	padding: 2px 4px;
+	margin: -8px -8px 6px -8px;
+}
+.rfb-avatar { display: flex; justify-content: center; margin-bottom: 4px; }
+.rfb-avatar svg, .rfb-post-avatar svg { border: 1px solid #ccc; }
+.rfb-name { font-weight: bold; color: #3b5998; margin-bottom: 2px; }
+.rfb-link { font-size: 10px; color: #3b5998; text-decoration: none; }
+.rfb-link:hover { text-decoration: underline; }
+.rfb-contacts {
+	flex: 1;
+	padding: 8px;
+}
+.rfb-contacts-title {
+	background: #3b5998;
+	color: #fff;
+	font-weight: bold;
+	font-size: 10px;
+	padding: 2px 4px;
+	margin: -8px -8px 6px -8px;
+}
+.rfb-count { font-weight: normal; }
+.rfb-contacts-list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	font-size: 10px;
+}
+.rfb-contacts-list li {
+	padding: 1px 0;
+	color: #3b5998;
+}
+.rfb-feed { padding: 8px; }
+.rfb-feed-title { font-weight: bold; font-size: 12px; margin-bottom: 6px; }
+.rfb-post {
+	display: flex;
+	gap: 6px;
+	border: 1px solid #e5e7eb;
+	border-radius: 4px;
+	padding: 6px;
+	background: #fafafa;
+}
+.rfb-post-avatar { flex-shrink: 0; }
+.rfb-post-name { font-weight: bold; color: #3b5998; font-size: 11px; }
+.rfb-post-text { font-size: 11px; margin: 3px 0; }
+.rfb-post-meta { font-size: 9px; color: #777; }
+.rfb-post-action { color: #3b5998; cursor: pointer; }
+.rfb-statusbar {
+	border-top: 1px solid #808080;
+	padding: 2px 6px;
+	font-size: 10px;
+	color: #333;
+}
+
+@media (max-width: 640px) {
+	.rfb-window {
+		float: none;
+		width: auto;
+		margin: 0 0 1.2rem 0;
+	}
+}
+</style>
