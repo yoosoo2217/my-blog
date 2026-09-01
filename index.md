@@ -11,7 +11,7 @@ show_profile: true
 <div style="margin: 2rem 0;">
 
   <p id="progress-text" style="font-size:1.1rem; font-weight:600;">
-    전체 진행률을 계산하고 있습니다...
+    LOADING...
   </p>
 
   <div style="
@@ -64,11 +64,11 @@ show_profile: true
     Math.round((day / totalDays) * 100);
 
   document.getElementById('progress-text').textContent =
-    '전체 진행률 ' +
+    'Day ' +
     day +
-    '일차 / ' +
+    '/ '
     totalDays +
-    '일 (' +
+    ' (' +
     pct +
     '%)';
 
@@ -81,7 +81,7 @@ show_profile: true
 
 <!-- ==================== 오늘의 학습 ==================== -->
 
-## 📚 오늘의 학습
+## TODAY'S LEARNING
 
 <div style="
   padding:1.2rem;
@@ -91,14 +91,14 @@ show_profile: true
   background:#fafafa;
 ">
 
-  <strong>오늘 배운 내용</strong>
+  <strong>Today's learning LOG</strong>
 
   <p style="margin-bottom:0.5rem;">
     GitHub Pull Request 실습
   </p>
 
   <small>
-    오늘도 한 걸음 성장했습니다! 💪
+    "No hay mal que por bien no venga."
   </small>
 
 </div>
@@ -106,7 +106,7 @@ show_profile: true
 
 <!-- ==================== 최근 학습 기록 ==================== -->
 
-## 📝 최근 학습 기록
+## RECENT STUDY LOG
 
 <div style="margin: 1rem 0 2rem;">
 
@@ -136,7 +136,7 @@ show_profile: true
 
 <!-- ==================== 학습 캘린더 ==================== -->
 
-## 📅 학습 캘린더
+## STUDY CALENDER
 
 <p style="color:#777; font-size:0.9rem;">
 블로그에 학습 기록을 작성한 날이 표시됩니다.
@@ -197,20 +197,20 @@ show_profile: true
 
 <!-- ==================== GitHub 연동 ==================== -->
 
-## 🐙 GitHub 활동
+## GITHUB WORKS
 
-![GitHub Streak](https://streak-stats.demolab.com/?user=yoosoo2217&ring=7253ED&fire=7253ED&currStreakLabel=7253ED)
+![GitHub Streak](https://streak-stats.demolab.com/?user=yoosoo2217&ring=008082&fire=008082&currStreakLabel=008082)
 
 
 <!-- ==================== 방문자 수 ==================== -->
 
-## 👀 방문자 수
+## VISITERS
 
 <div style="margin:1rem 0 2rem;">
 
   <img
-    src="https://api.visitorbadge.io/api/visitors?path=yoosoo2217%2Fmy-blog&label=방문자"
-    alt="방문자 수"
+    src="https://api.visitorbadge.io/api/visitors?path=yoosoo2217%2Fmy-blog&label=VISITERS"
+    alt="VISITERS"
   >
 
 </div>
@@ -225,7 +225,8 @@ var studyDates = [
   "2026-08-27",
   "2026-08-28",
   "2026-08-30",
-  "2026-08-31"
+  "2026-08-31",
+  "2026-09-01"
 ];
 
 var currentDate = new Date();
@@ -246,7 +247,7 @@ function renderCalendar() {
     document.getElementById("calendar-title");
 
   title.textContent =
-    year + "년 " + (month + 1) + "월";
+    year + "." + (month + 1) + ".";
 
   var grid =
     document.getElementById("calendar-grid");
@@ -255,13 +256,13 @@ function renderCalendar() {
 
 
   var days = [
-    "일",
-    "월",
-    "화",
-    "수",
-    "목",
-    "금",
-    "토"
+    "Sun",
+    "Mon",
+    "Tue",
+    "Wed",
+    "Thu",
+    "Fri",
+    "Sat"
   ];
 
 
@@ -323,7 +324,7 @@ function renderCalendar() {
 
     if (studyDates.includes(fullDate)) {
 
-      cell.style.background = "#7253ED";
+      cell.style.background = "#008082";
       cell.style.color = "white";
       cell.style.fontWeight = "600";
 
