@@ -198,7 +198,7 @@ title: 유수의 학습 블로그
 
 ## 🐙 GitHub 활동
 
-![GitHub Streak](https://streak-stats.demolab.com/?user=yoosoo2217&ring=7253ED&fire=7253ED&currStreakLabel=7253ED)
+![GitHub Streak](https://streak-stats.demolab.com/?user=yoosoo2217&ring=008082&fire=008082&currStreakLabel=008082)
 
 
 <!-- ==================== 방문자 수 ==================== -->
