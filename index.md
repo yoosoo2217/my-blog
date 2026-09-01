@@ -4,7 +4,7 @@ title: 유수의 학습 블로그
 show_profile: true
 ---
 
-배운 내용을 기록하고 정리하는 학습 블로그입니다.
+
 
 <!-- ==================== 전체 진행률 ==================== -->
 
@@ -92,16 +92,19 @@ show_profile: true
 
   <strong>Today's Quote</strong>
 
-  <em>
-    "No hay mal que por bien no venga."
-  </em>
+  <pre>
+    <em>
+      
+      "No hay mal que por bien no venga."
+    </em>
+  </pre>
 
 </div>
 
 
 <!-- ==================== 최근 학습 기록 ==================== -->
 
-### RECENT STUDY LOG
+## RECENT STUDY LOG
 
 <div style="margin: 1rem 0 2rem;">
 
@@ -131,10 +134,10 @@ show_profile: true
 
 <!-- ==================== 학습 캘린더 ==================== -->
 
-### STUDY CALENDER
+## STUDY CALENDER
 
 <p style="color:#777; font-size:0.9rem;">
-블로그에 학습 기록을 작성한 날이 표시됩니다.
+
 </p>
 
 <div id="study-calendar" style="
@@ -192,14 +195,14 @@ show_profile: true
 
 <!-- ==================== GitHub 연동 ==================== -->
 
-### GITHUB WORKS
+## GITHUB WORKS
 
 ![GitHub Streak](https://streak-stats.demolab.com/?user=yoosoo2217&ring=00007F&fire=00007F&currStreakLabel=00007F)
 
 
 <!-- ==================== 방문자 수 ==================== -->
 
-### VISITERS
+## VISITERS
 
 <div style="margin:1rem 0 2rem;">
 
