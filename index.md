@@ -85,7 +85,7 @@ show_profile: true
 <div style="
   padding:14px 8px;
   margin:0.6rem 0 1.2rem;
-  max-width:280px;
+  max-width:330px;
   background:#fff8ff;
   border-width:2px;
   border-style:ridge groove groove ridge;
@@ -93,7 +93,7 @@ show_profile: true
   font-size:0.85rem;
 ">
 
-  <strong>Today's Quote</strong>
+  <strong> Today's Quote</strong>
 
   <p style="font-style:italic; margin:0.3rem 0 0;">
     "No hay mal que por bien no venga."
@@ -143,7 +143,7 @@ show_profile: true
 <div id="study-calendar" style="
   margin:1rem 0 2rem;
   padding:1rem;
-  max-width:340px;
+  max-width:400px;
   background:#fff8ff;
   border-width:2px;
   border-style:ridge groove groove ridge;
