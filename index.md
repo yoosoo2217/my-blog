@@ -84,7 +84,7 @@ show_profile: true
 
 <div style="
   padding:14px 8px;
-  margin:0.6rem 0 10px;
+  margin: 2rem 10px;
   max-width:440px;
   background:#fff8ff;
   border-width:2px;
@@ -106,12 +106,12 @@ show_profile: true
 
 ## - RECENT STUDY LOG
 
-<div style="margin: 1rem 0 2rem;">
+<div style="margin: 2rem 10px;">
 
   {% for post in site.posts limit:6 %}
 
   <div style="
-    padding:0.8rem 1rem;
+    padding:2rem 10px;
     border-bottom:1px solid #eee;
   ">
 
@@ -141,8 +141,8 @@ show_profile: true
 </p>
 
 <div id="study-calendar" style="
-  margin:1rem 0 10px;
-  padding:1rem;
+  margin:2rem 10px;
+  padding:1.3rem;
   max-width:600px;
   background:#fff8ff;
   border-width:2px;
@@ -207,7 +207,7 @@ show_profile: true
 
 ## - VISITERS
 
-<div style="margin:1rem 0 2rem;">
+<div style="margin: 2rem 10px;">
 
   <img
     src="https://api.visitorbadge.io/api/visitors?path=yoosoo2217%2Fmy-blog&label=VISITERS"
@@ -227,7 +227,8 @@ var studyDates = [
   "2026-08-28",
   "2026-08-30",
   "2026-08-31",
-  "2026-09-01"
+  "2026-09-01",
+  "2026-09-02"
 ];
 
 var currentDate = new Date();
