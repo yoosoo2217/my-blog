@@ -83,8 +83,9 @@ show_profile: true
 
 
 <div style="
-  padding:5px 8px;
+  padding:14px 8px;
   margin:0.6rem 0 1.2rem;
+  max-width:280px;
   background:#fff8ff;
   border-width:2px;
   border-style:ridge groove groove ridge;
@@ -142,6 +143,7 @@ show_profile: true
 <div id="study-calendar" style="
   margin:1rem 0 2rem;
   padding:1rem;
+  max-width:340px;
   background:#fff8ff;
   border-width:2px;
   border-style:ridge groove groove ridge;
