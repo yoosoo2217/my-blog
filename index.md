@@ -10,7 +10,7 @@ show_profile: true
 
 <div style="margin: 2rem 10px;">
 
-  <p id="progress-text" style="font-size:1rem; font-weight:600;">
+  <p id="progress-text" style="font-size:1.1rem; font-weight:600;">
     loading...
   </p>
 
@@ -103,8 +103,8 @@ show_profile: true
 
 
 <!-- ==================== 최근 학습 기록 ==================== -->
-
-## - RECENT STUDY LOG
+ 
+<h3 style="margin-left:10px;">- RECENT STUDY LOG</h3>
 
 <div style="margin: 2rem 10px;">
 
@@ -134,14 +134,14 @@ show_profile: true
 
 <!-- ==================== 학습 캘린더 ==================== -->
 
-## - STUDY CALENDER
+<h3 style="margin-left:10px;">- STUDY CALENDER</h3>
 
 <p style="color:#777; font-size:0.9rem;">
 
 </p>
 
 <div id="study-calendar" style="
-  margin:2rem 10px;
+  margin:1rem 10px;
   padding:1.3rem;
   max-width:600px;
   background:#fff8ff;
@@ -198,14 +198,14 @@ show_profile: true
 
 <!-- ==================== GitHub 연동 ==================== -->
 
-## - GITHUB WORKS
+<h3 style="margin-left:10px;">- GITHUB WORKS</h3>
 
 ![GitHub Streak](https://streak-stats.demolab.com/?user=yoosoo2217&ring=00007F&fire=00007F&currStreakLabel=00007F)
 
 
 <!-- ==================== 방문자 수 ==================== -->
 
-## - VISITERS
+<h3 style="margin-left:10px;">- VISITORS</h3>
 
 <div style="margin: 2rem 10px;">
 
