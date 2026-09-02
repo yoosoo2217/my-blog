@@ -83,21 +83,20 @@ show_profile: true
 
 
 <div style="
-  padding:1.2rem;
-  margin:1rem 0 2rem;
-  border:1px solid #e5e7eb;
-  border-radius:12px;
-  background:#fafafa;
+  padding:5px 8px;
+  margin:0.6rem 0 1.2rem;
+  background:#fff8ff;
+  border-width:2px;
+  border-style:ridge groove groove ridge;
+  border-color:#7f787f #fff8ff #fff8ff #7f787f;
+  font-size:0.85rem;
 ">
 
   <strong>Today's Quote</strong>
 
-  <pre>
-    <em>
-      
+  <p style="font-style:italic; margin:0.3rem 0 0;">
     "No hay mal que por bien no venga."
-    </em>
-  </pre>
+  </p>
 
 </div>
 
@@ -143,8 +142,10 @@ show_profile: true
 <div id="study-calendar" style="
   margin:1rem 0 2rem;
   padding:1rem;
-  border:1px solid #e5e7eb;
-  border-radius:12px;
+  background:#fff8ff;
+  border-width:2px;
+  border-style:ridge groove groove ridge;
+  border-color:#7f787f #fff8ff #fff8ff #7f787f;
 ">
 
   <div style="
