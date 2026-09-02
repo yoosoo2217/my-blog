@@ -79,29 +79,6 @@ show_profile: true
 </script>
 
 
-<!-- ==================== 오늘의 학습 ==================== -->
-
-
-<div style="
-  padding:14px 8px;
-  margin: 2rem 10px;
-  max-width:440px;
-  background:#fff8ff;
-  border-width:2px;
-  border-style:ridge groove groove ridge;
-  border-color:#7f787f #fff8ff #fff8ff #7f787f;
-  font-size:0.85rem;
-">
-
-  <strong> Today's Quote</strong>
-
-  <p style="font-style:italic; margin:0.3rem 0 0;">
-    "No hay mal que por bien no venga."
-  </p>
-
-</div>
-
-
 <!-- ==================== 최근 학습 기록 ==================== -->
  
 <h2 style="margin-left:10px;">- RECENT STUDY LOG</h2>
