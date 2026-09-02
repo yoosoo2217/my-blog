@@ -84,8 +84,8 @@ show_profile: true
 
 <div style="
   padding:14px 8px;
-  margin:0.6rem 0 1.2rem;
-  max-width:330px;
+  margin:0.6rem 0 10px;
+  max-width:440px;
   background:#fff8ff;
   border-width:2px;
   border-style:ridge groove groove ridge;
@@ -141,9 +141,9 @@ show_profile: true
 </p>
 
 <div id="study-calendar" style="
-  margin:1rem 0 2rem;
+  margin:1rem 0 10px;
   padding:1rem;
-  max-width:400px;
+  max-width:600px;
   background:#fff8ff;
   border-width:2px;
   border-style:ridge groove groove ridge;
