@@ -104,14 +104,14 @@ show_profile: true
 
 <!-- ==================== 최근 학습 기록 ==================== -->
  
-<h3 style="margin-left:10px;">- RECENT STUDY LOG</h3>
+<h2 style="margin-left:10px;">- RECENT STUDY LOG</h2>
 
 <div style="margin: 2rem 10px;">
 
   {% for post in site.posts limit:6 %}
 
   <div style="
-    padding:2rem 10px;
+    padding:1rem 10px;
     border-bottom:1px solid #eee;
   ">
 
@@ -134,7 +134,7 @@ show_profile: true
 
 <!-- ==================== 학습 캘린더 ==================== -->
 
-<h3 style="margin-left:10px;">- STUDY CALENDER</h3>
+<h2 style="margin-left:10px;">- STUDY CALENDER</h2>
 
 <p style="color:#777; font-size:0.9rem;">
 
@@ -198,14 +198,14 @@ show_profile: true
 
 <!-- ==================== GitHub 연동 ==================== -->
 
-<h3 style="margin-left:10px;">- GITHUB WORKS</h3>
+<h2 style="margin-left:10px;">- GITHUB WORKS</h2>
 
 ![GitHub Streak](https://streak-stats.demolab.com/?user=yoosoo2217&ring=00007F&fire=00007F&currStreakLabel=00007F)
 
 
 <!-- ==================== 방문자 수 ==================== -->
 
-<h3 style="margin-left:10px;">- VISITORS</h3>
+<h2 style="margin-left:10px;">- VISITORS</h2>
 
 <div style="margin: 2rem 10px;">
 
