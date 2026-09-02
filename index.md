@@ -199,9 +199,9 @@ show_profile: true
 <!-- ==================== GitHub 연동 ==================== -->
 
 <h2 style="margin-left:10px;">- GITHUB WORKS</h2>
-
+<div style="margin-top:30px;">
 ![GitHub Streak](https://streak-stats.demolab.com/?user=yoosoo2217&ring=00007F&fire=00007F&currStreakLabel=00007F)
-
+</div>
 
 <!-- ==================== 방문자 수 ==================== -->
 
