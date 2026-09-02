@@ -8,7 +8,7 @@ permalink: /search/
   <input
     type="text"
     id="search-input"
-    placeholder="검색어를 입력하세요..."
+    placeholder="search.."
     style="
       width:100%;
       max-width:400px;
@@ -24,8 +24,8 @@ permalink: /search/
   >
 </div>
 
-<p id="search-hint" style="color:#555; font-size:0.85rem;">제목, 태그, 본문 내용을 검색합니다.</p>
-<p id="search-empty" style="color:#555; display:none;">검색 결과가 없습니다.</p>
+<p id="search-hint" style="color:#555; font-size:0.85rem;">제목, 태그, 본문 내용을 검색해주세용!</p>
+<p id="search-empty" style="color:#555; display:none;">검색 결과가 없습니당..</p>
 
 <ul id="search-results" style="list-style:none; padding:0; margin:0;"></ul>
 
