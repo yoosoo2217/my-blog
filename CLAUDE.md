@@ -210,10 +210,10 @@ permalink: /tag/frontend/
 ### 5.3 이미지 및 리소스 경로
 
 - 이미지는 `assets/img/` 같은 폴더에 저장한다.
-- `baseurl`은 빈 문자열(`""`)로 설정되어 있으므로, 이미지 경로는 절대경로로 바로 쓴다.
+- 이 사이트는 GitHub Pages 프로젝트 페이지(`https://yoosoo2217.github.io/my-blog/`)로 배포되므로 `baseurl`이 `/my-blog`로 설정되어 있다. 글 본문에서 이미지나 링크를 절대경로로 쓸 때는 반드시 `{{ site.baseurl }}`을 붙인다 (안 붙이면 배포된 사이트에서 경로가 깨진다).
 
 ```markdown
-![캐시 흐름도](/assets/img/cache-flow.png)
+![캐시 흐름도]({{ site.baseurl }}/assets/img/cache-flow.png)
 ```
 
 - 로컬 파일 경로(`C:\Users\...`, `/Users/...`)는 절대 사용하지 않는다.
