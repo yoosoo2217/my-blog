@@ -176,7 +176,7 @@ show_profile: true
     border-top:1px solid #ccc;
     font-size:0.9rem;
   ">
-    <span style="color:#777;">날짜를 클릭하면 그 날 작성한 글을 볼 수 있어요.</span>
+    <span style="color:#777;">날짜를 선택하면 그날그날 공부한 내용을 볼 수 잇오! ↑(￣︶￣)↑　</span>
   </div>
 
 </div>
