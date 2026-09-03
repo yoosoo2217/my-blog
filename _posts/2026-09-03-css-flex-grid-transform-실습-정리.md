@@ -31,16 +31,8 @@ flex/grid를 배우기 전에, 먼저 태그가 화면에서 차지하는 공간
 ```
 
 ```css
-/* div의 기본값은 block: 세로로 쌓인다 */
-/* span의 기본값은 inline: 가로로 이어진다 */
-
-/* display 속성으로 기본값을 뒤집어볼 수 있다 */
-.box-block-span {
-    display: block;
-}
-.box-inline-div {
-    display: inline;
-}
+.box-block-span { display: block; }  /* span인데 block처럼 */
+.box-inline-div { display: inline; } /* div인데 inline처럼 */
 ```
 
 | 값 | 기본으로 쓰는 태그 | 특징 |
@@ -62,43 +54,17 @@ flex/grid를 배우기 전에, 먼저 태그가 화면에서 차지하는 공간
         <p class="price">17,000원</p>
         <p class="desc">많은 구매 부탁드립니다.</p>
     </div>
-    <div class="card">
-        <div class="thumb"></div>
-        <h2 class="product-name">모니터</h2>
-        <p class="price">17,000원</p>
-    </div>
-    <div class="card">
-        <div class="thumb"></div>
-        <h2 class="product-name">마유수</h2>
-        <p class="price">17,000원</p>
-    </div>
+    <div class="card"> <!-- 카드 2개 더 반복, desc 문단 없음 --> </div>
 </main>
 ```
 
 ```css
 .card-list {
-    /* 이 상자(부모)를 플렉스 컨테이너로 만든다.
-       display: flex는 카드가 아니라 카드를 감싸는 상자에 줘야 한다. */
-    display: flex;
-
-    /* 주축(main axis) 방향 지정. 기본값은 row(가로) */
+    display: flex;                   /* 카드를 감싸는 부모에 준다 */
     flex-direction: row;
-
-    /* 주축 방향으로 항목을 어디에 모을지
-       flex-start 왼쪽 · center 가운데 · flex-end 오른쪽
-       space-between 양 끝에 붙이고 사이를 고르게 */
     justify-content: space-between;
-
-    /* 교차축(cross axis) 방향으로 항목을 어디에 맞출지
-       stretch(기본값) 컨테이너 높이만큼 늘려서 카드 높이를 맞춘다 */
-    /* align-items: flex-start; */
-
-    /* 항목 사이의 간격 */
+    /* align-items: flex-start;      기본값 stretch 대신 높이를 안 늘리려면 */
     gap: 20px;
-
-    /* 한 줄에 다 들어가지 못할 때 처리 방식
-       wrap: 화면이 좁아지면 아래 줄로 내려감
-       nowrap(기본값): 항목이 줄어들거나 상자 밖으로 넘침 */
     flex-wrap: wrap;
 }
 ```
@@ -137,15 +103,13 @@ flex/grid를 배우기 전에, 먼저 태그가 화면에서 차지하는 공간
 
 ```css
 .grid-list {
-    /* 이 속성만 있으면 열이 기본 1개로 시작한다 */
     display: grid;
-
-    /* repeat(3, 1fr): 열을 3개 만들고, 각 열이 남은 공간을 1:1:1 비율로 나눠 갖는다.
-       fr(fraction)은 "남은 공간의 몫"을 의미하는 grid 전용 단위다. */
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, 1fr); /* 열 3개, 남은 공간을 1:1:1로 */
     gap: 20px;
 }
 ```
+
+`fr`(fraction)은 "남은 공간의 몫"을 뜻하는 grid 전용 단위다.
 
 | 개념 | flex | grid |
 |---|---|---|
@@ -170,40 +134,28 @@ flex/grid를 배우기 전에, 먼저 태그가 화면에서 차지하는 공간
 
 ```css
 .card {
-  background-color: #FFFFFF;
   border: 1px solid #E5E7EB;
   border-radius: 8px;
   padding: 16px;
-  /* transition은 :hover가 아니라 "원래 규칙"에 써야 한다.
-     여기 써야 마우스를 뗄 때도 부드럽게 원래 상태로 돌아온다 */
-  transition: all 0.3s;
+  transition: all 0.3s; /* :hover가 아니라 원래 규칙에 써야 뗄 때도 부드럽다 */
 }
 
-/* .card:hover 는 붙여 써야 한다.
-   공백을 넣으면(.card :hover) 카드 "안쪽" 요소를 가리키는 다른 뜻이 된다 */
 .card:hover {
   background-color: #F9FAFB;
-  /* 위로 8px 이동하고 1.05배로 확대. 자리는 그대로 두고 그림만 움직인다 */
-  transform: translate(0, -8px) scale(1.05);
+  transform: translate(0, -8px) scale(1.05); /* 위로 8px, 1.05배 확대 */
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
 }
 
 .badge {
-  display: inline-block;
   background-color: #DC2626;
-  color: #FFFFFF;
   border-radius: 999px;
   transform: rotate(-5deg);
-  animation-name: blink;
-  animation-duration: 1.2s;
-  animation-iteration-count: infinite;
+  animation: blink 1.2s infinite;
 }
 
-/* 0%와 100%를 같은 색으로 둬야 애니메이션이 한 바퀴 돌고도 끊기지 않고 이어진다 */
 @keyframes blink {
-  0%   { background-color: #DC2626; }
-  50%  { background-color: #F97316; }
-  100% { background-color: #DC2626; }
+  0%, 100% { background-color: #DC2626; } /* 시작·끝을 같은 색으로 둬야 끊기지 않는다 */
+  50%      { background-color: #F97316; }
 }
 ```
 
@@ -217,17 +169,7 @@ flex/grid를 배우기 전에, 먼저 태그가 화면에서 차지하는 공간
 
 ## 5. 직접 쓴 CSS vs Tailwind/Bootstrap
 
-같은 카드 UI를 vanilla CSS로 만든 버전과, CDN으로 불러온 유틸리티 클래스(Tailwind, Bootstrap)로 만든 버전을 비교해봤다.
-
-```html
-<!-- vanilla CSS 버전: 클래스 이름은 의미 단위, 실제 스타일은 style.css에 정의 -->
-<div class="card">
-  <div class="thumb"></div>
-  <span class="badge">NEW</span>
-  <h2 class="product-name">무선 이어폰</h2>
-  <p class="price">89,000원</p>
-</div>
-```
+같은 카드 UI(위 4번의 `.card`)를 vanilla CSS로 만든 버전과, CDN으로 불러온 유틸리티 클래스(Tailwind, Bootstrap)로 만든 버전을 비교해봤다.
 
 ```html
 <!-- Tailwind 버전: 클래스 이름 자체가 스타일. 별도 CSS 파일이 거의 필요 없다 -->

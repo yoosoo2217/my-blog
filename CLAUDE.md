@@ -191,7 +191,7 @@ tags:
 |------|-----------|------|
 | `title` | 필수 | 글 제목. 콜론(`:`) 등 특수문자 포함 시 반드시 따옴표로 감싼다 |
 | `date` | 필수 | 파일명의 날짜와 맞춘다 |
-| `tags` | 필수 | 리스트 형식. 사이드바에 각 태그가 폴더처럼 표시된다. 현재 존재하는 태그: `Git`, `Linux`, `Shell`, `GitHub`, `Markdown`, `Branch`, `명령어` |
+| `tags` | 필수 | 리스트 형식. 사이드바에 각 태그가 폴더처럼 표시된다. 현재 존재하는 태그: `Git`, `Linux`, `Shell`, `GitHub`, `Markdown`, `Branch`, `명령어`, `HTML`, `CSS`, `실습파일정리` |
 
 `layout`, `parent`, `nav_order`, `categories`는 이 테마에서 별도로 넣지 않아도 된다 (`layout`은 defaults로 자동 적용, 나머지는 이 테마에서 쓰이지 않음).
 
