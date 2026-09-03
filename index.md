@@ -170,6 +170,15 @@ show_profile: true
   ">
   </div>
 
+  <div id="calendar-selected" style="
+    margin-top:1rem;
+    padding-top:0.8rem;
+    border-top:1px solid #ccc;
+    font-size:0.9rem;
+  ">
+    <span style="color:#777;">날짜를 클릭하면 그 날 작성한 글을 볼 수 있어요.</span>
+  </div>
+
 </div>
 
 
@@ -200,17 +209,19 @@ show_profile: true
 
 <script>
 
-var studyDates = [
-  "2026-08-26",
-  "2026-08-27",
-  "2026-08-28",
-  "2026-08-30",
-  "2026-08-31",
-  "2026-09-01",
-  "2026-09-02"
-];
+{% assign posts_by_date = site.posts | group_by_exp: "post", "post.date | date: '%Y-%m-%d'" %}
+var postsByDate = {
+{% for group in posts_by_date %}
+  "{{ group.name }}": [
+    {% for post in group.items %}
+    { "title": {{ post.title | jsonify }}, "url": {{ post.url | prepend: site.baseurl | jsonify }} }{% unless forloop.last %},{% endunless %}
+    {% endfor %}
+  ]{% unless forloop.last %},{% endunless %}
+{% endfor %}
+};
 
 var currentDate = new Date();
+var selectedDate = null;
 
 
 function renderCalendar() {
@@ -274,7 +285,7 @@ function renderCalendar() {
 
 
   for (
-    var date = 1;
+    let date = 1;
     date <= lastDate;
     date++
   ) {
@@ -282,13 +293,13 @@ function renderCalendar() {
     var cell =
       document.createElement("div");
 
-    var monthString =
+    let monthString =
       String(month + 1).padStart(2, "0");
 
-    var dateString =
+    let dateString =
       String(date).padStart(2, "0");
 
-    var fullDate =
+    let fullDate =
       year +
       "-" +
       monthString +
@@ -301,9 +312,10 @@ function renderCalendar() {
     cell.style.padding = "8px 4px";
     cell.style.borderRadius = "6px";
     cell.style.fontSize = "0.85rem";
+    cell.style.cursor = "pointer";
 
 
-    if (studyDates.includes(fullDate)) {
+    if (postsByDate.hasOwnProperty(fullDate)) {
 
       cell.style.background = "#00007F";
       cell.style.color = "white";
@@ -311,10 +323,67 @@ function renderCalendar() {
 
     }
 
+    if (fullDate === selectedDate) {
+
+      cell.style.outline = "2px solid #ff8800";
+      cell.style.outlineOffset = "-2px";
+
+    }
+
+    cell.addEventListener("click", function () {
+
+      selectedDate = fullDate;
+      renderCalendar();
+      showPostsForDate(fullDate);
+
+    });
+
 
     grid.appendChild(cell);
 
   }
+
+}
+
+
+function showPostsForDate(dateStr) {
+
+  var panel =
+    document.getElementById("calendar-selected");
+
+  var posts =
+    postsByDate[dateStr] || [];
+
+  var html =
+    '<div style="font-weight:600; margin-bottom:6px;">' +
+    dateStr +
+    '</div>';
+
+  if (posts.length === 0) {
+
+    html +=
+      '<div style="color:#777;">이 날은 작성한 글이 없습니다.</div>';
+
+  } else {
+
+    html += '<ul style="margin:0; padding-left:1.2rem;">';
+
+    posts.forEach(function (post) {
+
+      html +=
+        '<li><a href="' +
+        post.url +
+        '">' +
+        post.title +
+        '</a></li>';
+
+    });
+
+    html += '</ul>';
+
+  }
+
+  panel.innerHTML = html;
 
 }
 
