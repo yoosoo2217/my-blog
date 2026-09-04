@@ -94,6 +94,28 @@
     {% endif %}
 	<script src="{{ site.baseurl }}/assets/js/001.js"></script>
 	<script src="{{ site.baseurl }}/assets/js/002.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js"></script>
+	<script>
+		(function () {
+			if (!window.mermaid) { return; }
+			var containers = document.querySelectorAll('[class*="language-mermaid"]');
+			for (var i = 0; i < containers.length; i++) {
+				try {
+					var wrapper = containers[i];
+					var codeEl = wrapper.querySelector('code') || wrapper;
+					var src = codeEl.textContent;
+					var div = document.createElement('div');
+					div.className = 'mermaid';
+					div.textContent = src;
+					wrapper.parentNode.replaceChild(div, wrapper);
+				} catch (e) {
+					/* skip this block if anything goes wrong */
+				}
+			}
+			mermaid.initialize({ startOnLoad: false, theme: 'neutral' });
+			mermaid.run({ querySelector: '.mermaid' });
+		})();
+	</script>
 	<div class="footer">
 		<p>Created by <a href="http://github.com/h01000110" target="_blank">h01000110 (hi)</a> | Code licensed under <a href="https://github.com/h01000110/h01000110.github.io/blob/master/LICENSE" target="_blank">MIT License</a></p>
 	</div>
