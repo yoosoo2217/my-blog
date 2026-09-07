@@ -8,7 +8,7 @@ tags:
 
 # CSS flex, grid, transform 실습 정리
 
-[지난 글]({{ site.baseurl }}/css-선택자-실습-정리.html)에서 CSS 선택자를 정리했고, 이번엔 이어서 **레이아웃(block/inline), flex, grid, transform/애니메이션** 실습을 정리한다. 마찬가지로 실습은 따라 했지만 개념이 흐릿했던 부분이라, 코드마다 왜 그렇게 동작하는지를 붙여서 정리했다.
+[지난 글]({{ site.baseurl }}/css-선택자-실습-정리.html)에서 CSS 선택자를 정리했고, 이번에는 **레이아웃(block/inline), flex, grid, transform/애니메이션**을 정리한다. 마찬가지로 실습은 따라 했지만 개념이 흐릿했던 부분이라, 코드마다 왜 그렇게 동작하는지를 함께 정리했다.
 
 ## 1. 블록(block)과 인라인(inline)
 
@@ -20,7 +20,7 @@ flex/grid를 배우기 전에, 먼저 태그가 화면에서 차지하는 공간
   <div class="box-block">div — 그래서 아래로 쌓임</div>
 
   <span class="box-inline">span</span>
-  <span class="box-inline">span— 옆으로 붙음</span>
+  <span class="box-inline">span — 옆으로 붙음</span>
 
   <span class="box-inline-block">span인데 너비가 먹음</span>
   <span class="box-block-span">같은 span인데 자기 줄을 차지</span>
@@ -44,7 +44,7 @@ flex/grid를 배우기 전에, 먼저 태그가 화면에서 차지하는 공간
 
 ## 2. flex 레이아웃
 
-`div`만으로 카드 3개를 가로로 배치하려 하면, `div`가 기본적으로 세로로 쌓이기 때문에 화면 너비에 맞춰 유연하게 배치할 수 없다. 이 문제를 해결하려고 flexbox를 배웠다.
+`div`는 기본적으로 세로로 쌓이므로, 카드 3개를 가로로 배치하려면 화면 너비에 맞춰 유연하게 배치할 수 없다. 이 문제를 해결하기 위해 flexbox를 배웠다.
 
 ```html
 <main class="card-list">
@@ -54,7 +54,16 @@ flex/grid를 배우기 전에, 먼저 태그가 화면에서 차지하는 공간
         <p class="price">17,000원</p>
         <p class="desc">많은 구매 부탁드립니다.</p>
     </div>
-    <div class="card"> <!-- 카드 2개 더 반복, desc 문단 없음 --> </div>
+    <div class="card">
+        <div class="thumb"></div>
+        <h2 class="product-name">모니터</h2>
+        <p class="price">45,000원</p>
+    </div>
+    <div class="card">
+        <div class="thumb"></div>
+        <h2 class="product-name">마우스</h2>
+        <p class="price">8,000원</p>
+    </div>
 </main>
 ```
 
@@ -84,7 +93,7 @@ flex/grid를 배우기 전에, 먼저 태그가 화면에서 차지하는 공간
 | `gap` | 아이템 사이 간격 |
 | `flex-wrap` | 한 줄에 안 들어갈 때 줄바꿈 여부 |
 
-`align-items`를 `flex-start`로 주지 않고 기본값(`stretch`)으로 두면, 설명 문단(`desc`)이 있는 카드만 내용이 길어져도 다른 카드들의 높이가 컨테이너 높이만큼 늘어나서 나란히 맞춰진다는 걸 실습으로 확인했다.
+`align-items`의 기본값은 `stretch`인데, 이것을 `flex-start`로 바꾸지 않으면 모든 아이템의 높이가 컨테이너 높이만큼 자동으로 늘어난다. 실습에서 설명 문단(`desc`)이 있는 카드만 내용이 길어도 다른 카드들이 함께 높이가 맞춰지는 걸 확인했다.
 
 ## 3. grid 레이아웃
 
@@ -92,12 +101,36 @@ flex/grid를 배우기 전에, 먼저 태그가 화면에서 차지하는 공간
 
 ```html
 <main class="grid-list">
-    <div class="card"> ... 노트북 거치대 ... </div>
-    <div class="card"> ... 모니터 ... </div>
-    <div class="card"> ... 마유수 ... </div>
-    <div class="card"> ... 키보드 ... </div>
-    <div class="card"> ... 헤드폰 ... </div>
-    <div class="card"> ... 에어팟 ... </div>
+    <div class="card">
+        <div class="thumb"></div>
+        <h2 class="product-name">노트북 거치대</h2>
+        <p class="price">17,000원</p>
+    </div>
+    <div class="card">
+        <div class="thumb"></div>
+        <h2 class="product-name">모니터</h2>
+        <p class="price">45,000원</p>
+    </div>
+    <div class="card">
+        <div class="thumb"></div>
+        <h2 class="product-name">마우스</h2>
+        <p class="price">8,000원</p>
+    </div>
+    <div class="card">
+        <div class="thumb"></div>
+        <h2 class="product-name">키보드</h2>
+        <p class="price">35,000원</p>
+    </div>
+    <div class="card">
+        <div class="thumb"></div>
+        <h2 class="product-name">헤드폰</h2>
+        <p class="price">125,000원</p>
+    </div>
+    <div class="card">
+        <div class="thumb"></div>
+        <h2 class="product-name">에어팟</h2>
+        <p class="price">185,000원</p>
+    </div>
 </main>
 ```
 
@@ -117,7 +150,7 @@ flex/grid를 배우기 전에, 먼저 태그가 화면에서 차지하는 공간
 | 비유 | 한 줄로 세우고 정렬 | 칸을 미리 그려두고 그 칸에 채움 |
 | 적합한 상황 | 메뉴바처럼 한 줄/한 열 배치 | 카드 그리드처럼 표 형태 배치 |
 
-행(row) 개수를 따로 지정하지 않아도, 열(`grid-template-columns`)만 정해주면 내용물 개수에 맞춰 행이 자동으로 늘어난다는 점이 grid의 특징이었다.
+grid는 행(row) 개수를 따로 지정하지 않아도, 열(`grid-template-columns`)만 정해주면 내용물 개수에 맞춰 자동으로 행이 늘어난다는 특징이 있다.
 
 ## 4. transform과 애니메이션
 
