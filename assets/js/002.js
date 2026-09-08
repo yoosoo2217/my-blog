@@ -2,7 +2,11 @@
 // github.com/h01000110
 
 function numbers () {
-	var fields = document.getElementsByTagName("code");
+	// Only real fenced code blocks (<pre><code>) get line numbers.
+	// Inline code spans (`like this`) and the mermaid source block are
+	// excluded, since rewriting them breaks inline code (empties 1-line
+	// snippets) and breaks mermaid (mangles its syntax before it renders).
+	var fields = document.querySelectorAll("pre code:not([class*='language-mermaid'])");
 	for (var field = 0; field < fields.length; field++) {
 		var num = 0;
 		var select = fields[field].innerText;
