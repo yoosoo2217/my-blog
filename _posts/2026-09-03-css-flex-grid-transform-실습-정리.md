@@ -6,8 +6,6 @@ tags:
   - 실습파일정리
 ---
 
-# CSS flex, grid, transform 실습 정리
-
 [지난 글]({{ site.baseurl }}/css-선택자-실습-정리.html)에서 CSS 선택자를 정리했고, 이번에는 **레이아웃(block/inline), flex, grid, transform/애니메이션**을 정리한다. 마찬가지로 실습은 따라 했지만 개념이 흐릿했던 부분이라, 코드마다 왜 그렇게 동작하는지를 함께 정리했다.
 
 ## 1. 블록(block)과 인라인(inline)
@@ -25,7 +23,7 @@ flex/grid를 배우기 전에, 먼저 태그가 화면에서 차지하는 공간
   <span class="box-inline-block">span인데 너비가 먹음</span>
   <span class="box-block-span">같은 span인데 자기 줄을 차지</span>
 
-  <div class="box-inline-div">같은 div 인데</div>
+  <div class="box-inline-div">같은 div인데</div>
   <div class="box-inline-div">옆으로 붙음</div>
 </section>
 ```
@@ -44,7 +42,7 @@ flex/grid를 배우기 전에, 먼저 태그가 화면에서 차지하는 공간
 
 ## 2. flex 레이아웃
 
-`div`는 기본적으로 세로로 쌓이므로, 카드 3개를 가로로 배치하려면 화면 너비에 맞춰 유연하게 배치할 수 없다. 이 문제를 해결하기 위해 flexbox를 배웠다.
+`div`는 기본적으로 세로로 쌓이므로, 카드 3개를 가로로 배치하면서 화면 너비에 맞춰 유연하게 정렬하기는 어렵다. 이 문제를 해결하기 위해 flexbox를 배웠다.
 
 ```html
 <main class="card-list">
