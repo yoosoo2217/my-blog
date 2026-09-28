@@ -110,9 +110,9 @@ boolean isAdult = false;
 다음 세 가지는 서로 다른 동작이다.
 
 ```java
-int num;       // 선언
-num = 30;      // 값 대입
-int num2 = 10; // 선언과 동시에 초기화
+int num;         // 선언
+num = 30;        // 값 대입
+int num2 = 10;   // 선언과 동시에 초기화
 ```
 
 ## 8. 대입 연산자 `=`
