@@ -20,9 +20,7 @@
 	<script>hljs.initHighlightingOnLoad();</script>
 </head>
 <body>
-	{% if page.show_profile %}
-		{% include cyworld-widget.html %}
-	{% endif %}
+	<div class="top-row">
 	<div class="wrapper">
 		<div class="default_title">
 			<img src="{{ site.baseurl }}/assets/img/mycomputer.png" />
@@ -72,6 +70,10 @@
 			{% endif %}
 			<div class="right">&nbsp;</div>
 		</div>
+	</div>
+		{% if page.show_profile %}
+			{% include cyworld-widget.html %}
+		{% endif %}
 	</div>
 	{% if page.title %}
         <div class="content">

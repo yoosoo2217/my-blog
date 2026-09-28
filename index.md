@@ -10,23 +10,25 @@ show_profile: true
 
 <div style="margin: 2rem 10px;">
 
-  <p id="progress-text" style="font-size:1.1rem; font-weight:600;">
+  <p id="progress-text" style="font-size:1.2rem; font-weight:700; margin-bottom:6px;">
     loading...
   </p>
 
   <div style="
     width:90%;
-    height:10px;
-    background:#e2e2e2;
-    border-radius:999px;
+    max-width:520px;
+    height:14px;
+    background:#fff8ff;
+    border-width:2px;
+    border-style:ridge groove groove ridge;
+    border-color:#7f787f #fff8ff #fff8ff #7f787f;
     overflow:hidden;
   ">
     <div id="progress-bar-fill"
          style="
            height:100%;
            width:0%;
-           background:linear-gradient(90deg,#0D9488,#5EEAD4);
-           border-radius:999px;
+           background:#00007f;
            transition:width .6s ease;
          ">
     </div>
@@ -111,7 +113,7 @@ show_profile: true
 
 <!-- ==================== 학습 캘린더 ==================== -->
 
-<h2 style="margin-left:10px;">- STUDY CALENDER</h2>
+<h2 style="margin-left:10px;">- STUDY CALENDAR</h2>
 
 <p style="color:#777; font-size:0.9rem;">
 
@@ -310,7 +312,6 @@ function renderCalendar() {
     cell.textContent = date;
 
     cell.style.padding = "8px 4px";
-    cell.style.borderRadius = "6px";
     cell.style.fontSize = "0.85rem";
     cell.style.cursor = "pointer";
 

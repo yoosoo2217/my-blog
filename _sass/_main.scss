@@ -4,14 +4,34 @@ body {
 	font-size: 13px;
 }
 
-.wrapper, .content {
-	width: 800px;
-	margin: auto;
+// Holds the file explorer (.wrapper) and the TODAY IS sidebar side by
+// side, instead of the sidebar floating over the page via position:absolute.
+// Wraps to a single column on narrow viewports automatically.
+.top-row {
+	display: flex;
+	align-items: flex-start;
+	justify-content: center;
+	gap: 20px;
+	flex-wrap: wrap;
 	margin-top: 20px;
+}
+.wrapper, .content {
+	width: min(94%, 900px);
+	margin: auto;
 	background: #bfb8bf;
 	border: 2px solid;
 	border-color: #fff8ff #000000 #000000 #fff8ff;
 	padding: 2px 0;
+	box-sizing: border-box;
+}
+.top-row .wrapper {
+	margin: 0;
+}
+// The main Study Blog window is the site's most important content, so it
+// gets noticeably more width than the file explorer / sidebar row above it.
+.content {
+	width: min(94%, 1100px);
+	margin-top: 20px;
 }
 .default_title, .post_title {
 	padding: 2px 4px 3px 4px;
@@ -97,8 +117,8 @@ ul.topbar {
 .post_list {
 	width: 70.2%;
 	margin: 0 auto;
-	min-height: 150px;
-	max-height: 150px;
+	min-height: 220px;
+	max-height: 220px;
 	overflow-y: scroll;
 	display: inline-block;
 
@@ -130,8 +150,8 @@ ul.topbar {
 .tag_list {
 	width: 28%;
 	margin: 0 auto;
-	min-height: 150px;
-	max-height: 150px;
+	min-height: 220px;
+	max-height: 220px;
 	overflow-y: scroll;
 	display: inline-block;
 
@@ -188,13 +208,12 @@ ul.topbar {
 }
 .post_content {
 	position: relative;
+	box-sizing: border-box;
 	width: 98.5%;
-	min-height: 600px;
-	max-height: 600px;
-	padding: 2px;
+	min-height: 300px;
+	padding: 10px 14px;
 	margin: 0 auto;
-	overflow-y: scroll;
-	overflow-x: scroll;
+	overflow-x: auto;
 
 	p {
 		line-height: 150%;
