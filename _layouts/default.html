@@ -13,6 +13,7 @@
 		<link rel="stylesheet" type="text/css" href="{{ site.baseurl }}/assets/css/001.css">
     {% endif %}
 	<link rel="stylesheet" href="{{ site.baseurl }}/assets/css/font-awesome.min.css">
+	<link rel="stylesheet" href="{{ site.baseurl }}/assets/css/code-runner.css">
 	<link rel="shortcut icon" href="{{ site.baseurl }}/assets/img/favicon.ico" type="image/x-icon">
 	<link rel="icon" href="{{ site.baseurl }}/assets/img/favicon.ico" type="image/x-icon">
 	<script src="{{ site.baseurl }}/assets/js/highlight.pack.js"></script>
@@ -92,8 +93,31 @@
 			</div>
 		</div>
     {% endif %}
+	<script>
+		// Must run BEFORE 002.js, which rewrites every <pre><code> block into
+		// a line-numbered table and would otherwise destroy the original
+		// source text that the code runner needs to execute.
+		(function () {
+			var RUNNABLE_CLASSES = ['language-javascript', 'language-js'];
+			var registry = [];
+			var codeEls = document.querySelectorAll('.post_content pre code');
+			for (var i = 0; i < codeEls.length; i++) {
+				var el = codeEls[i];
+				var runnable = false;
+				for (var j = 0; j < RUNNABLE_CLASSES.length; j++) {
+					if (el.classList.contains(RUNNABLE_CLASSES[j])) { runnable = true; break; }
+				}
+				if (!runnable) { continue; }
+				var id = 'code-runner-' + registry.length;
+				el.setAttribute('data-code-runner-id', id);
+				registry.push({ id: id, source: el.textContent });
+			}
+			window.__codeRunnerRegistry = registry;
+		})();
+	</script>
 	<script src="{{ site.baseurl }}/assets/js/001.js"></script>
 	<script src="{{ site.baseurl }}/assets/js/002.js"></script>
+	<script src="{{ site.baseurl }}/assets/js/code-runner.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js"></script>
 	<script>
 		(function () {
