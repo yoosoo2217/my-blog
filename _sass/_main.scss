@@ -4,22 +4,34 @@ body {
 	font-size: 13px;
 }
 
-// Holds the file explorer (.wrapper) and the TODAY IS sidebar side by side,
-// instead of the sidebar floating over the page via position:absolute.
-// Wraps to a single column on narrow viewports automatically.
+// Holds the left-hand column (file explorer + Study Blog, stacked) and the
+// TODAY IS sidebar side by side as an independent floating window, instead
+// of the sidebar floating over the page via position:absolute. Centers the
+// sidebar against the full height of the left column, and wraps to a single
+// column on narrow viewports automatically.
 .top-row {
 	display: flex;
-	align-items: flex-start;
+	align-items: center;
 	justify-content: center;
 	gap: 20px;
 	flex-wrap: wrap;
 	margin-top: 20px;
 }
-.wrapper, .content {
-	// Same width formula on both so the file explorer and the Study Blog
-	// window below it always share the same left/right edges.
+// The file explorer and the Study Blog window stack here so they always
+// share the same left/right edges (see the shared width rule below). Width
+// lives here (not on an "auto" flex-basis derived from its children) so the
+// browser has a concrete number to lay the flex row out with — leaving it
+// implicit made some widths mis-measure the row as too wide and wrap the
+// sidebar below the column instead of beside it.
+.main-column {
+	flex: 0 1 auto;
 	width: min(94%, 1100px);
-	margin: 20px auto;
+	min-width: 0;
+	box-sizing: border-box;
+}
+.wrapper, .content {
+	width: 100%;
+	margin: 20px 0;
 	background: #bfb8bf;
 	border: 2px solid;
 	border-color: #fff8ff #000000 #000000 #fff8ff;
