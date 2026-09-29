@@ -35,47 +35,78 @@
 			</span>
 		</div>
 
+		<div class="cy-mp-menubar">
+			<span class="cy-mp-menu-item"><u>F</u>ile</span>
+			<span class="cy-mp-menu-item"><u>V</u>iew</span>
+			<span class="cy-mp-menu-item"><u>P</u>layback</span>
+			<span class="cy-mp-menu-item"><u>H</u>elp</span>
+		</div>
+
 		<div class="cy-panel cy-mp-panel">
 			<audio id="cy-bgm" src="{{ site.baseurl }}/assets/audio/bgm.mp3" preload="none"></audio>
 
 			<div class="cy-mp-top">
 				<div class="cy-mp-art">💿</div>
-				<div class="cy-mp-vol">
+				<div class="cy-mp-display">
+					<span class="cy-mp-display-track">[01]</span>
+					<span class="cy-mp-display-time" id="cy-mp-current">00:00</span>
+				</div>
+			</div>
+
+			<div class="cy-mp-transport-row">
+				<button type="button" id="cy-play-btn" class="cy-mp-btn cy-mp-btn-transport" aria-label="재생">▶</button>
+				<button type="button" id="cy-pause-btn" class="cy-mp-btn cy-mp-btn-transport" aria-label="일시정지">Ⅱ</button>
+				<button type="button" id="cy-stop-btn" class="cy-mp-btn cy-mp-btn-transport" aria-label="정지">■</button>
+			</div>
+
+			<div class="cy-mp-transport-row">
+				<button type="button" id="cy-restart-btn" class="cy-mp-btn cy-mp-btn-transport" title="처음으로" aria-label="처음으로">|◀</button>
+				<button type="button" id="cy-rewind-btn" class="cy-mp-btn cy-mp-btn-transport" title="10초 뒤로" aria-label="10초 뒤로">◀◀</button>
+				<button type="button" id="cy-forward-btn" class="cy-mp-btn cy-mp-btn-transport" title="10초 앞으로" aria-label="10초 앞으로">▶▶</button>
+				<button type="button" id="cy-end-btn" class="cy-mp-btn cy-mp-btn-transport" title="트랙 끝으로 이동" aria-label="트랙 끝으로 이동">▶|</button>
+			</div>
+
+			<div class="cy-mp-utility-row">
+				<button type="button" id="cy-repeat-btn" class="cy-mp-btn cy-mp-btn-icon cy-mp-btn-toggle-on" aria-pressed="true" title="반복 재생 켜짐" aria-label="반복 재생">🔁</button>
+				<button type="button" id="cy-heart-btn" class="cy-mp-btn cy-mp-btn-icon" title="즐겨찾기 추가" aria-pressed="false" aria-label="즐겨찾기">♡</button>
+			</div>
+
+			<div class="cy-mp-info-row">
+				<div class="cy-mp-fields">
+					<div class="cy-mp-field-row">
+						<span class="cy-mp-field-label">Artist</span>
+						<span class="cy-mp-field-box">Aves</span>
+					</div>
+					<div class="cy-mp-field-row">
+						<span class="cy-mp-field-label">Title</span>
+						<span class="cy-mp-field-box">Roasted</span>
+					</div>
+					<div class="cy-mp-field-row">
+						<span class="cy-mp-field-label">Track</span>
+						<span class="cy-mp-field-box">Track 1</span>
+					</div>
+				</div>
+
+				<div class="cy-mp-vol-block">
 					<span class="cy-mp-vol-label">VOL</span>
-					<button type="button" id="cy-vol-up" class="cy-mp-btn cy-mp-vol-btn" title="볼륨 크게" aria-label="볼륨 크게">+</button>
-					<div class="cy-mp-vol-meter"><div class="cy-mp-vol-fill" id="cy-vol-fill"></div></div>
-					<button type="button" id="cy-vol-down" class="cy-mp-btn cy-mp-vol-btn" title="볼륨 작게" aria-label="볼륨 작게">−</button>
-				</div>
-			</div>
-
-			<div class="cy-mp-controls">
-				<button type="button" id="cy-restart-btn" class="cy-mp-btn" title="처음으로" aria-label="처음으로">|◀</button>
-				<button type="button" id="cy-rewind-btn" class="cy-mp-btn" title="10초 뒤로" aria-label="10초 뒤로">◀◀</button>
-				<button type="button" id="cy-play-btn" class="cy-mp-btn cy-mp-btn-play" aria-label="재생">▶</button>
-				<button type="button" id="cy-forward-btn" class="cy-mp-btn" title="10초 앞으로" aria-label="10초 앞으로">▶▶</button>
-			</div>
-
-			<div class="cy-mp-subrow">
-				<button type="button" id="cy-repeat-btn" class="cy-mp-btn cy-mp-btn-wide cy-mp-btn-toggle-on" aria-pressed="true" title="반복 재생 켜짐" aria-label="반복 재생">🔁 Repeat</button>
-				<button type="button" id="cy-heart-btn" class="cy-mp-btn cy-mp-btn-wide" title="즐겨찾기 추가" aria-pressed="false" aria-label="즐겨찾기">♡ Favorite</button>
-			</div>
-
-			<div class="cy-mp-track-info">
-				<div class="cy-mp-field">
-					<span class="cy-mp-label">Artist</span>
-					<span class="cy-mp-value">Aves</span>
-				</div>
-				<div class="cy-mp-field">
-					<span class="cy-mp-label">Title</span>
-					<span class="cy-mp-value">Roasted</span>
+					<div class="cy-mp-vol">
+						<div class="cy-mp-vol-buttons">
+							<button type="button" id="cy-vol-up" class="cy-mp-btn cy-mp-vol-btn" title="볼륨 크게" aria-label="볼륨 크게">+</button>
+							<button type="button" id="cy-vol-down" class="cy-mp-btn cy-mp-vol-btn" title="볼륨 작게" aria-label="볼륨 작게">−</button>
+						</div>
+						<div class="cy-mp-vol-meter"><div class="cy-mp-vol-fill" id="cy-vol-fill"></div></div>
+					</div>
 				</div>
 			</div>
 
 			<div class="cy-mp-seek-row">
-				<span class="cy-mp-time" id="cy-mp-current">0:00</span>
 				<input type="range" id="cy-mp-seek" class="cy-mp-seek" min="0" max="1000" value="0" step="1" aria-label="재생 위치">
-				<span class="cy-mp-time" id="cy-mp-duration">0:00</span>
 			</div>
+		</div>
+
+		<div class="cy-mp-status">
+			<span class="cy-mp-status-item">Track: 01</span>
+			<span class="cy-mp-status-item">Time: <span id="cy-mp-duration">00:00</span></span>
 		</div>
 	</div>
 
@@ -90,9 +121,12 @@
 (function () {
 	var audio = document.getElementById('cy-bgm');
 	var playBtn = document.getElementById('cy-play-btn');
+	var pauseBtn = document.getElementById('cy-pause-btn');
+	var stopBtn = document.getElementById('cy-stop-btn');
 	var restartBtn = document.getElementById('cy-restart-btn');
 	var rewindBtn = document.getElementById('cy-rewind-btn');
 	var forwardBtn = document.getElementById('cy-forward-btn');
+	var endBtn = document.getElementById('cy-end-btn');
 	var repeatBtn = document.getElementById('cy-repeat-btn');
 	var heartBtn = document.getElementById('cy-heart-btn');
 	var volUpBtn = document.getElementById('cy-vol-up');
@@ -109,7 +143,7 @@
 		if (!isFinite(sec) || sec < 0) { sec = 0; }
 		var m = Math.floor(sec / 60);
 		var s = Math.floor(sec % 60);
-		return m + ':' + (s < 10 ? '0' : '') + s;
+		return (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s;
 	}
 
 	// The native range input has no cross-browser "fill" for the played
@@ -136,21 +170,30 @@
 		}
 	}
 
+	// Play/Pause/Stop are separate buttons (matching a classic CD player's
+	// transport row) rather than one toggling button; setPlayingUI just
+	// highlights whichever of Play/Pause matches the audio element's real
+	// state, so it also catches autoplay-block failures and the element
+	// being controlled from elsewhere.
 	function setPlayingUI(isPlaying) {
-		playBtn.textContent = isPlaying ? '⏸' : '▶';
-		playBtn.setAttribute('aria-label', isPlaying ? '일시정지' : '재생');
+		if (playBtn) { playBtn.classList.toggle('cy-mp-btn-toggle-on', isPlaying); }
+		if (pauseBtn) { pauseBtn.classList.toggle('cy-mp-btn-toggle-on', !isPlaying); }
 	}
 
 	playBtn.addEventListener('click', function () {
-		if (audio.paused) {
-			audio.play().then(function () { setPlayingUI(true); }).catch(function () { setPlayingUI(false); });
-		} else {
-			audio.pause();
-		}
+		audio.play().catch(function () { setPlayingUI(false); });
 	});
+	if (pauseBtn) {
+		pauseBtn.addEventListener('click', function () { audio.pause(); });
+	}
+	if (stopBtn) {
+		stopBtn.addEventListener('click', function () {
+			audio.pause();
+			audio.currentTime = 0;
+			refreshSeekUI();
+		});
+	}
 
-	// Reflect the audio element's real state (also catches autoplay-block
-	// failures and the element being controlled from elsewhere).
 	audio.addEventListener('play', function () { setPlayingUI(true); });
 	audio.addEventListener('pause', function () { setPlayingUI(false); });
 	audio.addEventListener('ended', function () { setPlayingUI(false); });
@@ -174,6 +217,14 @@
 			audio.currentTime = audio.duration
 				? Math.min(audio.duration, audio.currentTime + 10)
 				: audio.currentTime + 10;
+			refreshSeekUI();
+		});
+	}
+	if (endBtn) {
+		// Symmetric to the restart ("|◀") button: jumps to the end of the
+		// track instead of the start. Same NaN-duration guard as forward.
+		endBtn.addEventListener('click', function () {
+			audio.currentTime = audio.duration ? Math.max(0, audio.duration - 0.25) : audio.currentTime;
 			refreshSeekUI();
 		});
 	}
@@ -385,6 +436,16 @@
 	display: flex;
 	gap: 2px;
 }
+.cy-mp-menubar {
+	display: flex;
+	gap: 10px;
+	padding: 3px 7px;
+	background: #bfb8bf;
+	border-bottom: 1px solid;
+	border-color: #7f787f #fff8ff #fff8ff #7f787f;
+	font-size: 11px;
+	color: #000000;
+}
 .cy-mp-panel {
 	display: flex;
 	flex-direction: column;
@@ -392,13 +453,12 @@
 }
 .cy-mp-top {
 	display: flex;
-	align-items: center;
-	justify-content: center;
-	gap: 14px;
+	align-items: stretch;
+	gap: 6px;
 }
 .cy-mp-art {
-	width: 64px;
-	height: 64px;
+	width: 42px;
+	height: 42px;
 	flex-shrink: 0;
 	background: #ffffff;
 	border-width: 2px;
@@ -407,27 +467,123 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	font-size: 30px;
+	font-size: 22px;
+	box-sizing: border-box;
 }
-.cy-mp-vol {
+/* The old CD player's LCD-style readout: black background, amber/green
+   monospace digits, matching the "[01] 00:00" reference display. */
+.cy-mp-display {
+	flex: 1 1 auto;
+	min-width: 0;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 4px;
+	padding: 0 6px;
+	background: #000000;
+	border-width: 2px;
+	border-style: ridge groove groove ridge;
+	border-color: #7f787f #fff8ff #fff8ff #7f787f;
+	font-family: "Courier New", Courier, monospace;
+	color: #b8c400;
+	box-sizing: border-box;
+}
+.cy-mp-display-track {
+	font-size: 10px;
+	opacity: 0.85;
+}
+.cy-mp-display-time {
+	font-size: 13px;
+	font-weight: bold;
+	letter-spacing: 1px;
+}
+.cy-mp-transport-row {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 4px;
+}
+.cy-mp-utility-row {
+	display: flex;
+	justify-content: flex-end;
+	gap: 4px;
+}
+.cy-mp-info-row {
+	display: flex;
+	align-items: flex-end;
+	gap: 8px;
+	padding-top: 2px;
+}
+.cy-mp-fields {
+	flex: 1 1 auto;
+	min-width: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 3px;
+}
+.cy-mp-field-row {
+	display: flex;
+	align-items: center;
+	gap: 5px;
+}
+.cy-mp-field-label {
+	flex-shrink: 0;
+	width: 30px;
+	font-size: 9px;
+	letter-spacing: 0.5px;
+	color: #555555;
+}
+.cy-mp-field-box {
+	flex: 1 1 auto;
+	min-width: 0;
+	background: #ffffff;
+	border-width: 2px;
+	border-style: ridge groove groove ridge;
+	border-color: #7f787f #fff8ff #fff8ff #7f787f;
+	padding: 1px 5px;
+	font-size: 11px;
+	font-weight: bold;
+	color: #000000;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	box-sizing: border-box;
+}
+.cy-mp-vol-block {
+	flex-shrink: 0;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	gap: 3px;
+	gap: 2px;
 }
 .cy-mp-vol-label {
 	font-size: 9px;
 	letter-spacing: 0.5px;
 	color: #555555;
 }
+.cy-mp-vol {
+	display: flex;
+	align-items: stretch;
+	gap: 3px;
+}
+.cy-mp-vol-buttons {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+}
 .cy-mp-vol-btn {
-	width: 20px;
-	padding: 2px 0;
-	text-align: center;
+	width: 22px;
+	height: 15px;
+	padding: 0;
+	font-size: 12px;
+	font-weight: bold;
+	line-height: 1;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 .cy-mp-vol-meter {
 	width: 10px;
-	height: 36px;
 	background: #ffffff;
 	border-width: 2px;
 	border-style: ridge groove groove ridge;
@@ -435,22 +591,12 @@
 	display: flex;
 	align-items: flex-end;
 	overflow: hidden;
+	box-sizing: border-box;
 }
 .cy-mp-vol-fill {
 	width: 100%;
 	height: 70%;
 	background: #1a9c4b;
-}
-.cy-mp-controls {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	gap: 5px;
-}
-.cy-mp-subrow {
-	display: flex;
-	justify-content: center;
-	gap: 6px;
 }
 /* Shared, deliberately understated bevel: a crisp 1px black outline plus a
    subtle inset highlight/shadow, instead of the thick alternating 2px
@@ -474,16 +620,20 @@
 	transform: translate(1px, 1px);
 	box-shadow: inset -1px -1px 0 #fdfdfd, inset 1px 1px 0 #8a8a8a;
 }
-.cy-mp-btn-play {
-	font-size: 13px;
-	font-weight: bold;
-	padding: 4px 14px;
-}
-.cy-mp-btn-wide {
-	flex: 1 1 auto;
-	font-size: 10px;
-	padding: 3px 6px;
+.cy-mp-btn-transport {
+	flex: 1 1 0;
+	font-size: 12px;
+	padding: 4px 0;
 	text-align: center;
+}
+.cy-mp-btn-icon {
+	width: 22px;
+	height: 20px;
+	padding: 0;
+	font-size: 11px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 .cy-mp-btn-toggle-on {
 	background: #cfe8d6;
@@ -492,42 +642,29 @@
 .cy-mp-btn-toggle-on:hover {
 	background: #d8ecdd;
 }
-.cy-mp-track-info {
+.cy-mp-status {
 	display: flex;
-	flex-direction: column;
-	gap: 4px;
-	padding-top: 2px;
+	border-top: 1px solid;
+	border-color: #7f787f #fff8ff #fff8ff #7f787f;
 }
-.cy-mp-field {
-	display: flex;
-	flex-direction: column;
-	gap: 1px;
-}
-.cy-mp-label {
-	font-size: 9px;
-	letter-spacing: 0.5px;
-	text-transform: uppercase;
-	color: #666666;
-}
-.cy-mp-value {
-	font-size: 12px;
-	font-weight: bold;
+.cy-mp-status-item {
+	flex: 1 1 50%;
+	padding: 2px 6px;
+	font-size: 10px;
 	color: #000000;
+	border-right: 1px solid #7f787f;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
+}
+.cy-mp-status-item:last-child {
+	border-right: none;
 }
 .cy-mp-seek-row {
 	display: flex;
 	align-items: center;
 	gap: 6px;
 	padding-top: 2px;
-}
-.cy-mp-time {
-	font-size: 10px;
-	color: #444444;
-	flex-shrink: 0;
-	line-height: 1;
 }
 .cy-mp-seek {
 	flex: 1 1 auto;
