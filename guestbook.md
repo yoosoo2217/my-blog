@@ -2,6 +2,7 @@
 layout: default
 title: 방명록
 permalink: /guestbook/
+show_profile: true
 ---
 
 얘도라 만나서 방가방가~~ 방명록 남겨줘! *^▽^*

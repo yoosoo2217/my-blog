@@ -2,6 +2,7 @@
 layout: default
 title: 검색
 permalink: /search/
+show_profile: true
 ---
 
 <div style="margin:0.5rem 0 1rem;">
