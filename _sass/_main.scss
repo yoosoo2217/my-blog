@@ -23,7 +23,7 @@ body {
 	margin-top: 0;
 }
 // On pages with the TODAY IS sidebar (index/me), reserve a gutter on the
-// right for it and use that reserved box — not the viewport — as the
+// left for it and use that reserved box — not the viewport — as the
 // positioning anchor. This keeps .wrapper and .content perfectly aligned
 // (they're just 100% of the same reserved box) regardless of the
 // sidebar's own height, and keeps the sidebar top-aligned with .wrapper
@@ -32,7 +32,7 @@ body {
 	position: relative;
 	width: min(94%, 1340px);
 	margin: 20px auto 0;
-	padding-right: 240px;
+	padding-left: 240px;
 	box-sizing: border-box;
 
 	.wrapper, .content {
@@ -42,14 +42,14 @@ body {
 	.cy-sidebar {
 		position: absolute;
 		top: 0;
-		right: 0;
+		left: 0;
 		width: 220px;
 	}
 }
 @media only screen and (max-width: 900px) {
 	.top-row.has-sidebar {
 		width: min(94%, 1100px);
-		padding-right: 0;
+		padding-left: 0;
 
 		.cy-sidebar {
 			position: static;
