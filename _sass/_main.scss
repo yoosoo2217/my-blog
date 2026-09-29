@@ -414,9 +414,11 @@ ul.topbar {
 	margin: 0 auto;
 	overflow-x: auto;
 	overflow-y: auto;
+	font-size: 14px;
+	line-height: 1.7;
 
 	p {
-		line-height: 150%;
+		line-height: 1.7;
 		margin-bottom: 15px;
 	}
 
@@ -435,6 +437,41 @@ ul.topbar {
 		font-size: 18px;
 		font-weight: 700;
 		margin: 25px 0 5px 0;
+	}
+
+	h3 {
+		font-size: 15px;
+		font-weight: 700;
+		margin: 20px 0 8px 0;
+	}
+
+	// Reset.scss sets `font: inherit` on code/pre, so without this they
+	// render as plain body text in the same sans-serif font as prose —
+	// indistinguishable from a paragraph. A monospace font plus a visibly
+	// different panel is what actually makes code read as code.
+	code {
+		font-family: Consolas, "Courier New", monospace;
+		font-size: 13px;
+		background: #f0f0f0;
+		border: 1px solid #c8c8c8;
+		padding: 1px 4px;
+	}
+
+	pre {
+		margin-bottom: 15px;
+		padding: 10px 12px;
+		background: #f4f4f4;
+		border-width: 2px;
+		border-style: ridge groove groove ridge;
+		border-color: #7f787f #fff8ff #fff8ff #7f787f;
+		overflow-x: auto;
+
+		code {
+			background: none;
+			border: 0;
+			padding: 0;
+			line-height: 1.5;
+		}
 	}
 
 	em {
@@ -490,13 +527,20 @@ ul.topbar {
 		}
 	}
 
-	table, th, td {
-		border: 1px solid #222222;
-		padding: 2px;
+	table {
+		border-collapse: collapse;
+		margin-bottom: 15px;
 	}
 
-	pre {
-		margin-bottom: 15px;
+	table, th, td {
+		border: 1px solid #222222;
+		padding: 6px 8px;
+	}
+
+	th {
+		background: #e4e0e4;
+		font-weight: 700;
+		text-align: left;
 	}
 }
 .hljs {
