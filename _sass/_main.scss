@@ -307,34 +307,6 @@ ul.topbar {
 		color: #000000;
 	}
 }
-// Site nav (About / 검색 / 방명록 / GitHub) styled as a real Windows 95 tab
-// strip — see topbar.html for the "active" class on the current page's tab.
-// Sits flush against the panel below (.tag_list/.post_list), so the active
-// tab visually fuses with it, same as a real Win95 tab control.
-.win95-tabs {
-	display: flex;
-	padding: 0 0 0 6px;
-	margin: 6px 0 0;
-	position: relative;
-	z-index: 1;
-
-	li {
-		@include win95-raised();
-		display: block;
-		margin: 0 -1px 0 0;
-		padding: 3px 10px 4px;
-		background: #bfb8bf;
-		color: #000000;
-		font-weight: normal;
-	}
-
-	li.active {
-		background: #fff8ff;
-		border-bottom-color: #fff8ff;
-		padding-bottom: 5px;
-		font-weight: bold;
-	}
-}
 .post_list, .tag_list, .post_content {
 	background: #fff8ff;
 	border-width: 2px;

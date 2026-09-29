@@ -1,6 +1,6 @@
 ---
 layout: me
-title: me
+title: About
 permalink: /me/
 show_profile: true
 ---
