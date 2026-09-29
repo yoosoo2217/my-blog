@@ -41,28 +41,34 @@
 			<div class="cy-mp-top">
 				<div class="cy-mp-art">💿</div>
 				<div class="cy-mp-vol">
-					<button type="button" id="cy-vol-up" class="cy-mp-btn" title="볼륨 크게" aria-label="볼륨 크게">+</button>
+					<span class="cy-mp-vol-label">VOL</span>
+					<button type="button" id="cy-vol-up" class="cy-mp-btn cy-mp-vol-btn" title="볼륨 크게" aria-label="볼륨 크게">+</button>
 					<div class="cy-mp-vol-meter"><div class="cy-mp-vol-fill" id="cy-vol-fill"></div></div>
-					<button type="button" id="cy-vol-down" class="cy-mp-btn" title="볼륨 작게" aria-label="볼륨 작게">−</button>
+					<button type="button" id="cy-vol-down" class="cy-mp-btn cy-mp-vol-btn" title="볼륨 작게" aria-label="볼륨 작게">−</button>
 				</div>
 			</div>
 
 			<div class="cy-mp-controls">
 				<button type="button" id="cy-restart-btn" class="cy-mp-btn" title="처음으로" aria-label="처음으로">|◀</button>
 				<button type="button" id="cy-rewind-btn" class="cy-mp-btn" title="10초 뒤로" aria-label="10초 뒤로">◀◀</button>
-				<button type="button" id="cy-play-btn" class="cy-mp-btn cy-mp-btn-big" aria-label="재생">▶</button>
+				<button type="button" id="cy-play-btn" class="cy-mp-btn cy-mp-btn-play" aria-label="재생">▶</button>
 				<button type="button" id="cy-forward-btn" class="cy-mp-btn" title="10초 앞으로" aria-label="10초 앞으로">▶▶</button>
-				<button type="button" id="cy-repeat-btn" class="cy-mp-btn cy-mp-btn-toggle-on" aria-pressed="true" title="반복 재생 켜짐" aria-label="반복 재생">🔁</button>
-				<button type="button" id="cy-heart-btn" class="cy-mp-btn" title="즐겨찾기 추가" aria-pressed="false" aria-label="즐겨찾기">♡</button>
 			</div>
 
-			<div class="cy-mp-field">
-				<span class="cy-mp-label">Artist:</span>
-				<span class="cy-mp-value">Aves</span>
+			<div class="cy-mp-subrow">
+				<button type="button" id="cy-repeat-btn" class="cy-mp-btn cy-mp-btn-wide cy-mp-btn-toggle-on" aria-pressed="true" title="반복 재생 켜짐" aria-label="반복 재생">🔁 Repeat</button>
+				<button type="button" id="cy-heart-btn" class="cy-mp-btn cy-mp-btn-wide" title="즐겨찾기 추가" aria-pressed="false" aria-label="즐겨찾기">♡ Favorite</button>
 			</div>
-			<div class="cy-mp-field">
-				<span class="cy-mp-label">Title:</span>
-				<span class="cy-mp-value">Roasted</span>
+
+			<div class="cy-mp-track-info">
+				<div class="cy-mp-field">
+					<span class="cy-mp-label">Artist</span>
+					<span class="cy-mp-value">Aves</span>
+				</div>
+				<div class="cy-mp-field">
+					<span class="cy-mp-label">Title</span>
+					<span class="cy-mp-value">Roasted</span>
+				</div>
 			</div>
 
 			<div class="cy-mp-seek-row">
@@ -106,6 +112,30 @@
 		return m + ':' + (s < 10 ? '0' : '') + s;
 	}
 
+	// The native range input has no cross-browser "fill" for the played
+	// portion, so we paint it ourselves as a two-color gradient that moves
+	// with the thumb.
+	function updateSeekFill(percent) {
+		if (!seek) { return; }
+		percent = Math.max(0, Math.min(100, percent));
+		seek.style.background =
+			'linear-gradient(to right, #1a9c4b 0%, #1a9c4b ' + percent + '%, #ffffff ' + percent + '%, #ffffff 100%)';
+	}
+
+	// Refreshes the seek bar/time display from audio.currentTime directly,
+	// instead of waiting on a 'timeupdate' event — that event isn't
+	// guaranteed to fire promptly right after a programmatic seek (e.g.
+	// clicking rewind/forward/restart while paused), so those buttons call
+	// this themselves rather than relying on it.
+	function refreshSeekUI() {
+		if (currentEl) { currentEl.textContent = formatTime(audio.currentTime); }
+		if (audio.duration) {
+			var pct = (audio.currentTime / audio.duration) * 1000;
+			if (seek) { seek.value = String(pct); }
+			updateSeekFill(pct / 10);
+		}
+	}
+
 	function setPlayingUI(isPlaying) {
 		playBtn.textContent = isPlaying ? '⏸' : '▶';
 		playBtn.setAttribute('aria-label', isPlaying ? '일시정지' : '재생');
@@ -127,17 +157,24 @@
 
 	// One track only, so these skip within it rather than between tracks.
 	if (restartBtn) {
-		restartBtn.addEventListener('click', function () { audio.currentTime = 0; });
+		restartBtn.addEventListener('click', function () { audio.currentTime = 0; refreshSeekUI(); });
 	}
 	if (rewindBtn) {
 		rewindBtn.addEventListener('click', function () {
 			audio.currentTime = Math.max(0, audio.currentTime - 10);
+			refreshSeekUI();
 		});
 	}
 	if (forwardBtn) {
 		forwardBtn.addEventListener('click', function () {
-			var end = audio.duration || audio.currentTime;
-			audio.currentTime = Math.min(end, audio.currentTime + 10);
+			// No artificial upper bound here: with preload="none", duration
+			// is NaN (falsy) until playback/loading actually starts, which
+			// used to clamp this to 0 and made the button do nothing before
+			// the track had ever been played once.
+			audio.currentTime = audio.duration
+				? Math.min(audio.duration, audio.currentTime + 10)
+				: audio.currentTime + 10;
+			refreshSeekUI();
 		});
 	}
 
@@ -191,18 +228,20 @@
 		});
 	}
 
+	updateSeekFill(0);
 	audio.addEventListener('loadedmetadata', function () {
 		if (durationEl) { durationEl.textContent = formatTime(audio.duration); }
+		refreshSeekUI();
 	});
 	audio.addEventListener('timeupdate', function () {
 		if (seeking) { return; }
-		if (currentEl) { currentEl.textContent = formatTime(audio.currentTime); }
-		if (seek && audio.duration) { seek.value = String((audio.currentTime / audio.duration) * 1000); }
+		refreshSeekUI();
 	});
 
 	if (seek) {
 		seek.addEventListener('input', function () {
 			seeking = true;
+			updateSeekFill(seek.value / 10);
 			if (currentEl && audio.duration) {
 				currentEl.textContent = formatTime((seek.value / 1000) * audio.duration);
 			}
@@ -354,12 +393,12 @@
 .cy-mp-top {
 	display: flex;
 	align-items: center;
-	justify-content: space-between;
-	gap: 8px;
+	justify-content: center;
+	gap: 14px;
 }
 .cy-mp-art {
-	width: 56px;
-	height: 56px;
+	width: 64px;
+	height: 64px;
 	flex-shrink: 0;
 	background: #ffffff;
 	border-width: 2px;
@@ -368,7 +407,7 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	font-size: 28px;
+	font-size: 30px;
 }
 .cy-mp-vol {
 	display: flex;
@@ -376,9 +415,19 @@
 	align-items: center;
 	gap: 3px;
 }
+.cy-mp-vol-label {
+	font-size: 9px;
+	letter-spacing: 0.5px;
+	color: #555555;
+}
+.cy-mp-vol-btn {
+	width: 20px;
+	padding: 2px 0;
+	text-align: center;
+}
 .cy-mp-vol-meter {
 	width: 10px;
-	height: 40px;
+	height: 36px;
 	background: #ffffff;
 	border-width: 2px;
 	border-style: ridge groove groove ridge;
@@ -394,43 +443,76 @@
 }
 .cy-mp-controls {
 	display: flex;
-	flex-wrap: wrap;
 	align-items: center;
 	justify-content: center;
-	gap: 4px;
+	gap: 5px;
 }
+.cy-mp-subrow {
+	display: flex;
+	justify-content: center;
+	gap: 6px;
+}
+/* Shared, deliberately understated bevel: a crisp 1px black outline plus a
+   subtle inset highlight/shadow, instead of the thick alternating 2px
+   border used elsewhere — that read as "puffed up" once several of these
+   sat next to each other in the same small panel. */
 .cy-mp-btn {
-	background: #cccccc;
+	background: #cfcfcf;
 	color: #000000;
-	border: 2px solid;
-	border-color: #fff8ff #000000 #000000 #fff8ff;
+	border: 1px solid #000000;
+	box-shadow: inset 1px 1px 0 #fdfdfd, inset -1px -1px 0 #8a8a8a;
 	font-family: inherit;
 	font-size: 11px;
-	padding: 2px 6px;
+	padding: 3px 7px;
 	cursor: pointer;
+	transition: transform 0.05s linear, background-color 0.1s linear;
+}
+.cy-mp-btn:hover {
+	background: #dadada;
 }
 .cy-mp-btn:active {
-	border-color: #000000 #fff8ff #fff8ff #000000;
+	transform: translate(1px, 1px);
+	box-shadow: inset -1px -1px 0 #fdfdfd, inset 1px 1px 0 #8a8a8a;
 }
-.cy-mp-btn-big {
-	font-size: 14px;
-	padding: 3px 12px;
+.cy-mp-btn-play {
+	font-size: 13px;
+	font-weight: bold;
+	padding: 4px 14px;
+}
+.cy-mp-btn-wide {
+	flex: 1 1 auto;
+	font-size: 10px;
+	padding: 3px 6px;
+	text-align: center;
 }
 .cy-mp-btn-toggle-on {
-	border-color: #000000 #fff8ff #fff8ff #000000;
-	background: #b7b0b7;
+	background: #cfe8d6;
+	box-shadow: inset 1px 1px 0 #eaf6ec, inset -1px -1px 0 #6fa17d;
+}
+.cy-mp-btn-toggle-on:hover {
+	background: #d8ecdd;
+}
+.cy-mp-track-info {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	padding-top: 2px;
 }
 .cy-mp-field {
 	display: flex;
-	gap: 4px;
-	font-size: 11px;
+	flex-direction: column;
+	gap: 1px;
 }
 .cy-mp-label {
-	color: #444444;
-	flex-shrink: 0;
+	font-size: 9px;
+	letter-spacing: 0.5px;
+	text-transform: uppercase;
+	color: #666666;
 }
 .cy-mp-value {
+	font-size: 12px;
 	font-weight: bold;
+	color: #000000;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
@@ -439,38 +521,44 @@
 	display: flex;
 	align-items: center;
 	gap: 6px;
+	padding-top: 2px;
 }
 .cy-mp-time {
 	font-size: 10px;
 	color: #444444;
 	flex-shrink: 0;
+	line-height: 1;
 }
 .cy-mp-seek {
 	flex: 1 1 auto;
 	-webkit-appearance: none;
 	appearance: none;
-	height: 12px;
+	height: 8px;
 	margin: 0;
+	border: 1px solid #000000;
 	background: #ffffff;
-	border-width: 2px;
-	border-style: ridge groove groove ridge;
-	border-color: #7f787f #fff8ff #fff8ff #7f787f;
+}
+.cy-mp-seek::-moz-range-track {
+	height: 8px;
+	background: transparent;
+	border: none;
 }
 .cy-mp-seek::-webkit-slider-thumb {
 	-webkit-appearance: none;
-	width: 10px;
-	height: 14px;
-	background: #cccccc;
-	border: 2px solid;
-	border-color: #fff8ff #000000 #000000 #fff8ff;
+	width: 8px;
+	height: 12px;
+	margin-top: -2px;
+	background: #cfcfcf;
+	border: 1px solid #000000;
+	box-shadow: inset 1px 1px 0 #fdfdfd, inset -1px -1px 0 #8a8a8a;
 	cursor: pointer;
 }
 .cy-mp-seek::-moz-range-thumb {
-	width: 10px;
-	height: 14px;
-	background: #cccccc;
-	border: 2px solid;
-	border-color: #fff8ff #000000 #000000 #fff8ff;
+	width: 8px;
+	height: 12px;
+	background: #cfcfcf;
+	border: 1px solid #000000;
+	box-shadow: inset 1px 1px 0 #fdfdfd, inset -1px -1px 0 #8a8a8a;
 	border-radius: 0;
 	cursor: pointer;
 }
