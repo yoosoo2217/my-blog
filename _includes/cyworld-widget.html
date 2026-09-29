@@ -12,12 +12,6 @@
 
 			<div class="cy-caption"><b>오늘의 TMI</b><br>오늘의 점심은 나물비빔밥이었다. 맛잇엇다.</div>
 
-			<div class="cy-music">
-				<audio id="cy-bgm" src="{{ site.baseurl }}/assets/audio/bgm.mp3" loop preload="none"></audio>
-				<button type="button" id="cy-music-btn" class="cy-music-btn">▶ BGM 재생</button>
-				<span id="cy-music-label" class="cy-music-label">Aves - Roasted</span>
-			</div>
-
 			<div class="cy-divider"></div>
 
 			<div class="cy-subrow">
@@ -31,6 +25,50 @@
 		<div class="cy-statusbar">Document: Done</div>
 	</div>
 
+	<div class="cy-music-window">
+		<div class="cy-titlebar">
+			<span class="cy-title-text">Cruise FM</span>
+			<span class="cy-mp-winbtns">
+				<span class="cy-title-btn">_</span>
+				<span class="cy-title-btn">▢</span>
+				<span class="cy-title-btn">X</span>
+			</span>
+		</div>
+
+		<div class="cy-panel cy-mp-panel">
+			<audio id="cy-bgm" src="{{ site.baseurl }}/assets/audio/bgm.mp3" preload="none"></audio>
+
+			<div class="cy-mp-top">
+				<div class="cy-mp-art">💿</div>
+				<div class="cy-mp-vol">
+					<button type="button" id="cy-vol-up" class="cy-mp-btn" title="볼륨 크게" aria-label="볼륨 크게">+</button>
+					<div class="cy-mp-vol-meter"><div class="cy-mp-vol-fill" id="cy-vol-fill"></div></div>
+					<button type="button" id="cy-vol-down" class="cy-mp-btn" title="볼륨 작게" aria-label="볼륨 작게">−</button>
+				</div>
+			</div>
+
+			<div class="cy-mp-controls">
+				<button type="button" id="cy-play-btn" class="cy-mp-btn cy-mp-btn-big" aria-label="재생">▶</button>
+				<button type="button" id="cy-repeat-btn" class="cy-mp-btn cy-mp-btn-toggle-on" aria-pressed="true" title="반복 재생 켜짐" aria-label="반복 재생">🔁</button>
+			</div>
+
+			<div class="cy-mp-field">
+				<span class="cy-mp-label">Artist:</span>
+				<span class="cy-mp-value">Aves</span>
+			</div>
+			<div class="cy-mp-field">
+				<span class="cy-mp-label">Title:</span>
+				<span class="cy-mp-value">Roasted</span>
+			</div>
+
+			<div class="cy-mp-seek-row">
+				<span class="cy-mp-time" id="cy-mp-current">0:00</span>
+				<input type="range" id="cy-mp-seek" class="cy-mp-seek" min="0" max="1000" value="0" step="1" aria-label="재생 위치">
+				<span class="cy-mp-time" id="cy-mp-duration">0:00</span>
+			</div>
+		</div>
+	</div>
+
 	<a class="cy-guestbook-btn" href="{{ site.baseurl }}/guestbook/">
 		<span class="cy-gb-icon">📖</span>
 		<span class="cy-gb-text">방명록 남기기</span>
@@ -41,29 +79,98 @@
 <script>
 (function () {
 	var audio = document.getElementById('cy-bgm');
-	var btn = document.getElementById('cy-music-btn');
-	if (!audio || !btn) return;
+	var playBtn = document.getElementById('cy-play-btn');
+	var repeatBtn = document.getElementById('cy-repeat-btn');
+	var volUpBtn = document.getElementById('cy-vol-up');
+	var volDownBtn = document.getElementById('cy-vol-down');
+	var volFill = document.getElementById('cy-vol-fill');
+	var seek = document.getElementById('cy-mp-seek');
+	var currentEl = document.getElementById('cy-mp-current');
+	var durationEl = document.getElementById('cy-mp-duration');
+	if (!audio || !playBtn) { return; }
 
-	function setPlayingUI(isPlaying) {
-		btn.textContent = isPlaying ? '⏸ BGM 정지' : '▶ BGM 재생';
+	var seeking = false;
+
+	function formatTime(sec) {
+		if (!isFinite(sec) || sec < 0) { sec = 0; }
+		var m = Math.floor(sec / 60);
+		var s = Math.floor(sec % 60);
+		return m + ':' + (s < 10 ? '0' : '') + s;
 	}
 
-	btn.addEventListener('click', function () {
+	function setPlayingUI(isPlaying) {
+		playBtn.textContent = isPlaying ? '⏸' : '▶';
+		playBtn.setAttribute('aria-label', isPlaying ? '일시정지' : '재생');
+	}
+
+	playBtn.addEventListener('click', function () {
 		if (audio.paused) {
-			audio.play().then(function () {
-				setPlayingUI(true);
-			}).catch(function () {
-				setPlayingUI(false);
-			});
+			audio.play().then(function () { setPlayingUI(true); }).catch(function () { setPlayingUI(false); });
 		} else {
 			audio.pause();
-			setPlayingUI(false);
 		}
 	});
 
-	audio.addEventListener('ended', function () {
-		setPlayingUI(false);
+	// Reflect the audio element's real state (also catches autoplay-block
+	// failures and the element being controlled from elsewhere).
+	audio.addEventListener('play', function () { setPlayingUI(true); });
+	audio.addEventListener('pause', function () { setPlayingUI(false); });
+	audio.addEventListener('ended', function () { setPlayingUI(false); });
+
+	// The old widget always looped; keep that as the default; the button
+	// just makes it an actual, visible, toggleable setting instead of a
+	// hardcoded one.
+	audio.loop = true;
+	if (repeatBtn) {
+		repeatBtn.addEventListener('click', function () {
+			audio.loop = !audio.loop;
+			repeatBtn.classList.toggle('cy-mp-btn-toggle-on', audio.loop);
+			repeatBtn.setAttribute('aria-pressed', String(audio.loop));
+			repeatBtn.title = audio.loop ? '반복 재생 켜짐' : '반복 재생 꺼짐';
+		});
+	}
+
+	function updateVolumeUI() {
+		if (volFill) { volFill.style.height = Math.round(audio.volume * 100) + '%'; }
+	}
+	audio.volume = 0.7;
+	updateVolumeUI();
+	if (volUpBtn) {
+		volUpBtn.addEventListener('click', function () {
+			audio.volume = Math.min(1, Math.round((audio.volume + 0.1) * 10) / 10);
+			updateVolumeUI();
+		});
+	}
+	if (volDownBtn) {
+		volDownBtn.addEventListener('click', function () {
+			audio.volume = Math.max(0, Math.round((audio.volume - 0.1) * 10) / 10);
+			updateVolumeUI();
+		});
+	}
+
+	audio.addEventListener('loadedmetadata', function () {
+		if (durationEl) { durationEl.textContent = formatTime(audio.duration); }
 	});
+	audio.addEventListener('timeupdate', function () {
+		if (seeking) { return; }
+		if (currentEl) { currentEl.textContent = formatTime(audio.currentTime); }
+		if (seek && audio.duration) { seek.value = String((audio.currentTime / audio.duration) * 1000); }
+	});
+
+	if (seek) {
+		seek.addEventListener('input', function () {
+			seeking = true;
+			if (currentEl && audio.duration) {
+				currentEl.textContent = formatTime((seek.value / 1000) * audio.duration);
+			}
+		});
+		seek.addEventListener('change', function () {
+			if (audio.duration) {
+				audio.currentTime = (seek.value / 1000) * audio.duration;
+			}
+			seeking = false;
+		});
+	}
 })();
 </script>
 
@@ -181,29 +288,147 @@
 	color: #000000;
 	padding: 0 4px 8px;
 }
-.cy-music {
+.cy-music-window {
+	width: 220px;
+	margin-top: 10px;
+	background: #bfb8bf;
+	border: 2px solid;
+	border-color: #fff8ff #000000 #000000 #fff8ff;
+	font-family: Tahoma, "MS Sans Serif", Geneva, Verdana, sans-serif;
+	font-size: 12px;
+	color: #000000;
+	box-sizing: border-box;
+}
+.cy-mp-winbtns {
+	display: flex;
+	gap: 2px;
+}
+.cy-mp-panel {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+}
+.cy-mp-top {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 8px;
+}
+.cy-mp-art {
+	width: 56px;
+	height: 56px;
+	flex-shrink: 0;
+	background: #ffffff;
+	border-width: 2px;
+	border-style: ridge groove groove ridge;
+	border-color: #7f787f #fff8ff #fff8ff #7f787f;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	gap: 6px;
-	padding-bottom: 8px;
+	font-size: 28px;
 }
-.cy-music-btn {
+.cy-mp-vol {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 3px;
+}
+.cy-mp-vol-meter {
+	width: 10px;
+	height: 40px;
+	background: #ffffff;
+	border-width: 2px;
+	border-style: ridge groove groove ridge;
+	border-color: #7f787f #fff8ff #fff8ff #7f787f;
+	display: flex;
+	align-items: flex-end;
+	overflow: hidden;
+}
+.cy-mp-vol-fill {
+	width: 100%;
+	height: 70%;
+	background: #1a9c4b;
+}
+.cy-mp-controls {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 8px;
+}
+.cy-mp-btn {
 	background: #cccccc;
 	color: #000000;
 	border: 2px solid;
 	border-color: #fff8ff #000000 #000000 #fff8ff;
-	font-family: Tahoma, "MS Sans Serif", Geneva, Verdana, sans-serif;
-	font-size: 11px;
-	padding: 2px 6px;
+	font-family: inherit;
+	font-size: 12px;
+	padding: 3px 8px;
 	cursor: pointer;
 }
-.cy-music-btn:active {
+.cy-mp-btn:active {
 	border-color: #000000 #fff8ff #fff8ff #000000;
 }
-.cy-music-label {
+.cy-mp-btn-big {
+	font-size: 15px;
+	padding: 4px 16px;
+}
+.cy-mp-btn-toggle-on {
+	border-color: #000000 #fff8ff #fff8ff #000000;
+	background: #b7b0b7;
+}
+.cy-mp-field {
+	display: flex;
+	gap: 4px;
+	font-size: 11px;
+}
+.cy-mp-label {
+	color: #444444;
+	flex-shrink: 0;
+}
+.cy-mp-value {
+	font-weight: bold;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.cy-mp-seek-row {
+	display: flex;
+	align-items: center;
+	gap: 6px;
+}
+.cy-mp-time {
 	font-size: 10px;
 	color: #444444;
+	flex-shrink: 0;
+}
+.cy-mp-seek {
+	flex: 1 1 auto;
+	-webkit-appearance: none;
+	appearance: none;
+	height: 12px;
+	margin: 0;
+	background: #ffffff;
+	border-width: 2px;
+	border-style: ridge groove groove ridge;
+	border-color: #7f787f #fff8ff #fff8ff #7f787f;
+}
+.cy-mp-seek::-webkit-slider-thumb {
+	-webkit-appearance: none;
+	width: 10px;
+	height: 14px;
+	background: #cccccc;
+	border: 2px solid;
+	border-color: #fff8ff #000000 #000000 #fff8ff;
+	cursor: pointer;
+}
+.cy-mp-seek::-moz-range-thumb {
+	width: 10px;
+	height: 14px;
+	background: #cccccc;
+	border: 2px solid;
+	border-color: #fff8ff #000000 #000000 #fff8ff;
+	border-radius: 0;
+	cursor: pointer;
 }
 .cy-divider {
 	height: 1px;
@@ -231,7 +456,7 @@
 }
 
 @media (max-width: 640px) {
-	.cy-window, .cy-guestbook-btn { width: auto; }
+	.cy-window, .cy-guestbook-btn, .cy-music-window { width: auto; }
 	.cy-photo-frame { width: 180px; height: 216px; }
 	.cy-avatar { width: 160px; height: 192px; }
 }
