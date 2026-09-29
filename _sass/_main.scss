@@ -4,34 +4,15 @@ body {
 	font-size: 13px;
 }
 
-// Holds the left-hand column (file explorer + Study Blog, stacked) and the
-// TODAY IS sidebar side by side as an independent floating window, instead
-// of the sidebar floating over the page via position:absolute. Centers the
-// sidebar against the full height of the left column, and wraps to a single
-// column on narrow viewports automatically.
 .top-row {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	gap: 20px;
-	flex-wrap: wrap;
 	margin-top: 20px;
 }
-// The file explorer and the Study Blog window stack here so they always
-// share the same left/right edges (see the shared width rule below). Width
-// lives here (not on an "auto" flex-basis derived from its children) so the
-// browser has a concrete number to lay the flex row out with — leaving it
-// implicit made some widths mis-measure the row as too wide and wrap the
-// sidebar below the column instead of beside it.
-.main-column {
-	flex: 0 1 auto;
-	width: min(94%, 1100px);
-	min-width: 0;
-	box-sizing: border-box;
-}
+// The file explorer (.wrapper) and Study Blog (.content) windows just stack
+// normally here, so they always share the exact same width and left/right
+// edges — no matter what the TODAY IS sidebar below is doing.
 .wrapper, .content {
-	width: 100%;
-	margin: 20px 0;
+	width: min(94%, 1100px);
+	margin: 20px auto;
 	background: #bfb8bf;
 	border: 2px solid;
 	border-color: #fff8ff #000000 #000000 #fff8ff;
@@ -40,6 +21,42 @@ body {
 }
 .wrapper {
 	margin-top: 0;
+}
+// On pages with the TODAY IS sidebar (index/me), reserve a gutter on the
+// right for it and use that reserved box — not the viewport — as the
+// positioning anchor. This keeps .wrapper and .content perfectly aligned
+// (they're just 100% of the same reserved box) regardless of the
+// sidebar's own height, and keeps the sidebar top-aligned with .wrapper
+// without it ever being able to push .content down.
+.top-row.has-sidebar {
+	position: relative;
+	width: min(94%, 1340px);
+	margin: 20px auto 0;
+	padding-right: 240px;
+	box-sizing: border-box;
+
+	.wrapper, .content {
+		width: 100%;
+	}
+
+	.cy-sidebar {
+		position: absolute;
+		top: 0;
+		right: 0;
+		width: 220px;
+	}
+}
+@media only screen and (max-width: 900px) {
+	.top-row.has-sidebar {
+		width: min(94%, 1100px);
+		padding-right: 0;
+
+		.cy-sidebar {
+			position: static;
+			width: 220px;
+			margin: 20px auto 0;
+		}
+	}
 }
 .default_title, .post_title {
 	padding: 2px 4px 3px 4px;
