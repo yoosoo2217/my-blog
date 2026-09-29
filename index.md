@@ -85,29 +85,25 @@ show_profile: true
  
 <h2 style="margin-left:10px;">- RECENT STUDY LOG</h2>
 
-<div style="margin: 2rem 10px;">
-
-  {% for post in site.posts limit:6 %}
-
-  <div style="
-    padding:1rem 10px;
-    border-bottom:1px solid #eee;
-  ">
-
-    <span style="font-size:0.85rem; color:#777;">
-      {{ post.date | date: "%Y.%m.%d" }}
-    </span>
-
-    <br>
-
-    <a href="{{ site.baseurl }}{{ post.url }}">
-      <strong>{{ post.title }}</strong>
-    </a>
-
-  </div>
-
-  {% endfor %}
-
+<div class="win95-explorer-list">
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Type</th>
+        <th>Modified</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for post in site.posts limit:6 %}
+      <tr onclick="location.href='{{ site.baseurl }}{{ post.url }}'">
+        <td><a href="{{ site.baseurl }}{{ post.url }}">📄 {{ post.title }}</a></td>
+        <td>Document</td>
+        <td>{{ post.date | date: "%m/%d" }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
 </div>
 
 

@@ -1,0 +1,69 @@
+<div class="win95-taskbar">
+	<button type="button" class="win95-start-btn" id="win95-start-btn" aria-haspopup="true" aria-expanded="false">
+		<span class="win95-start-icon">🪟</span> 시작
+	</button>
+
+	<div class="win95-taskbar-window" title="{{ page.title | default: site.name }}">
+		<span class="win95-taskbar-window-icon">📄</span>
+		{{ page.title | default: site.name }}
+	</div>
+
+	<div class="win95-clock" id="win95-clock">--:--</div>
+
+	<div class="win95-start-menu" id="win95-start-menu" hidden>
+		<ul>
+			<li><a href="{{ site.baseurl }}/">📚 학습 노트</a></li>
+			<li><a href="{{ site.baseurl }}/me/">🙋 About</a></li>
+			<li><a href="{{ site.baseurl }}/search/">🔍 검색</a></li>
+			<li><a href="{{ site.baseurl }}/guestbook/">📖 방명록</a></li>
+			{% if site.github and site.github != 'default' %}
+			<li><a href="https://github.com/{{ site.github }}" target="_blank">🐙 GitHub</a></li>
+			{% endif %}
+		</ul>
+	</div>
+</div>
+
+<script>
+(function () {
+	var startBtn = document.getElementById('win95-start-btn');
+	var startMenu = document.getElementById('win95-start-menu');
+	var clockEl = document.getElementById('win95-clock');
+
+	function closeMenu() {
+		startMenu.hidden = true;
+		startBtn.setAttribute('aria-expanded', 'false');
+		startBtn.classList.remove('win95-start-btn-pressed');
+	}
+
+	if (startBtn && startMenu) {
+		startBtn.addEventListener('click', function (e) {
+			e.stopPropagation();
+			var willOpen = startMenu.hidden;
+			startMenu.hidden = !willOpen;
+			startBtn.setAttribute('aria-expanded', String(willOpen));
+			startBtn.classList.toggle('win95-start-btn-pressed', willOpen);
+		});
+
+		document.addEventListener('click', function (e) {
+			if (!startMenu.hidden && !startMenu.contains(e.target) && e.target !== startBtn) {
+				closeMenu();
+			}
+		});
+
+		document.addEventListener('keydown', function (e) {
+			if (e.key === 'Escape') { closeMenu(); }
+		});
+	}
+
+	function updateClock() {
+		if (!clockEl) { return; }
+		var now = new Date();
+		var h = String(now.getHours()).padStart(2, '0');
+		var m = String(now.getMinutes()).padStart(2, '0');
+		clockEl.textContent = h + ':' + m;
+	}
+
+	updateClock();
+	setInterval(updateClock, 1000 * 15);
+})();
+</script>
