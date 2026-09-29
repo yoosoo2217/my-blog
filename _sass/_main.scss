@@ -4,6 +4,34 @@ body {
 	font-size: 13px;
 }
 
+// --- Shared Windows 95 bevel tokens ------------------------------------
+// The same two border-color pairs already show up all over this file
+// (raised buttons/panels, sunken/etched panels) — named here so new UI
+// (tabs, group boxes) can reuse them instead of re-deriving the colors.
+$win95-highlight: #fff8ff;
+$win95-shadow: #7f787f;
+$win95-darkshadow: #000000;
+
+@mixin win95-raised($size: 2px) {
+	border-style: solid;
+	border-width: $size;
+	border-color: $win95-highlight $win95-darkshadow $win95-darkshadow $win95-highlight;
+}
+@mixin win95-raised-pressed($size: 2px) {
+	border-style: solid;
+	border-width: $size;
+	border-color: $win95-darkshadow $win95-highlight $win95-highlight $win95-darkshadow;
+}
+@mixin win95-etched() {
+	border-width: 2px;
+	border-style: ridge groove groove ridge;
+	border-color: $win95-shadow $win95-highlight $win95-highlight $win95-shadow;
+}
+
+button, input, select, textarea {
+	border-radius: 0;
+}
+
 .top-row {
 	margin-top: 20px;
 }
@@ -131,6 +159,34 @@ ul.topbar {
 	a {
 		text-decoration: none;
 		color: #000000;
+	}
+}
+// Site nav (About / 검색 / 방명록 / GitHub) styled as a real Windows 95 tab
+// strip — see topbar.html for the "active" class on the current page's tab.
+// Sits flush against the panel below (.tag_list/.post_list), so the active
+// tab visually fuses with it, same as a real Win95 tab control.
+.win95-tabs {
+	display: flex;
+	padding: 0 0 0 6px;
+	margin: 6px 0 0;
+	position: relative;
+	z-index: 1;
+
+	li {
+		@include win95-raised();
+		display: block;
+		margin: 0 -1px 0 0;
+		padding: 3px 10px 4px;
+		background: #bfb8bf;
+		color: #000000;
+		font-weight: normal;
+	}
+
+	li.active {
+		background: #fff8ff;
+		border-bottom-color: #fff8ff;
+		padding-bottom: 5px;
+		font-weight: bold;
 	}
 }
 .post_list, .tag_list, .post_content {

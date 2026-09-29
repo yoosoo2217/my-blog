@@ -139,11 +139,17 @@ show_profile: true
     <button
       onclick="changeMonth(-1)"
       style="
-        border:0;
-        background:none;
+        border-width:2px;
+        border-style:solid;
+        border-color:#fff8ff #000000 #000000 #fff8ff;
+        background:#bfb8bf;
         cursor:pointer;
-        font-size:1.2rem;
+        font-size:1rem;
+        padding:2px 10px;
+        font-family:Tahoma, 'MS Sans Serif', Geneva, Verdana, sans-serif;
       "
+      onmousedown="this.style.borderColor='#000000 #fff8ff #fff8ff #000000'"
+      onmouseup="this.style.borderColor='#fff8ff #000000 #000000 #fff8ff'"
     >
       ←
     </button>
@@ -153,11 +159,17 @@ show_profile: true
     <button
       onclick="changeMonth(1)"
       style="
-        border:0;
-        background:none;
+        border-width:2px;
+        border-style:solid;
+        border-color:#fff8ff #000000 #000000 #fff8ff;
+        background:#bfb8bf;
         cursor:pointer;
-        font-size:1.2rem;
+        font-size:1rem;
+        padding:2px 10px;
+        font-family:Tahoma, 'MS Sans Serif', Geneva, Verdana, sans-serif;
       "
+      onmousedown="this.style.borderColor='#000000 #fff8ff #fff8ff #000000'"
+      onmouseup="this.style.borderColor='#fff8ff #000000 #000000 #fff8ff'"
     >
       →
     </button>
