@@ -48,8 +48,12 @@
 			</div>
 
 			<div class="cy-mp-controls">
+				<button type="button" id="cy-restart-btn" class="cy-mp-btn" title="처음으로" aria-label="처음으로">|◀</button>
+				<button type="button" id="cy-rewind-btn" class="cy-mp-btn" title="10초 뒤로" aria-label="10초 뒤로">◀◀</button>
 				<button type="button" id="cy-play-btn" class="cy-mp-btn cy-mp-btn-big" aria-label="재생">▶</button>
+				<button type="button" id="cy-forward-btn" class="cy-mp-btn" title="10초 앞으로" aria-label="10초 앞으로">▶▶</button>
 				<button type="button" id="cy-repeat-btn" class="cy-mp-btn cy-mp-btn-toggle-on" aria-pressed="true" title="반복 재생 켜짐" aria-label="반복 재생">🔁</button>
+				<button type="button" id="cy-heart-btn" class="cy-mp-btn" title="즐겨찾기 추가" aria-pressed="false" aria-label="즐겨찾기">♡</button>
 			</div>
 
 			<div class="cy-mp-field">
@@ -80,7 +84,11 @@
 (function () {
 	var audio = document.getElementById('cy-bgm');
 	var playBtn = document.getElementById('cy-play-btn');
+	var restartBtn = document.getElementById('cy-restart-btn');
+	var rewindBtn = document.getElementById('cy-rewind-btn');
+	var forwardBtn = document.getElementById('cy-forward-btn');
 	var repeatBtn = document.getElementById('cy-repeat-btn');
+	var heartBtn = document.getElementById('cy-heart-btn');
 	var volUpBtn = document.getElementById('cy-vol-up');
 	var volDownBtn = document.getElementById('cy-vol-down');
 	var volFill = document.getElementById('cy-vol-fill');
@@ -116,6 +124,41 @@
 	audio.addEventListener('play', function () { setPlayingUI(true); });
 	audio.addEventListener('pause', function () { setPlayingUI(false); });
 	audio.addEventListener('ended', function () { setPlayingUI(false); });
+
+	// One track only, so these skip within it rather than between tracks.
+	if (restartBtn) {
+		restartBtn.addEventListener('click', function () { audio.currentTime = 0; });
+	}
+	if (rewindBtn) {
+		rewindBtn.addEventListener('click', function () {
+			audio.currentTime = Math.max(0, audio.currentTime - 10);
+		});
+	}
+	if (forwardBtn) {
+		forwardBtn.addEventListener('click', function () {
+			var end = audio.duration || audio.currentTime;
+			audio.currentTime = Math.min(end, audio.currentTime + 10);
+		});
+	}
+
+	// Favorite toggle, persisted per-visitor so it survives a reload.
+	if (heartBtn) {
+		var HEART_KEY = 'cy-bgm-favorite';
+		var setHeartUI = function (isFav) {
+			heartBtn.textContent = isFav ? '♥' : '♡';
+			heartBtn.setAttribute('aria-pressed', String(isFav));
+			heartBtn.classList.toggle('cy-mp-btn-toggle-on', isFav);
+			heartBtn.title = isFav ? '즐겨찾기 해제' : '즐겨찾기 추가';
+		};
+		var initialFav = false;
+		try { initialFav = localStorage.getItem(HEART_KEY) === '1'; } catch (e) { /* private mode etc. */ }
+		setHeartUI(initialFav);
+		heartBtn.addEventListener('click', function () {
+			var next = heartBtn.getAttribute('aria-pressed') !== 'true';
+			setHeartUI(next);
+			try { localStorage.setItem(HEART_KEY, next ? '1' : '0'); } catch (e) { /* private mode etc. */ }
+		});
+	}
 
 	// The old widget always looped; keep that as the default; the button
 	// just makes it an actual, visible, toggleable setting instead of a
@@ -351,9 +394,10 @@
 }
 .cy-mp-controls {
 	display: flex;
+	flex-wrap: wrap;
 	align-items: center;
 	justify-content: center;
-	gap: 8px;
+	gap: 4px;
 }
 .cy-mp-btn {
 	background: #cccccc;
@@ -361,16 +405,16 @@
 	border: 2px solid;
 	border-color: #fff8ff #000000 #000000 #fff8ff;
 	font-family: inherit;
-	font-size: 12px;
-	padding: 3px 8px;
+	font-size: 11px;
+	padding: 2px 6px;
 	cursor: pointer;
 }
 .cy-mp-btn:active {
 	border-color: #000000 #fff8ff #fff8ff #000000;
 }
 .cy-mp-btn-big {
-	font-size: 15px;
-	padding: 4px 16px;
+	font-size: 14px;
+	padding: 3px 12px;
 }
 .cy-mp-btn-toggle-on {
 	border-color: #000000 #fff8ff #fff8ff #000000;
