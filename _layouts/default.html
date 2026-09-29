@@ -21,6 +21,7 @@
 </head>
 <body>
 	<div class="top-row">
+	<div class="main-column">
 	<div class="wrapper">
 		<div class="default_title">
 			<img src="{{ site.baseurl }}/assets/img/mycomputer.png" />
@@ -71,10 +72,6 @@
 			<div class="right">&nbsp;</div>
 		</div>
 	</div>
-		{% if page.show_profile %}
-			{% include cyworld-widget.html %}
-		{% endif %}
-	</div>
 	{% if page.title %}
         <div class="content">
 			<div class="post_title">
@@ -95,6 +92,11 @@
 			</div>
 		</div>
     {% endif %}
+	</div>
+		{% if page.show_profile %}
+			{% include cyworld-widget.html %}
+		{% endif %}
+	</div>
 	<script>
 		// Must run BEFORE 002.js, which rewrites every <pre><code> block into
 		// a line-numbered table and would otherwise destroy the original
