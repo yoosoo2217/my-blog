@@ -1,6 +1,6 @@
 ---
 title: "commit, push, PR 정리"
-date: 2026-08-31
+date: 2026-08-31 10:00:00
 tags:
   - Git
   - GitHub

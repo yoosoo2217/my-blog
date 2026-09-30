@@ -1,6 +1,6 @@
 ---
 title: "반복문(for, while, do-while) 정리"
-date: 2026-09-29
+date: 2026-09-29 09:30:00
 tags:
   - Java
 ---

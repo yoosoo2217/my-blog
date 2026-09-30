@@ -1,6 +1,6 @@
 ---
 title: "리눅스 셸(Shell) 기초 정리"
-date: 2026-08-28
+date: 2026-08-28 09:00:00
 tags:
   - Git
   - Linux

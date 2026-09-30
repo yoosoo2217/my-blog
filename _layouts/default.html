@@ -89,6 +89,51 @@
 					{% include donate.html %}
 				{% endif %}
 			</div>
+			{% if page.date %}
+			<div class="post_nav">
+				{% comment %}
+				page.previous resolves to the OLDER post and page.next to the
+				NEWER one (confirmed with a real `jekyll build`, since this is
+				easy to get backwards from the names alone). Mapped here so
+				"이전 글" is always the older post and "다음 글" the newer one,
+				matching how every post's own intro text uses those terms.
+				{% endcomment %}
+				{% if page.previous %}
+				<a class="post_nav-btn post_nav-prev" href="{{ site.baseurl }}{{ page.previous.url }}">
+					<span class="post_nav-arrow">◀</span>
+					<span class="post_nav-text">
+						<span class="post_nav-label">이전 글</span>
+						<span class="post_nav-title">{{ page.previous.title }}</span>
+					</span>
+				</a>
+				{% else %}
+				<span class="post_nav-btn post_nav-disabled">
+					<span class="post_nav-arrow">◀</span>
+					<span class="post_nav-text">
+						<span class="post_nav-label">이전 글</span>
+						<span class="post_nav-title">없음</span>
+					</span>
+				</span>
+				{% endif %}
+				{% if page.next %}
+				<a class="post_nav-btn post_nav-next" href="{{ site.baseurl }}{{ page.next.url }}">
+					<span class="post_nav-text">
+						<span class="post_nav-label">다음 글</span>
+						<span class="post_nav-title">{{ page.next.title }}</span>
+					</span>
+					<span class="post_nav-arrow">▶</span>
+				</a>
+				{% else %}
+				<span class="post_nav-btn post_nav-disabled post_nav-next">
+					<span class="post_nav-text">
+						<span class="post_nav-label">다음 글</span>
+						<span class="post_nav-title">없음</span>
+					</span>
+					<span class="post_nav-arrow">▶</span>
+				</span>
+				{% endif %}
+			</div>
+			{% endif %}
 		</div>
     {% endif %}
 	{% if page.show_profile %}
