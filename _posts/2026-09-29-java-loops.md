@@ -1,5 +1,5 @@
 ---
-title: "Java 기초 - 반복문(for, while, do-while) 정리"
+title: "반복문(for, while, do-while) 정리"
 date: 2026-09-29
 tags:
   - Java

@@ -1,5 +1,5 @@
 ---
-title: "Java 기초 - JDK, JRE, JVM의 차이와 개발 환경"
+title: "JDK, JRE, JVM의 차이와 개발 환경"
 date: 2026-09-28
 tags:
   - Java

@@ -1,5 +1,5 @@
 ---
-title: "Java 기초 - 형변환과 데이터 손실"
+title: "형변환과 데이터 손실"
 date: 2026-09-28
 tags:
   - Java

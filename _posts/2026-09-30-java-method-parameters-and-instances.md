@@ -1,5 +1,5 @@
 ---
-title: "Java 기초 - 매개변수, 전달인자, 그리고 다른 클래스의 메서드 호출"
+title: "매개변수, 전달인자, 그리고 다른 클래스의 메서드 호출"
 date: 2026-09-30
 tags:
   - Java
@@ -11,7 +11,7 @@ tags:
 
 오늘 수업은 지난 이틀 내용을 간단히 복습하는 것으로 시작했다.
 
-- **1일차** — 리터럴(값)과 변수(공간): [Java 기초 - 변수와 자료형 정리]({{ site.baseurl }}/java-variables-and-types.html)
+- **1일차** — 리터럴(값)과 변수(공간): [변수와 자료형 정리]({{ site.baseurl }}/java-variables-and-types.html)
 - **2일차** — 조건문·반복문·메서드: [조건문]({{ site.baseurl }}/java-conditional-statements.html), [반복문]({{ site.baseurl }}/java-loops.html), [메서드]({{ site.baseurl }}/java-methods.html)
 
 `int x = 4;`라는 한 줄도 뜯어보면 `int`(정수 자료형), `x`(변수), `=`(대입연산자 — 오른쪽은 값, 왼쪽은 공간), `4`(리터럴, 값)로 나뉜다는 걸 다시 짚었다. 오늘은 이 복습에 이어서, 메서드를 호출할 때 값을 어떻게 주고받는지를 배웠다.

@@ -1,5 +1,5 @@
 ---
-title: "Java 기초 - 변수와 자료형 정리"
+title: "변수와 자료형 정리"
 date: 2026-09-28
 tags:
   - Java

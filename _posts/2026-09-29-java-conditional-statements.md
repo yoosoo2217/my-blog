@@ -1,5 +1,5 @@
 ---
-title: "Java 기초 - 조건문(if, switch)으로 실행 흐름 분기하기"
+title: "조건문(if, switch)으로 실행 흐름 분기하기"
 date: 2026-09-29
 tags:
   - Java
