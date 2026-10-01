@@ -21,6 +21,11 @@ email: ""
 # Jekyll
 permalink: /:title.html
 markdown: kramdown
+# Without this, Jekyll silently drops any post whose date is later in the day
+# than whenever GitHub's build server (UTC) happens to build the site — which
+# bit a same-day batch of posts timestamped in the Korean afternoon/evening,
+# since that's still "the future" in UTC terms until several hours later.
+future: true
 highlighter: rouge
 
 kramdown:
