@@ -81,6 +81,53 @@ show_profile: true
 </script>
 
 
+<!-- ==================== 주간 학습 흐름 ==================== -->
+
+<h2 style="margin-left:10px;">- WEEKLY STUDY FLOW</h2>
+
+<div class="win95-weekflow">
+  <div class="win95-weekflow-header">
+    <span class="win95-weekflow-dot"></span>
+    <span class="win95-weekflow-title">이번 주 학습 흐름</span>
+    <a href="#post_list" class="win95-weekflow-all">전체 흐름 ↑</a>
+  </div>
+
+  <div class="win95-weekflow-weeks">
+    {% assign weeks = site.posts | group_by_exp: "post", "post.date | date: '%Y-%U'" %}
+    {% assign weeks_sorted = weeks | sort: "name" | reverse %}
+    {% for week in weeks_sorted limit:2 %}
+      {% assign week_posts_asc = week.items | sort: "date" %}
+      {% assign week_posts_desc = week_posts_asc | reverse %}
+      {% assign range_start = week_posts_asc | first %}
+      {% assign range_end = week_posts_asc | last %}
+      {% assign rep_ts = range_start.date | date: "%s" %}
+      {% assign rep_days = rep_ts | minus: 1787702400 | divided_by: 86400 %}
+      {% assign course_week = rep_days | divided_by: 7 | plus: 1 %}
+      {% assign shown = week_posts_desc | slice: 0, 3 %}
+      {% assign extra = week.items.size | minus: 3 %}
+      <div class="win95-weekflow-col{% if forloop.first %} win95-weekflow-current{% endif %}">
+        <div class="win95-weekflow-weeklabel">
+          Week {{ course_week }}
+          <span class="win95-weekflow-range">{{ range_start.date | date: "%m.%d" }} - {{ range_end.date | date: "%m.%d" }}</span>
+        </div>
+        <div class="win95-weekflow-line">
+          {% for post in shown %}
+          <a class="win95-weekflow-item" href="{{ site.baseurl }}{{ post.url }}">
+            <span class="win95-weekflow-node"></span>
+            <span class="win95-weekflow-date">{{ post.date | date: "%m.%d" }}</span>
+            <span class="win95-weekflow-post-title">{{ post.title }}</span>
+          </a>
+          {% endfor %}
+        </div>
+        {% if extra > 0 %}
+        <div class="win95-weekflow-more">+ {{ extra }}편 더</div>
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+
 <!-- ==================== 최근 학습 기록 ==================== -->
  
 <h2 style="margin-left:10px;">- RECENT STUDY LOG</h2>

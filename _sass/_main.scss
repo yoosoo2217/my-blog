@@ -178,6 +178,141 @@ button, input, select, textarea {
 	}
 }
 
+// --- Weekly study flow (home page) ---------------------------------------
+.win95-weekflow {
+	@include win95-etched();
+	background: #fff8ff;
+	width: min(94%, 1100px);
+	margin: 1rem auto 2rem;
+	padding: 14px 18px;
+	box-sizing: border-box;
+	font-family: Tahoma, "MS Sans Serif", Geneva, Verdana, sans-serif;
+}
+.win95-weekflow-header {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	margin-bottom: 16px;
+}
+.win95-weekflow-dot {
+	width: 8px;
+	height: 8px;
+	border-radius: 50%;
+	background: #1a9c4b;
+	flex-shrink: 0;
+}
+.win95-weekflow-title {
+	font-weight: 700;
+	font-size: 14px;
+	color: #00007f;
+	flex: 1 1 auto;
+}
+.win95-weekflow-all {
+	font-size: 11px;
+	color: #444444;
+	text-decoration: none;
+	flex-shrink: 0;
+}
+.win95-weekflow-all:hover {
+	text-decoration: underline;
+}
+.win95-weekflow-weeks {
+	display: flex;
+	gap: 28px;
+	flex-wrap: wrap;
+}
+.win95-weekflow-col {
+	flex: 1 1 260px;
+	min-width: 220px;
+}
+.win95-weekflow-weeklabel {
+	font-weight: 700;
+	font-size: 12px;
+	color: #7f787f;
+	margin-bottom: 12px;
+}
+.win95-weekflow-current .win95-weekflow-weeklabel {
+	color: #00007f;
+}
+.win95-weekflow-range {
+	font-weight: 400;
+	color: #999999;
+	font-size: 11px;
+	margin-left: 6px;
+}
+.win95-weekflow-line {
+	display: flex;
+	gap: 16px;
+	position: relative;
+	padding-top: 6px;
+}
+.win95-weekflow-line::before {
+	content: "";
+	position: absolute;
+	top: 11px;
+	left: 0;
+	right: 0;
+	height: 1px;
+	background: #c8c2c8;
+	z-index: 0;
+}
+.win95-weekflow-item {
+	position: relative;
+	z-index: 1;
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	text-decoration: none;
+	color: inherit;
+	flex: 1 1 0;
+	min-width: 0;
+}
+.win95-weekflow-node {
+	width: 9px;
+	height: 9px;
+	border-radius: 50%;
+	background: #bfb8bf;
+	border: 1px solid #7f787f;
+	margin-bottom: 8px;
+	box-sizing: border-box;
+}
+.win95-weekflow-current .win95-weekflow-node {
+	background: #1a9c4b;
+	border-color: #0f7a35;
+}
+.win95-weekflow-date {
+	font-size: 11px;
+	font-weight: 700;
+	color: #7f787f;
+}
+.win95-weekflow-current .win95-weekflow-date {
+	color: #00007f;
+}
+.win95-weekflow-post-title {
+	font-size: 12px;
+	color: #000000;
+	line-height: 1.4;
+	margin-top: 3px;
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+}
+.win95-weekflow-item:hover .win95-weekflow-post-title {
+	text-decoration: underline;
+}
+.win95-weekflow-more {
+	margin-top: 8px;
+	font-size: 11px;
+	color: #7f787f;
+}
+@media (max-width: 640px) {
+	.win95-weekflow-weeks {
+		flex-direction: column;
+		gap: 20px;
+	}
+}
+
 .top-row {
 	margin-top: 20px;
 }
