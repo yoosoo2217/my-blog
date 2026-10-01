@@ -22,6 +22,16 @@ function numbers () {
 
 		/* END OF SECTION*/
 
+		// Highlight each line on its own, against its own plain text, *before* it goes
+		// into the table below. hljs used to run afterward on the whole <code> element,
+		// but by then every line was split across separate <th> cells with no real "\n"
+		// between them (table cells don't contribute newlines to textContent) — so a
+		// single-line "//" comment on one line had no line break left to stop at, and
+		// hljs colored everything after it as part of that same comment. Highlighting
+		// each line here, while it's still one real string, avoids that entirely.
+		var langMatch = fields[field].className.match(/language-(\S+)/);
+		var lang = (langMatch && window.hljs && hljs.getLanguage(langMatch[1])) ? langMatch[1] : null;
+
 		fields[field].innerHTML = "";
 		fields[field].appendChild(tab);
 		for (var line = 0; line < select_f.length; line++) {
@@ -29,7 +39,11 @@ function numbers () {
 			var col = document.createElement("th");
 			var colc = document.createElement("th");
 			col.innerText = num + 1;
-			colc.innerText = select_f[line];
+			if (lang) {
+				colc.innerHTML = hljs.highlight(lang, select_f[line], true).value;
+			} else {
+				colc.innerText = select_f[line];
+			}
 			row.appendChild(col);
 			row.appendChild(colc);
 			tab.appendChild(row);
@@ -49,6 +63,7 @@ function numbers () {
 			// END OF SECTION
 
 		}
+		if (lang) { fields[field].classList.add("hljs"); }
 	}
 }
 

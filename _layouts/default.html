@@ -17,7 +17,10 @@
 	<link rel="shortcut icon" href="{{ site.baseurl }}/assets/img/favicon.ico" type="image/x-icon">
 	<link rel="icon" href="{{ site.baseurl }}/assets/img/favicon.ico" type="image/x-icon">
 	<script src="{{ site.baseurl }}/assets/js/highlight.pack.js"></script>
-	<script>hljs.initHighlightingOnLoad();</script>
+	<!-- 002.js now calls hljs.highlight() itself, one line at a time, while it builds the
+	     line-number table — see the comment in 002.js for why. Running initHighlightingOnLoad()
+	     here too used to re-highlight the whole already-tableified block afterward, which is
+	     what caused "//" comments to swallow every line after them. -->
 </head>
 <body>
 	<div class="top-row{% if page.show_profile %} has-sidebar{% endif %}">
