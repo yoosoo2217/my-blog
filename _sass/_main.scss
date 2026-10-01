@@ -542,6 +542,15 @@ ul.topbar {
 		font-weight: 700;
 		text-align: left;
 	}
+
+	// 002.js wraps every code block's lines in a <table> of <th> cells
+	// (for the line-number gutter), so the markdown-table header styling
+	// above was leaking a gray box onto every code line. Code blocks don't
+	// use real <table> markup anywhere else, so this scopes cleanly.
+	pre code table th {
+		background: none;
+		font-weight: 400;
+	}
 }
 .hljs {
 	background: #fff8ff;
