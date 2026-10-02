@@ -90,34 +90,31 @@
 		{% include topbar.html %}
 		<div class="tag_list">
 			<ul id="tag-list">
-				<li class="win95-folder{% unless page.tag %} win95-folder-selected{% endunless %}"><a href="{{ site.baseurl }}/" data-tag="__all__" data-tag-name="(C:)"><img src="{{ site.baseurl }}/assets/img/disk.png" />(C:)</a>
+				<li class="win95-folder{% unless page.tag %} win95-folder-selected{% endunless %}"><a href="{{ site.baseurl }}/"><img src="{{ site.baseurl }}/assets/img/disk.png" />(C:)</a>
 			<ul>
 				{% assign tags = site.tags | sort %}
 				{% for tag in tags %}
-				<li class="win95-folder{% if page.tag == tag[0] %} win95-folder-selected{% endif %}"><a href="{{ site.baseurl }}/tag/{{ tag | first | slugify }}/" title="{{ tag[0] | replace:'-', ' ' }}" data-tag="{{ tag[0] }}" data-tag-name="{{ tag[0] | replace:'-', ' ' }}"><img src="{{ site.baseurl }}/assets/img/folder.ico" />{{ tag[0] | replace:'-', ' ' }}</a></li>
+				<li class="win95-folder{% if page.tag == tag[0] %} win95-folder-selected{% endif %}"><a href="{{ site.baseurl }}/tag/{{ tag | first | slugify }}/" title="{{ tag[0] | replace:'-', ' ' }}"><img src="{{ site.baseurl }}/assets/img/folder.ico" />{{ tag[0] | replace:'-', ' ' }}</a></li>
 				{% endfor %}
 			</ul>
 				</li>
 			</ul>
 		</div>
 		<div class="post_list" id="post_list">
-			{% unless page.date%}
-				{% if page.title %}
-					<ul>
-						{% for post in site.posts %}
-						<li><a href="{{ site.baseurl }}{{ post.url }}" title="{{ post.title }}"><img src="{{ site.baseurl }}/assets/img/file.ico" title="{{ post.title }}" />{{ post.title }}</a></li>
-						{% endfor %}
-					</ul>
-				{% else %}
-					{{ content }}
-				{% endif %}
+			{% if page.tag %}
+				<ul>
+					{% assign tag_posts = site.tags[page.tag] | sort: "date" | reverse %}
+					{% for post in tag_posts %}
+					<li><a href="{{ site.baseurl }}{{ post.url }}" title="{{ post.title }}"><img src="{{ site.baseurl }}/assets/img/file.ico" title="{{ post.title }}" />{{ post.title }}</a></li>
+					{% endfor %}
+				</ul>
 			{% else %}
 				<ul>
 					{% for post in site.posts %}
 					<li><a href="{{ site.baseurl }}{{ post.url }}" title="{{ post.title }}"><img src="{{ site.baseurl }}/assets/img/file.ico" title="{{ post.title }}" />{{ post.title }}</a></li>
 					{% endfor %}
 				</ul>
-			{% endunless %}
+			{% endif %}
 		</div>
 		<div class="post_total">
 			{% if page.tag %}
@@ -197,39 +194,6 @@
 		{% include cyworld-widget.html %}
 	{% endif %}
 	</div>
-
-	<div class="win95-tag-overlay" id="win95-tag-overlay" hidden>
-		<div class="win95-tag-overlay-window">
-			<div class="win95-tag-overlay-titlebar">
-				<span id="win95-tag-overlay-title">폴더</span>
-				<span class="win95-tag-overlay-close" id="win95-tag-overlay-close" role="button" tabindex="0" aria-label="닫기">✕</span>
-			</div>
-			<div class="win95-tag-overlay-body">
-				<ul id="win95-tag-overlay-list"></ul>
-			</div>
-		</div>
-	</div>
-	<script>
-		// Data for the folder-click overlay below: every post, and every
-		// post grouped by tag, embedded once so opening a folder never
-		// navigates away from whatever page you're currently reading.
-		var win95AllPosts = [
-			{% for post in site.posts %}
-			{ "title": {{ post.title | jsonify }}, "url": {{ post.url | prepend: site.baseurl | jsonify }} }{% unless forloop.last %},{% endunless %}
-			{% endfor %}
-		];
-		var win95PostsByTag = {
-			{% assign all_tags = site.tags | sort %}
-			{% for tag in all_tags %}
-			{{ tag[0] | jsonify }}: [
-				{% assign tag_posts = tag[1] | sort: "date" | reverse %}
-				{% for post in tag_posts %}
-				{ "title": {{ post.title | jsonify }}, "url": {{ post.url | prepend: site.baseurl | jsonify }} }{% unless forloop.last %},{% endunless %}
-				{% endfor %}
-			]{% unless forloop.last %},{% endunless %}
-			{% endfor %}
-		};
-	</script>
 	<script>
 		// Must run BEFORE 002.js, which rewrites every <pre><code> block into
 		// a line-numbered table and would otherwise destroy the original
@@ -285,59 +249,23 @@
 		(function () {
 			var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-			// --- Folder click opens an overlay window in place, instead of
-			// navigating to the tag page. The href on each link is left
-			// intact (still a real page, for JS-off/bookmarking/SEO) — this
-			// just intercepts the click on top of it.
-			var tagOverlay = document.getElementById('win95-tag-overlay');
-			var tagOverlayTitle = document.getElementById('win95-tag-overlay-title');
-			var tagOverlayList = document.getElementById('win95-tag-overlay-list');
-			var tagOverlayClose = document.getElementById('win95-tag-overlay-close');
-
-			function openTagOverlay(tagKey, displayName) {
-				if (!tagOverlay) { return; }
-				var byTag = window.win95PostsByTag || {};
-				var posts = tagKey === '__all__' ? (window.win95AllPosts || []) : (byTag[tagKey] || []);
-				tagOverlayTitle.textContent = displayName;
-				tagOverlayList.innerHTML = '';
-				posts.forEach(function (post) {
-					var li = document.createElement('li');
-					var a = document.createElement('a');
-					a.href = post.url;
-					a.textContent = post.title;
-					li.appendChild(a);
-					tagOverlayList.appendChild(li);
-				});
-				if (posts.length === 0) {
-					var empty = document.createElement('li');
-					empty.className = 'win95-tag-overlay-empty';
-					empty.textContent = '이 폴더는 비어 있습니다.';
-					tagOverlayList.appendChild(empty);
-				}
-				tagOverlay.hidden = false;
-			}
-			function closeTagOverlay() {
-				if (tagOverlay) { tagOverlay.hidden = true; }
-			}
-			if (tagOverlayClose) {
-				tagOverlayClose.addEventListener('click', closeTagOverlay);
-				tagOverlayClose.addEventListener('keydown', function (e) {
-					if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); closeTagOverlay(); }
-				});
-			}
-			document.addEventListener('keydown', function (e) {
-				if (e.key === 'Escape') { closeTagOverlay(); }
-			});
-
+			// --- Folder click: a brief "selected" flash before the real,
+			// unchanged href navigates to that tag's page.
 			var folderLinks = document.querySelectorAll('#tag-list > li > a, #tag-list li li > a');
 			for (var i = 0; i < folderLinks.length; i++) {
 				folderLinks[i].addEventListener('click', function (e) {
-					e.preventDefault();
 					var li = this.closest('li');
+					if (!li || li.classList.contains('win95-folder-selected')) { return; }
+					e.preventDefault();
+					var href = this.href;
 					var selected = document.querySelectorAll('#tag-list .win95-folder-selected');
 					for (var k = 0; k < selected.length; k++) { selected[k].classList.remove('win95-folder-selected'); }
-					if (li) { li.classList.add('win95-folder-selected'); }
-					openTagOverlay(this.getAttribute('data-tag'), this.getAttribute('data-tag-name') || this.textContent.trim());
+					li.classList.add('win95-folder-selected');
+					if (reduceMotion) {
+						window.location.href = href;
+						return;
+					}
+					setTimeout(function () { window.location.href = href; }, 200);
 				});
 			}
 
