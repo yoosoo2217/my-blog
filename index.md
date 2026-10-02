@@ -29,7 +29,6 @@ show_profile: true
            height:100%;
            width:0%;
            background:#00007f;
-           transition:width .6s ease;
          ">
     </div>
   </div>
@@ -75,17 +74,42 @@ show_profile: true
     '%)';
 
   var fill = document.getElementById('progress-bar-fill');
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // The fill starts at width:0% in the markup below. Setting the real
-  // width right away, in the same tick the page is still parsing, can
-  // happen before the browser ever paints that 0% state — and a
-  // transition can't animate from a state that was never rendered.
-  // Two rAFs guarantee a real paint of 0% happens first.
-  requestAnimationFrame(function () {
+  if (reduceMotion) {
+    fill.style.width = pct + '%';
+    return;
+  }
+
+  var FILL_MS = 2000; // slow, deliberate fill — not a snappy modern loading bar
+  var HOLD_MS = 1000; // pause at the real value before looping back to 0%
+
+  function fillToTarget() {
+    fill.style.transition = 'width ' + FILL_MS + 'ms ease';
+    // The fill starts at width:0%. Setting the real width in the same
+    // tick the page is still parsing can happen before the browser ever
+    // paints that 0% state — and a transition can't animate from a
+    // state that was never rendered. Two rAFs guarantee a real paint of
+    // 0% happens first (also needed on every repeat below, after the
+    // instant reset).
     requestAnimationFrame(function () {
-      fill.style.width = pct + '%';
+      requestAnimationFrame(function () {
+        fill.style.width = pct + '%';
+      });
     });
-  });
+  }
+
+  fillToTarget();
+
+  // Repeats for as long as the page stays open: hold at the real value,
+  // snap back to 0% with no transition, then fill back up to the same
+  // real value again.
+  setInterval(function () {
+    fill.style.transition = 'none';
+    fill.style.width = '0%';
+    void fill.offsetWidth; // flush the instant reset before re-enabling the transition
+    fillToTarget();
+  }, FILL_MS + HOLD_MS);
 
 })();
 </script>
