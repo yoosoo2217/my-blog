@@ -935,14 +935,14 @@ ul.topbar {
 .content,
 .cy-window,
 .cy-music-window {
-	animation: win95-window-open 200ms ease-out both;
+	animation: win95-window-open 320ms ease-out both;
 }
-.content { animation-delay: 120ms; }
-.cy-window { animation-delay: 240ms; }
-.cy-music-window { animation-delay: 360ms; }
+.content { animation-delay: 200ms; }
+.cy-window { animation-delay: 400ms; }
+.cy-music-window { animation-delay: 600ms; }
 
 .content.win95-window-closing {
-	animation: win95-window-close 130ms ease-in forwards;
+	animation: win95-window-close 200ms ease-in forwards;
 }
 
 // File-explorer folder selection — reuses the same navy/white highlight
@@ -1008,7 +1008,7 @@ ul.topbar {
 	height: 100%;
 	width: 0%;
 	background: #c0c0c0;
-	transition: width 800ms linear;
+	transition: width 1200ms linear;
 }
 .win95-boot-welcome {
 	color: #ffffff;
