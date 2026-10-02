@@ -76,24 +76,25 @@
 			}, 1950);
 		})();
 	</script>
-	<div class="top-row{% if page.show_profile %} has-sidebar{% endif %}">
+	<div class="top-row{% if page.show_profile %} has-sidebar{% endif %}{% if page.date %} win95-explorer-collapsed{% endif %}">
 	<div class="wrapper">
-		<div class="default_title">
+		<div class="default_title" id="win95-explorer-toggle">
 			<img src="{{ site.baseurl }}/assets/img/mycomputer.png" />
 			{% if page.tag %}
 				<h1>{{ page.tag }}</h1>
 			{% else %}
 				<h1>{{ site.name }}</h1>
 			{% endif %}
+			<span class="win95-explorer-toggle-label"></span>
 		</div>
 		{% include topbar.html %}
 		<div class="tag_list">
 			<ul id="tag-list">
-				<li class="win95-folder{% unless page.tag %} win95-folder-selected{% endunless %}"><a href="{{ site.baseurl }}/" ><img src="{{ site.baseurl }}/assets/img/disk.png" />(C:)</a>
+				<li class="win95-folder{% unless page.tag %} win95-folder-selected{% endunless %}"><a href="{{ site.baseurl }}/" data-tag="__all__" data-tag-name="(C:)"><img src="{{ site.baseurl }}/assets/img/disk.png" />(C:)</a>
 			<ul>
 				{% assign tags = site.tags | sort %}
 				{% for tag in tags %}
-				<li class="win95-folder{% if page.tag == tag[0] %} win95-folder-selected{% endif %}"><a href="{{ site.baseurl }}/tag/{{ tag | first | slugify }}/" title="{{ tag[0] | replace:'-', ' ' }}"><img src="{{ site.baseurl }}/assets/img/folder.ico" />{{ tag[0] | replace:'-', ' ' }}</a></li>
+				<li class="win95-folder{% if page.tag == tag[0] %} win95-folder-selected{% endif %}"><a href="{{ site.baseurl }}/tag/{{ tag | first | slugify }}/" title="{{ tag[0] | replace:'-', ' ' }}" data-tag="{{ tag[0] }}" data-tag-name="{{ tag[0] | replace:'-', ' ' }}"><img src="{{ site.baseurl }}/assets/img/folder.ico" />{{ tag[0] | replace:'-', ' ' }}</a></li>
 				{% endfor %}
 			</ul>
 				</li>
@@ -196,6 +197,39 @@
 		{% include cyworld-widget.html %}
 	{% endif %}
 	</div>
+
+	<div class="win95-tag-overlay" id="win95-tag-overlay" hidden>
+		<div class="win95-tag-overlay-window">
+			<div class="win95-tag-overlay-titlebar">
+				<span id="win95-tag-overlay-title">폴더</span>
+				<span class="win95-tag-overlay-close" id="win95-tag-overlay-close" role="button" tabindex="0" aria-label="닫기">✕</span>
+			</div>
+			<div class="win95-tag-overlay-body">
+				<ul id="win95-tag-overlay-list"></ul>
+			</div>
+		</div>
+	</div>
+	<script>
+		// Data for the folder-click overlay below: every post, and every
+		// post grouped by tag, embedded once so opening a folder never
+		// navigates away from whatever page you're currently reading.
+		var win95AllPosts = [
+			{% for post in site.posts %}
+			{ "title": {{ post.title | jsonify }}, "url": {{ post.url | prepend: site.baseurl | jsonify }} }{% unless forloop.last %},{% endunless %}
+			{% endfor %}
+		];
+		var win95PostsByTag = {
+			{% assign all_tags = site.tags | sort %}
+			{% for tag in all_tags %}
+			{{ tag[0] | jsonify }}: [
+				{% assign tag_posts = tag[1] | sort: "date" | reverse %}
+				{% for post in tag_posts %}
+				{ "title": {{ post.title | jsonify }}, "url": {{ post.url | prepend: site.baseurl | jsonify }} }{% unless forloop.last %},{% endunless %}
+				{% endfor %}
+			]{% unless forloop.last %},{% endunless %}
+			{% endfor %}
+		};
+	</script>
 	<script>
 		// Must run BEFORE 002.js, which rewrites every <pre><code> block into
 		// a line-numbered table and would otherwise destroy the original
@@ -248,27 +282,67 @@
 	</div>
 	{% include taskbar.html %}
 	<script>
-		// Short, real-navigation-preserving interactions: a brief "selected"
-		// flash before a file-explorer folder link navigates, and a brief
-		// "closing" shrink before the document window's close button
-		// navigates home. Both just delay the real, unchanged href by one
-		// short animation instead of replacing it with anything SPA-like.
 		(function () {
 			var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-			if (reduceMotion) { return; }
+
+			// --- Folder click opens an overlay window in place, instead of
+			// navigating to the tag page. The href on each link is left
+			// intact (still a real page, for JS-off/bookmarking/SEO) — this
+			// just intercepts the click on top of it.
+			var tagOverlay = document.getElementById('win95-tag-overlay');
+			var tagOverlayTitle = document.getElementById('win95-tag-overlay-title');
+			var tagOverlayList = document.getElementById('win95-tag-overlay-list');
+			var tagOverlayClose = document.getElementById('win95-tag-overlay-close');
+
+			function openTagOverlay(tagKey, displayName) {
+				if (!tagOverlay) { return; }
+				var byTag = window.win95PostsByTag || {};
+				var posts = tagKey === '__all__' ? (window.win95AllPosts || []) : (byTag[tagKey] || []);
+				tagOverlayTitle.textContent = displayName;
+				tagOverlayList.innerHTML = '';
+				posts.forEach(function (post) {
+					var li = document.createElement('li');
+					var a = document.createElement('a');
+					a.href = post.url;
+					a.textContent = post.title;
+					li.appendChild(a);
+					tagOverlayList.appendChild(li);
+				});
+				if (posts.length === 0) {
+					var empty = document.createElement('li');
+					empty.className = 'win95-tag-overlay-empty';
+					empty.textContent = '이 폴더는 비어 있습니다.';
+					tagOverlayList.appendChild(empty);
+				}
+				tagOverlay.hidden = false;
+			}
+			function closeTagOverlay() {
+				if (tagOverlay) { tagOverlay.hidden = true; }
+			}
+			if (tagOverlayClose) {
+				tagOverlayClose.addEventListener('click', closeTagOverlay);
+				tagOverlayClose.addEventListener('keydown', function (e) {
+					if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); closeTagOverlay(); }
+				});
+			}
+			document.addEventListener('keydown', function (e) {
+				if (e.key === 'Escape') { closeTagOverlay(); }
+			});
 
 			var folderLinks = document.querySelectorAll('#tag-list > li > a, #tag-list li li > a');
 			for (var i = 0; i < folderLinks.length; i++) {
 				folderLinks[i].addEventListener('click', function (e) {
-					var li = this.closest('li');
-					if (!li || li.classList.contains('win95-folder-selected')) { return; }
 					e.preventDefault();
-					var href = this.href;
-					li.classList.add('win95-folder-selected');
-					setTimeout(function () { window.location.href = href; }, 200);
+					var li = this.closest('li');
+					var selected = document.querySelectorAll('#tag-list .win95-folder-selected');
+					for (var k = 0; k < selected.length; k++) { selected[k].classList.remove('win95-folder-selected'); }
+					if (li) { li.classList.add('win95-folder-selected'); }
+					openTagOverlay(this.getAttribute('data-tag'), this.getAttribute('data-tag-name') || this.textContent.trim());
 				});
 			}
 
+			// --- Document window close button: brief shrink, then the same
+			// real navigation home (skipped under reduced motion).
 			var closeBtn = document.querySelector('.win95-close-btn');
 			if (closeBtn) {
 				closeBtn.addEventListener('click', function (e) {
@@ -276,8 +350,22 @@
 					if (!win) { return; }
 					e.preventDefault();
 					var href = this.href;
+					if (reduceMotion) {
+						window.location.href = href;
+						return;
+					}
 					win.classList.add('win95-window-closing');
 					setTimeout(function () { window.location.href = href; }, 210);
+				});
+			}
+
+			// --- Explorer window collapse toggle (post pages only — see
+			// the win95-explorer-collapsed class on .top-row).
+			var toggle = document.getElementById('win95-explorer-toggle');
+			var topRow = document.querySelector('.top-row.win95-explorer-collapsed');
+			if (toggle && topRow) {
+				toggle.addEventListener('click', function () {
+					topRow.classList.toggle('win95-explorer-expanded');
 				});
 			}
 		})();
