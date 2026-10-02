@@ -948,10 +948,12 @@ ul.topbar {
 // File-explorer folder selection — reuses the same navy/white highlight
 // the Explorer-style post table already uses on hover, rather than
 // inventing a new "selected" look or a new open-folder icon asset.
-.win95-folder > a {
-	display: block;
-}
-.win95-folder.win95-folder-selected > a {
+// #tag-list li a already sets its own background (#fff8ff) with an ID
+// selector, which otherwise beats a plain class selector here and left
+// the selected state's white text sitting on that same near-white
+// background instead of the intended navy — so this also has to be
+// scoped under #tag-list to actually win.
+#tag-list .win95-folder.win95-folder-selected > a {
 	background: #00007f;
 	color: #ffffff;
 }
