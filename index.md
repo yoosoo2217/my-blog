@@ -81,35 +81,19 @@ show_profile: true
     return;
   }
 
-  var FILL_MS = 2000; // slow, deliberate fill — not a snappy modern loading bar
-  var HOLD_MS = 1000; // pause at the real value before looping back to 0%
+  var FILL_MS = 3000; // slow, deliberate one-time fill — not a snappy modern loading bar
 
-  function fillToTarget() {
-    fill.style.transition = 'width ' + FILL_MS + 'ms ease';
-    // The fill starts at width:0%. Setting the real width in the same
-    // tick the page is still parsing can happen before the browser ever
-    // paints that 0% state — and a transition can't animate from a
-    // state that was never rendered. Two rAFs guarantee a real paint of
-    // 0% happens first (also needed on every repeat below, after the
-    // instant reset).
+  fill.style.transition = 'width ' + FILL_MS + 'ms ease';
+  // The fill starts at width:0%. Setting the real width in the same
+  // tick the page is still parsing can happen before the browser ever
+  // paints that 0% state — and a transition can't animate from a
+  // state that was never rendered. Two rAFs guarantee a real paint of
+  // 0% happens first.
+  requestAnimationFrame(function () {
     requestAnimationFrame(function () {
-      requestAnimationFrame(function () {
-        fill.style.width = pct + '%';
-      });
+      fill.style.width = pct + '%';
     });
-  }
-
-  fillToTarget();
-
-  // Repeats for as long as the page stays open: hold at the real value,
-  // snap back to 0% with no transition, then fill back up to the same
-  // real value again.
-  setInterval(function () {
-    fill.style.transition = 'none';
-    fill.style.width = '0%';
-    void fill.offsetWidth; // flush the instant reset before re-enabling the transition
-    fillToTarget();
-  }, FILL_MS + HOLD_MS);
+  });
 
 })();
 </script>
