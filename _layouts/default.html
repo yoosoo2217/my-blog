@@ -23,6 +23,59 @@
 	     what caused "//" comments to swallow every line after them. -->
 </head>
 <body>
+	<div id="win95-boot" class="win95-boot">
+		<div class="win95-boot-text">
+			<div class="win95-boot-title">YUSU COMPUTER SYSTEM</div>
+			<div class="win95-boot-line" data-boot-line>Initializing...</div>
+			<div class="win95-boot-line" data-boot-line>Loading study logs...</div>
+			<div class="win95-boot-line" data-boot-line>Loading GitHub...</div>
+			<div class="win95-boot-line" data-boot-line>Loading TMI...</div>
+			<div class="win95-boot-bar"><div class="win95-boot-bar-fill" data-boot-bar></div></div>
+			<div class="win95-boot-line win95-boot-welcome" data-boot-welcome>Welcome<span class="win95-cursor">_</span></div>
+		</div>
+	</div>
+	<script>
+		// Runs immediately (before the rest of the page paints) so a repeat
+		// visit within the same session never shows even a flash of this.
+		// First visit per session only — not on every SPA-less page nav.
+		(function () {
+			var boot = document.getElementById('win95-boot');
+			if (!boot) { return; }
+			var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+			var alreadyBooted = false;
+			try { alreadyBooted = sessionStorage.getItem('yusu-booted') === '1'; } catch (e) { /* private mode etc. */ }
+			if (alreadyBooted || reduceMotion) {
+				boot.parentNode.removeChild(boot);
+				return;
+			}
+			try { sessionStorage.setItem('yusu-booted', '1'); } catch (e) { /* private mode etc. */ }
+
+			var lines = boot.querySelectorAll('[data-boot-line]');
+			var welcome = boot.querySelector('[data-boot-welcome]');
+			var bar = boot.querySelector('[data-boot-bar]');
+			for (var i = 0; i < lines.length; i++) {
+				if (lines[i] !== welcome) { lines[i].style.visibility = 'hidden'; }
+			}
+			welcome.style.visibility = 'hidden';
+
+			var revealDelays = [0, 200, 400, 600];
+			var loadingLines = [];
+			for (var j = 0; j < lines.length; j++) {
+				if (lines[j] !== welcome) { loadingLines.push(lines[j]); }
+			}
+			loadingLines.forEach(function (el, idx) {
+				setTimeout(function () { el.style.visibility = 'visible'; }, revealDelays[idx] || 0);
+			});
+			requestAnimationFrame(function () {
+				requestAnimationFrame(function () { bar.style.width = '100%'; });
+			});
+			setTimeout(function () { welcome.style.visibility = 'visible'; }, 1000);
+			setTimeout(function () { boot.classList.add('win95-boot-hide'); }, 1100);
+			setTimeout(function () {
+				if (boot.parentNode) { boot.parentNode.removeChild(boot); }
+			}, 1300);
+		})();
+	</script>
 	<div class="top-row{% if page.show_profile %} has-sidebar{% endif %}">
 	<div class="wrapper">
 		<div class="default_title">
@@ -36,11 +89,11 @@
 		{% include topbar.html %}
 		<div class="tag_list">
 			<ul id="tag-list">
-				<li><a href="{{ site.baseurl }}/" ><img src="{{ site.baseurl }}/assets/img/disk.png" />(C:)</a>
+				<li class="win95-folder{% unless page.tag %} win95-folder-selected{% endunless %}"><a href="{{ site.baseurl }}/" ><img src="{{ site.baseurl }}/assets/img/disk.png" />(C:)</a>
 			<ul>
 				{% assign tags = site.tags | sort %}
 				{% for tag in tags %}
-				<li><a href="{{ site.baseurl }}/tag/{{ tag | first | slugify }}/" title="{{ tag[0] | replace:'-', ' ' }}"><img src="{{ site.baseurl }}/assets/img/folder.ico" />{{ tag[0] | replace:'-', ' ' }}</a></li>
+				<li class="win95-folder{% if page.tag == tag[0] %} win95-folder-selected{% endif %}"><a href="{{ site.baseurl }}/tag/{{ tag | first | slugify }}/" title="{{ tag[0] | replace:'-', ' ' }}"><img src="{{ site.baseurl }}/assets/img/folder.ico" />{{ tag[0] | replace:'-', ' ' }}</a></li>
 				{% endfor %}
 			</ul>
 				</li>
@@ -79,7 +132,7 @@
 			<div class="post_title">
 				<img src="{{ site.baseurl }}/assets/img/file.png" />
 				<h1>{{  page.title  }}</h1>
-				<a href="{{ site.baseurl }}/"><div class="btn"><span class="fa fa-times"></span></div></a>
+				<a href="{{ site.baseurl }}/" class="win95-close-btn"><div class="btn"><span class="fa fa-times"></span></div></a>
 				<div class="btn btn_max"><span class="fa fa-window-maximize"></span></div>
 				<div class="btn"><span class="fa fa-window-minimize"></span></div>
 			</div>
@@ -194,5 +247,40 @@
 		<p>Created by <a href="http://github.com/h01000110" target="_blank">h01000110 (hi)</a> | Code licensed under <a href="https://github.com/h01000110/h01000110.github.io/blob/master/LICENSE" target="_blank">MIT License</a></p>
 	</div>
 	{% include taskbar.html %}
+	<script>
+		// Short, real-navigation-preserving interactions: a brief "selected"
+		// flash before a file-explorer folder link navigates, and a brief
+		// "closing" shrink before the document window's close button
+		// navigates home. Both just delay the real, unchanged href by one
+		// short animation instead of replacing it with anything SPA-like.
+		(function () {
+			var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+			if (reduceMotion) { return; }
+
+			var folderLinks = document.querySelectorAll('#tag-list > li > a, #tag-list li li > a');
+			for (var i = 0; i < folderLinks.length; i++) {
+				folderLinks[i].addEventListener('click', function (e) {
+					var li = this.closest('li');
+					if (!li || li.classList.contains('win95-folder-selected')) { return; }
+					e.preventDefault();
+					var href = this.href;
+					li.classList.add('win95-folder-selected');
+					setTimeout(function () { window.location.href = href; }, 120);
+				});
+			}
+
+			var closeBtn = document.querySelector('.win95-close-btn');
+			if (closeBtn) {
+				closeBtn.addEventListener('click', function (e) {
+					var win = document.querySelector('.content');
+					if (!win) { return; }
+					e.preventDefault();
+					var href = this.href;
+					win.classList.add('win95-window-closing');
+					setTimeout(function () { window.location.href = href; }, 130);
+				});
+			}
+		})();
+	</script>
 </body>
 </html>

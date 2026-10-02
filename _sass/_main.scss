@@ -917,3 +917,118 @@ ul.topbar {
 ::-webkit-scrollbar-corner {
 	background-color: #cacaca;
 } /* if both the vertical and the horizontal bars appear, then perhaps the right bottom corner also needs to be styled */
+
+// --- Retro interaction animations -----------------------------------------
+// Pure CSS transform/opacity so nothing here triggers layout, and the
+// elements' final rendered size/position is identical to their un-animated
+// state (scale(1), opacity 1) — only how they arrive there changes.
+
+@keyframes win95-window-open {
+	from { transform: scale(0.95); opacity: 0; }
+	to { transform: scale(1); opacity: 1; }
+}
+@keyframes win95-window-close {
+	from { transform: scale(1); opacity: 1; }
+	to { transform: scale(0.95); opacity: 0; }
+}
+.top-row > .wrapper,
+.content,
+.cy-window,
+.cy-music-window {
+	animation: win95-window-open 200ms ease-out both;
+}
+.content { animation-delay: 120ms; }
+.cy-window { animation-delay: 240ms; }
+.cy-music-window { animation-delay: 360ms; }
+
+.content.win95-window-closing {
+	animation: win95-window-close 130ms ease-in forwards;
+}
+
+// File-explorer folder selection — reuses the same navy/white highlight
+// the Explorer-style post table already uses on hover, rather than
+// inventing a new "selected" look or a new open-folder icon asset.
+.win95-folder > a {
+	display: block;
+}
+.win95-folder.win95-folder-selected > a {
+	background: #00007f;
+	color: #ffffff;
+}
+
+@keyframes win95-cursor-blink {
+	50% { opacity: 0; }
+}
+.win95-cursor {
+	display: inline-block;
+	animation: win95-cursor-blink 600ms steps(1) infinite;
+}
+
+// --- Boot screen -----------------------------------------------------------
+.win95-boot {
+	position: fixed;
+	inset: 0;
+	z-index: 10000;
+	background: #008082;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-family: "Courier New", Courier, monospace;
+	transition: opacity 150ms ease-out;
+}
+.win95-boot-hide {
+	opacity: 0;
+	pointer-events: none;
+}
+.win95-boot-text {
+	background: #000000;
+	color: #c0c0c0;
+	min-width: 260px;
+	padding: 20px 26px;
+	border: 2px solid;
+	border-color: #7f787f #000000 #000000 #7f787f;
+	font-size: 13px;
+	line-height: 1.8;
+	white-space: nowrap;
+}
+.win95-boot-title {
+	color: #ffffff;
+	font-weight: bold;
+	margin-bottom: 8px;
+}
+.win95-boot-bar {
+	margin-top: 10px;
+	width: 100%;
+	height: 10px;
+	background: #000000;
+	border: 1px solid #7f787f;
+	box-sizing: border-box;
+}
+.win95-boot-bar-fill {
+	height: 100%;
+	width: 0%;
+	background: #c0c0c0;
+	transition: width 800ms linear;
+}
+.win95-boot-welcome {
+	color: #ffffff;
+	margin-top: 4px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.top-row > .wrapper,
+	.content,
+	.cy-window,
+	.cy-music-window,
+	.content.win95-window-closing {
+		animation: none !important;
+		opacity: 1 !important;
+		transform: none !important;
+	}
+	.win95-cursor {
+		animation: none !important;
+	}
+	.win95-boot {
+		display: none !important;
+	}
+}

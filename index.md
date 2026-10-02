@@ -74,8 +74,18 @@ show_profile: true
     pct +
     '%)';
 
-  document.getElementById('progress-bar-fill').style.width =
-    pct + '%';
+  var fill = document.getElementById('progress-bar-fill');
+
+  // The fill starts at width:0% in the markup below. Setting the real
+  // width right away, in the same tick the page is still parsing, can
+  // happen before the browser ever paints that 0% state — and a
+  // transition can't animate from a state that was never rendered.
+  // Two rAFs guarantee a real paint of 0% happens first.
+  requestAnimationFrame(function () {
+    requestAnimationFrame(function () {
+      fill.style.width = pct + '%';
+    });
+  });
 
 })();
 </script>
