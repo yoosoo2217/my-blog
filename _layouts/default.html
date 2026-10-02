@@ -23,6 +23,21 @@
 	     what caused "//" comments to swallow every line after them. -->
 </head>
 <body>
+	<script>
+		// Set by the folder-click handler right before it navigates to a tag
+		// page — consumed here, before anything paints, so that one page load
+		// skips the window-open animation (it reads as an abrupt "jump" when
+		// you already just watched the folder itself flash and know where
+		// you're going, unlike a fresh/direct visit).
+		(function () {
+			var skip = false;
+			try { skip = sessionStorage.getItem('yusu-skip-window-anim') === '1'; } catch (e) {}
+			if (skip) {
+				try { sessionStorage.removeItem('yusu-skip-window-anim'); } catch (e) {}
+				document.documentElement.classList.add('win95-no-window-anim');
+			}
+		})();
+	</script>
 	<div id="win95-boot" class="win95-boot">
 		<div class="win95-boot-text">
 			<div class="win95-boot-title">YUSU COMPUTER SYSTEM</div>
@@ -250,7 +265,11 @@
 			var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 			// --- Folder click: a brief "selected" flash before the real,
-			// unchanged href navigates to that tag's page.
+			// unchanged href navigates to that tag's page. The destination
+			// page skips its window-open animation (flag read in the early
+			// <head>-adjacent script above) — you just watched the folder
+			// flash and know where you're headed, so the window "popping in"
+			// again reads as a stutter rather than an arrival.
 			var folderLinks = document.querySelectorAll('#tag-list > li > a, #tag-list li li > a');
 			for (var i = 0; i < folderLinks.length; i++) {
 				folderLinks[i].addEventListener('click', function (e) {
@@ -261,6 +280,7 @@
 					var selected = document.querySelectorAll('#tag-list .win95-folder-selected');
 					for (var k = 0; k < selected.length; k++) { selected[k].classList.remove('win95-folder-selected'); }
 					li.classList.add('win95-folder-selected');
+					try { sessionStorage.setItem('yusu-skip-window-anim', '1'); } catch (err) {}
 					if (reduceMotion) {
 						window.location.href = href;
 						return;

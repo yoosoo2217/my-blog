@@ -958,6 +958,19 @@ ul.topbar {
 .cy-window { animation-delay: 400ms; }
 .cy-music-window { animation-delay: 600ms; }
 
+// Set for one page load right after a folder click navigates to a tag
+// page — see the sessionStorage flag in the layout's scripts.
+html.win95-no-window-anim {
+	.top-row > .wrapper,
+	.content,
+	.cy-window,
+	.cy-music-window {
+		animation: none;
+		opacity: 1;
+		transform: none;
+	}
+}
+
 .content.win95-window-closing {
 	animation: win95-window-close 200ms ease-in forwards;
 }
