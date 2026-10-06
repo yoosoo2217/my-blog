@@ -1046,6 +1046,27 @@ html.win95-no-window-anim {
 	color: #ffffff;
 	margin-top: 4px;
 }
+.win95-boot-enter {
+	@include win95-raised();
+	display: block;
+	width: 100%;
+	margin-top: 14px;
+	padding: 6px 10px;
+	background: #bfb8bf;
+	color: #000000;
+	font-family: inherit;
+	font-size: 12px;
+	font-weight: bold;
+	cursor: pointer;
+	white-space: nowrap;
+}
+.win95-boot-enter:active {
+	@include win95-raised-pressed();
+}
+.win95-boot-enter:focus-visible {
+	outline: 1px dotted #000000;
+	outline-offset: 2px;
+}
 
 // --- Explorer window collapse (post pages) --------------------------------
 // The top file-explorer window defaults to a short, mostly-closed strip
@@ -1093,8 +1114,11 @@ html.win95-no-window-anim {
 	.win95-cursor {
 		animation: none !important;
 	}
-	.win95-boot {
-		display: none !important;
+	// The boot screen is a real landing gate now (not decoration), so it
+	// still needs to show under reduced motion — just without the
+	// animated reveal, which the layout's script already handles.
+	.win95-boot-bar-fill {
+		transition: none !important;
 	}
 	.win95-explorer-collapsed .post_list,
 	.win95-explorer-collapsed .tag_list,

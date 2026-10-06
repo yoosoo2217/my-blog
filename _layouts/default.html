@@ -40,34 +40,56 @@
 	</script>
 	<div id="win95-boot" class="win95-boot">
 		<div class="win95-boot-text">
-			<div class="win95-boot-title">YUSU COMPUTER SYSTEM</div>
+			<div class="win95-boot-title">YOOSOO COMPUTER SYSTEM</div>
 			<div class="win95-boot-line" data-boot-line>Initializing...</div>
 			<div class="win95-boot-line" data-boot-line>Loading study logs...</div>
 			<div class="win95-boot-line" data-boot-line>Loading GitHub...</div>
 			<div class="win95-boot-line" data-boot-line>Loading TMI...</div>
 			<div class="win95-boot-bar"><div class="win95-boot-bar-fill" data-boot-bar></div></div>
 			<div class="win95-boot-line win95-boot-welcome" data-boot-welcome>Welcome<span class="win95-cursor">_</span></div>
+			<button type="button" class="win95-boot-enter" id="win95-boot-enter" data-boot-enter hidden>유수의 블로그 들어가기 ▶</button>
 		</div>
 	</div>
 	<script>
-		// Runs immediately (before the rest of the page paints) so a repeat
-		// visit within the same session never shows even a flash of this.
-		// First visit per session only — not on every SPA-less page nav.
+		// This is a real landing screen now, not just a decorative intro —
+		// it waits for the "들어가기" button before showing the site, and
+		// only plays once per session (sessionStorage-gated) since every
+		// page here is a full reload, not an SPA route change.
 		(function () {
 			var boot = document.getElementById('win95-boot');
 			if (!boot) { return; }
 			var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-			var alreadyBooted = false;
-			try { alreadyBooted = sessionStorage.getItem('yusu-booted') === '1'; } catch (e) { /* private mode etc. */ }
-			if (alreadyBooted || reduceMotion) {
+			var alreadyEntered = false;
+			try { alreadyEntered = sessionStorage.getItem('yusu-booted') === '1'; } catch (e) { /* private mode etc. */ }
+			if (alreadyEntered) {
 				boot.parentNode.removeChild(boot);
 				return;
 			}
-			try { sessionStorage.setItem('yusu-booted', '1'); } catch (e) { /* private mode etc. */ }
 
 			var lines = boot.querySelectorAll('[data-boot-line]');
 			var welcome = boot.querySelector('[data-boot-welcome]');
 			var bar = boot.querySelector('[data-boot-bar]');
+			var enterBtn = boot.querySelector('[data-boot-enter]');
+
+			function closeBoot() {
+				try { sessionStorage.setItem('yusu-booted', '1'); } catch (e) { /* private mode etc. */ }
+				if (reduceMotion) {
+					if (boot.parentNode) { boot.parentNode.removeChild(boot); }
+					return;
+				}
+				boot.classList.add('win95-boot-hide');
+				setTimeout(function () {
+					if (boot.parentNode) { boot.parentNode.removeChild(boot); }
+				}, 200);
+			}
+			enterBtn.addEventListener('click', closeBoot);
+
+			if (reduceMotion) {
+				bar.style.width = '100%';
+				enterBtn.hidden = false;
+				return;
+			}
+
 			for (var i = 0; i < lines.length; i++) {
 				if (lines[i] !== welcome) { lines[i].style.visibility = 'hidden'; }
 			}
@@ -84,11 +106,11 @@
 			requestAnimationFrame(function () {
 				requestAnimationFrame(function () { bar.style.width = '100%'; });
 			});
-			setTimeout(function () { welcome.style.visibility = 'visible'; }, 1500);
-			setTimeout(function () { boot.classList.add('win95-boot-hide'); }, 1700);
 			setTimeout(function () {
-				if (boot.parentNode) { boot.parentNode.removeChild(boot); }
-			}, 1950);
+				welcome.style.visibility = 'visible';
+				enterBtn.hidden = false;
+				enterBtn.focus();
+			}, 1500);
 		})();
 	</script>
 	<div class="top-row{% if page.show_profile %} has-sidebar{% endif %}{% if page.date %} win95-explorer-collapsed{% endif %}">
