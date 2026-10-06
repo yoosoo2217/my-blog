@@ -7,6 +7,8 @@ sitemap: false
 
 홈 사이드바의 "오늘의 TMI" 문구를 여기서 바로 바꿀 수 있다. GitHub 개인 토큰이 있어야 저장되고, 그 토큰은 **이 브라우저에만** 저장된다. 아래에 토큰을 넣고 "불러오기"를 누르면 현재 문구가 뜨고, 고친 뒤 "저장"을 누르면 바로 커밋된다. GitHub Actions 빌드가 끝나면(보통 1~2분) 사이트에 반영된다.
 
+다른 관리 도구: [글 수정]({{ site.baseurl }}/admin-posts/)
+
 <div class="tmi-admin">
 	<div class="tmi-admin-row">
 		<label for="tmi-token">GitHub 토큰</label>
@@ -32,7 +34,7 @@ sitemap: false
 	var REPO = 'my-blog';
 	var PATH = '_data/tmi.yml';
 	var BRANCH = 'main';
-	var TOKEN_KEY = 'yusu-tmi-admin-token';
+	var TOKEN_KEY = 'yusu-admin-gh-token';
 
 	var tokenInput = document.getElementById('tmi-token');
 	var clearBtn = document.getElementById('tmi-token-clear');
