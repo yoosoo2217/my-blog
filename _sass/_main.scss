@@ -561,11 +561,9 @@ ul.topbar {
 	position: relative;
 	box-sizing: border-box;
 	width: 98.5%;
-	max-height: 640px;
 	padding: 10px 14px;
 	margin: 0 auto;
 	overflow-x: auto;
-	overflow-y: auto;
 	font-size: 14px;
 	line-height: 1.7;
 
@@ -1069,19 +1067,32 @@ html.win95-no-window-anim {
 }
 
 // --- Explorer window collapse (post pages) --------------------------------
-// The top file-explorer window defaults to a short, mostly-closed strip
-// while reading a post, so the post content gets the room — a click on
-// its title bar expands it back to the normal browsing height.
+// The top file-explorer window is fully closed (0 height, no border) while
+// reading a post, so only its title bar + menu stay and the post content
+// gets all the room — a click on its title bar expands it back to the
+// normal browsing height.
 .win95-explorer-collapsed .post_list,
 .win95-explorer-collapsed .tag_list {
-	min-height: 48px;
-	max-height: 48px;
-	transition: min-height 180ms ease, max-height 180ms ease;
+	min-height: 0;
+	max-height: 0;
+	border-width: 0;
+	overflow: hidden;
+	transition: min-height 180ms ease, max-height 180ms ease, border-width 180ms ease;
+}
+.win95-explorer-collapsed .post_total {
+	max-height: 0;
+	margin: 0;
+	overflow: hidden;
+	transition: max-height 180ms ease;
 }
 .win95-explorer-collapsed.win95-explorer-expanded .post_list,
 .win95-explorer-collapsed.win95-explorer-expanded .tag_list {
 	min-height: 220px;
 	max-height: 220px;
+	border-width: 2px;
+}
+.win95-explorer-collapsed.win95-explorer-expanded .post_total {
+	max-height: 40px;
 }
 .win95-explorer-collapsed .default_title {
 	cursor: pointer;
@@ -1240,8 +1251,10 @@ html.win95-no-window-anim {
 	}
 	.win95-explorer-collapsed .post_list,
 	.win95-explorer-collapsed .tag_list,
+	.win95-explorer-collapsed .post_total,
 	.win95-explorer-collapsed.win95-explorer-expanded .post_list,
-	.win95-explorer-collapsed.win95-explorer-expanded .tag_list {
+	.win95-explorer-collapsed.win95-explorer-expanded .tag_list,
+	.win95-explorer-collapsed.win95-explorer-expanded .post_total {
 		transition: none !important;
 	}
 }
