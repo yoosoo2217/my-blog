@@ -1101,6 +1101,114 @@ html.win95-no-window-anim {
 	content: "▾ 접기";
 }
 
+// --- Favorite (즐겨찾기) toggle on each post -------------------------------
+.win95-fav-toggle {
+	@include win95-raised(1px);
+	background: #cfcfcf;
+	color: #000000;
+	font-family: inherit;
+	font-size: 11px;
+	padding: 2px 6px;
+	cursor: pointer;
+}
+.win95-fav-toggle:active {
+	@include win95-raised-pressed(1px);
+}
+.win95-fav-toggle[aria-pressed="true"] {
+	background: #ffe9a8;
+	box-shadow: inset 1px 1px 0 #fff7df, inset -1px -1px 0 #b99a3f;
+}
+
+// --- Code block copy button -------------------------------------------------
+.post_content pre {
+	position: relative;
+}
+.win95-copy-btn {
+	@include win95-raised(1px);
+	position: absolute;
+	top: 6px;
+	right: 6px;
+	background: #e8e8e8;
+	color: #000000;
+	font-family: Tahoma, "MS Sans Serif", Geneva, Verdana, sans-serif;
+	font-size: 10px;
+	padding: 2px 6px;
+	cursor: pointer;
+	z-index: 2;
+}
+.win95-copy-btn:active {
+	@include win95-raised-pressed(1px);
+}
+.win95-copy-btn.win95-copy-btn-done {
+	background: #cfe8d6;
+}
+
+// --- Post table of contents -------------------------------------------------
+.win95-toc {
+	@include win95-etched();
+	background: #fff8ff;
+	margin: 0 0 15px;
+	padding: 8px 10px;
+	font-size: 12px;
+}
+.win95-toc-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	cursor: pointer;
+	font-weight: bold;
+	color: #00007f;
+}
+.win95-toc-toggle {
+	font-size: 10px;
+	color: #555555;
+}
+.win95-toc-list {
+	list-style: none;
+	margin: 8px 0 0;
+	padding: 0;
+}
+.win95-toc.win95-toc-collapsed .win95-toc-list {
+	display: none;
+}
+.win95-toc-list li {
+	margin: 0;
+	padding: 3px 0;
+}
+.win95-toc-list a {
+	color: #000000;
+	text-decoration: none;
+}
+.win95-toc-list a:hover {
+	text-decoration: underline;
+}
+.win95-toc-list .win95-toc-h3 {
+	padding-left: 16px;
+	font-size: 11px;
+	color: #444444;
+}
+
+// --- Retro hit counter -------------------------------------------------------
+.win95-hitcounter {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	background: #000000;
+	border: 2px solid;
+	border-color: #7f787f #fff8ff #fff8ff #7f787f;
+	padding: 4px 8px;
+}
+.win95-hitcounter img {
+	display: block;
+	image-rendering: pixelated;
+}
+.win95-hitcounter-label {
+	color: #3fef6a;
+	font-family: "Courier New", Courier, monospace;
+	font-size: 10px;
+	letter-spacing: 0.5px;
+}
+
 @media (prefers-reduced-motion: reduce) {
 	.top-row > .wrapper,
 	.content,

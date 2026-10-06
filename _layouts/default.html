@@ -16,6 +16,7 @@
 	<link rel="stylesheet" href="{{ site.baseurl }}/assets/css/code-runner.css">
 	<link rel="shortcut icon" href="{{ site.baseurl }}/assets/img/favicon.ico" type="image/x-icon">
 	<link rel="icon" href="{{ site.baseurl }}/assets/img/favicon.ico" type="image/x-icon">
+	<link rel="alternate" type="application/rss+xml" title="{{ site.name }}" href="{{ site.baseurl }}/feed.xml">
 	<script src="{{ site.baseurl }}/assets/js/highlight.pack.js"></script>
 	<!-- 002.js now calls hljs.highlight() itself, one line at a time, while it builds the
 	     line-number table — see the comment in 002.js for why. Running initHighlightingOnLoad()
@@ -173,6 +174,11 @@
 			</div>
 			<ul class="topbar">
 				<li>{{ page.date | date: '%B %-d, %Y' }}</li>
+				{% if page.date %}
+				<li>
+					<button type="button" class="win95-fav-toggle" id="win95-fav-toggle" data-url="{{ site.baseurl }}{{ page.url }}" data-title="{{ page.title | escape }}" aria-pressed="false">☆ 즐겨찾기</button>
+				</li>
+				{% endif %}
 			</ul>
 			<div class="post_content">
         		{{ content }}
@@ -255,6 +261,112 @@
 	</script>
 	<script src="{{ site.baseurl }}/assets/js/001.js"></script>
 	<script src="{{ site.baseurl }}/assets/js/002.js"></script>
+	<script>
+		(function () {
+			// --- Code block copy buttons --------------------------------------
+			// 002.js stashes each block's clean source on data-code-text before
+			// splitting it across the line-number table, so this never has to
+			// reconstruct code from the table cells.
+			var codeBlocks = document.querySelectorAll('.post_content pre[data-code-text]');
+			for (var i = 0; i < codeBlocks.length; i++) {
+				(function (pre) {
+					var btn = document.createElement('button');
+					btn.type = 'button';
+					btn.className = 'win95-copy-btn';
+					btn.textContent = '복사';
+					btn.addEventListener('click', function () {
+						var text = pre.getAttribute('data-code-text') || '';
+						var done = function () {
+							btn.textContent = '복사됨!';
+							btn.classList.add('win95-copy-btn-done');
+							setTimeout(function () {
+								btn.textContent = '복사';
+								btn.classList.remove('win95-copy-btn-done');
+							}, 1500);
+						};
+						if (navigator.clipboard && navigator.clipboard.writeText) {
+							navigator.clipboard.writeText(text).then(done).catch(function () {});
+						} else {
+							var ta = document.createElement('textarea');
+							ta.value = text;
+							ta.style.position = 'fixed';
+							ta.style.left = '-9999px';
+							document.body.appendChild(ta);
+							ta.select();
+							try { document.execCommand('copy'); done(); } catch (e) {}
+							document.body.removeChild(ta);
+						}
+					});
+					pre.appendChild(btn);
+				})(codeBlocks[i]);
+			}
+
+			// --- Table of contents ---------------------------------------------
+			var postContent = document.querySelector('.post_content');
+			if (postContent) {
+				var headings = postContent.querySelectorAll('h2, h3');
+				if (headings.length >= 2) {
+					var toc = document.createElement('div');
+					toc.className = 'win95-toc';
+					var header = document.createElement('div');
+					header.className = 'win95-toc-header';
+					header.innerHTML = '<span>📑 목차</span><span class="win95-toc-toggle">▾ 접기</span>';
+					var list = document.createElement('ul');
+					list.className = 'win95-toc-list';
+					headings.forEach(function (h, idx) {
+						if (!h.id) { h.id = 'toc-heading-' + idx; }
+						var li = document.createElement('li');
+						if (h.tagName === 'H3') { li.className = 'win95-toc-h3'; }
+						var a = document.createElement('a');
+						a.href = '#' + h.id;
+						a.textContent = h.textContent;
+						a.addEventListener('click', function (e) {
+							e.preventDefault();
+							h.scrollIntoView({ block: 'start' });
+						});
+						li.appendChild(a);
+						list.appendChild(li);
+					});
+					header.addEventListener('click', function () {
+						var collapsed = toc.classList.toggle('win95-toc-collapsed');
+						header.querySelector('.win95-toc-toggle').textContent = collapsed ? '▸ 펼치기' : '▾ 접기';
+					});
+					toc.appendChild(header);
+					toc.appendChild(list);
+					postContent.insertBefore(toc, postContent.firstChild);
+				}
+			}
+
+			// --- Favorite (즐겨찾기) toggle --------------------------------------
+			var favBtn = document.getElementById('win95-fav-toggle');
+			if (favBtn) {
+				var FAV_KEY = 'yusu-favorites';
+				var readFavs = function () {
+					try { return JSON.parse(localStorage.getItem(FAV_KEY) || '[]'); } catch (e) { return []; }
+				};
+				var writeFavs = function (list) {
+					try { localStorage.setItem(FAV_KEY, JSON.stringify(list)); } catch (e) {}
+				};
+				var url = favBtn.getAttribute('data-url');
+				var setState = function (isFav) {
+					favBtn.textContent = isFav ? '★ 즐겨찾기 해제' : '☆ 즐겨찾기';
+					favBtn.setAttribute('aria-pressed', String(isFav));
+				};
+				setState(readFavs().indexOf(url) !== -1);
+				favBtn.addEventListener('click', function () {
+					var favs = readFavs();
+					var idx = favs.indexOf(url);
+					if (idx === -1) {
+						favs.push(url);
+					} else {
+						favs.splice(idx, 1);
+					}
+					writeFavs(favs);
+					setState(idx === -1);
+				});
+			}
+		})();
+	</script>
 	<script src="{{ site.baseurl }}/assets/js/code-runner.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.1/dist/mermaid.min.js"></script>
 	<script>

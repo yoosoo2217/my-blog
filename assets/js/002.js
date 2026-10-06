@@ -22,6 +22,14 @@ function numbers () {
 
 		/* END OF SECTION*/
 
+		// Stash the clean original source on the <pre> (before it's split
+		// across table cells below) so the copy button added elsewhere can
+		// just read this attribute instead of trying to reconstruct the
+		// code from the line-numbered table.
+		if (fields[field].parentElement) {
+			fields[field].parentElement.setAttribute("data-code-text", select_f.join("\n"));
+		}
+
 		// Highlight each line on its own, against its own plain text, *before* it goes
 		// into the table below. hljs used to run afterward on the whole <code> element,
 		// but by then every line was split across separate <th> cells with no real "\n"

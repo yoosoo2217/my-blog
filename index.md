@@ -272,10 +272,13 @@ show_profile: true
 
 <div style="margin: 2rem 10px;">
 
-  <img
-    src="https://api.visitorbadge.io/api/visitors?path=yoosoo2217%2Fmy-blog&label=VISITERS"
-    alt="VISITERS"
-  >
+  <div class="win95-hitcounter">
+    <span class="win95-hitcounter-label">💾 HIT COUNT</span>
+    <img
+      src="https://api.visitorbadge.io/api/visitors?path=yoosoo2217%2Fmy-blog&label=VISITERS"
+      alt="VISITERS"
+    >
+  </div>
 
 </div>
 
