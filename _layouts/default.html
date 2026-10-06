@@ -179,8 +179,11 @@
 					<button type="button" class="win95-fav-toggle" id="win95-fav-toggle" data-url="{{ site.baseurl }}{{ page.url }}" data-title="{{ page.title | escape }}" aria-pressed="false">☆ 즐겨찾기</button>
 				</li>
 				{% endif %}
+				<li class="win95-toc-wrap" id="win95-toc-wrap" hidden>
+					<button type="button" class="win95-toc-toggle" id="win95-toc-toggle" aria-expanded="false" aria-haspopup="true">▤ 목차</button>
+					<ul class="win95-toc-list" id="win95-toc-list" hidden></ul>
+				</li>
 			</ul>
-			<ul class="topbar win95-toc-bar" id="win95-toc-bar" hidden></ul>
 			<div class="post_content">
         		{{ content }}
 				{% if page.title %}
@@ -304,27 +307,49 @@
 				})(codeBlocks[i]);
 			}
 
-			// --- Table of contents — a plain topbar-style menu row (like the
-			// file explorer's About/검색/방명록 menu above), not a boxed panel.
+			// --- Table of contents — collapsed by default behind a "▤ 목차"
+			// toggle (like the Start Menu button), so long posts with many
+			// headings don't dump a wall of text into the topbar row.
 			var postContent = document.querySelector('.post_content');
-			var tocBar = document.getElementById('win95-toc-bar');
-			if (postContent && tocBar) {
+			var tocWrap = document.getElementById('win95-toc-wrap');
+			var tocToggle = document.getElementById('win95-toc-toggle');
+			var tocList = document.getElementById('win95-toc-list');
+			if (postContent && tocWrap && tocToggle && tocList) {
 				var headings = postContent.querySelectorAll('h2, h3');
 				if (headings.length >= 2) {
 					headings.forEach(function (h, idx) {
 						if (!h.id) { h.id = 'toc-heading-' + idx; }
 						var li = document.createElement('li');
+						if (h.tagName === 'H3') { li.className = 'win95-toc-sub'; }
 						var a = document.createElement('a');
 						a.href = '#' + h.id;
 						a.textContent = h.textContent;
 						a.addEventListener('click', function (e) {
 							e.preventDefault();
+							closeToc();
 							h.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
 						});
 						li.appendChild(a);
-						tocBar.appendChild(li);
+						tocList.appendChild(li);
 					});
-					tocBar.hidden = false;
+					tocWrap.hidden = false;
+
+					var closeToc = function () {
+						tocList.hidden = true;
+						tocToggle.setAttribute('aria-expanded', 'false');
+					};
+					tocToggle.addEventListener('click', function (e) {
+						e.stopPropagation();
+						var willOpen = tocList.hidden;
+						tocList.hidden = !willOpen;
+						tocToggle.setAttribute('aria-expanded', String(willOpen));
+					});
+					document.addEventListener('click', function (e) {
+						if (!tocList.hidden && !tocWrap.contains(e.target)) { closeToc(); }
+					});
+					document.addEventListener('keydown', function (e) {
+						if (e.key === 'Escape') { closeToc(); }
+					});
 				}
 			}
 
