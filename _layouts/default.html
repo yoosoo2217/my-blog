@@ -180,6 +180,9 @@
 				</li>
 				{% endif %}
 			</ul>
+			{% if page.date %}
+			<ul class="topbar win95-toc-bar" id="win95-toc-bar" hidden></ul>
+			{% endif %}
 			<div class="post_content">
         		{{ content }}
 				{% if page.title %}
@@ -263,6 +266,8 @@
 	<script src="{{ site.baseurl }}/assets/js/002.js"></script>
 	<script>
 		(function () {
+			var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
 			// --- Code block copy buttons --------------------------------------
 			// 002.js stashes each block's clean source on data-code-text before
 			// splitting it across the line-number table, so this never has to
@@ -301,39 +306,27 @@
 				})(codeBlocks[i]);
 			}
 
-			// --- Table of contents ---------------------------------------------
+			// --- Table of contents — a plain topbar-style menu row (like the
+			// file explorer's About/검색/방명록 menu above), not a boxed panel.
 			var postContent = document.querySelector('.post_content');
-			if (postContent) {
+			var tocBar = document.getElementById('win95-toc-bar');
+			if (postContent && tocBar) {
 				var headings = postContent.querySelectorAll('h2, h3');
 				if (headings.length >= 2) {
-					var toc = document.createElement('div');
-					toc.className = 'win95-toc';
-					var header = document.createElement('div');
-					header.className = 'win95-toc-header';
-					header.innerHTML = '<span>📑 목차</span><span class="win95-toc-toggle">▾ 접기</span>';
-					var list = document.createElement('ul');
-					list.className = 'win95-toc-list';
 					headings.forEach(function (h, idx) {
 						if (!h.id) { h.id = 'toc-heading-' + idx; }
 						var li = document.createElement('li');
-						if (h.tagName === 'H3') { li.className = 'win95-toc-h3'; }
 						var a = document.createElement('a');
 						a.href = '#' + h.id;
 						a.textContent = h.textContent;
 						a.addEventListener('click', function (e) {
 							e.preventDefault();
-							h.scrollIntoView({ block: 'start' });
+							h.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
 						});
 						li.appendChild(a);
-						list.appendChild(li);
+						tocBar.appendChild(li);
 					});
-					header.addEventListener('click', function () {
-						var collapsed = toc.classList.toggle('win95-toc-collapsed');
-						header.querySelector('.win95-toc-toggle').textContent = collapsed ? '▸ 펼치기' : '▾ 접기';
-					});
-					toc.appendChild(header);
-					toc.appendChild(list);
-					postContent.insertBefore(toc, postContent.firstChild);
+					tocBar.hidden = false;
 				}
 			}
 
