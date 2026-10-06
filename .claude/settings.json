@@ -1,0 +1,30 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cp /c/Users/user/AppData/Local/Temp/claude/c--my-blog/54eed096-1801-49d1-b467-1423e71f0b86/scratchpad/002_correct2.css /c/Users/user/AppData/Local/Temp/claude/c--my-blog/54eed096-1801-49d1-b467-1423e71f0b86/scratchpad/002_correct2_served.css)",
+      "Bash(node -e ' *)",
+      "Bash(python3 -c \"print\\('test'\\)\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:9061/002_correct2_served.css)",
+      "Bash(curl -s http://localhost:9061/002_correct2_served.css)",
+      "Bash(curl -sI http://localhost:9061/002_correct2_served.css)",
+      "Bash(powershell -NoProfile -Command 'Get-NetTCPConnection -LocalPort 9061 -ErrorAction SilentlyContinue | Select-Object -ExpandProperty OwningProcess | ForEach-Object { Stop-Process -Id $_ -Force }')",
+      "Bash(curl -sI http://localhost:9062/002_correct2_served.css)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:9062/live_check_code_fixed.html)",
+      "Bash(powershell -NoProfile -Command 'Get-NetTCPConnection -LocalPort 9062 -ErrorAction SilentlyContinue | Select-Object -ExpandProperty OwningProcess | ForEach-Object { Stop-Process -Id $_ -Force }')",
+      "Bash(git commit -m ' *)",
+      "Bash(file _posts/2026-10-01-*.md)",
+      "Bash(/c/Ruby40-x64/bin/ruby.exe --version)",
+      "PowerShell(& \"C:\\\\Ruby40-x64\\\\bin\\\\ruby.exe\" --version)",
+      "Bash(sort -t: -k2)",
+      "Bash(grep -l \"^    //\\\\|        //\" _posts/*.md)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" https://yoosoo2217.github.io/my-blog/java-encapsulation-immutable-objects.html)",
+      "Bash(curl -s https://yoosoo2217.github.io/my-blog/java-encapsulation-immutable-objects.html -o \"/c/Users/user/AppData/Local/Temp/claude/c--my-blog/54eed096-1801-49d1-b467-1423e71f0b86/scratchpad/live_comment_check.html\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" https://yoosoo2217.github.io/my-blog/java-variables-and-types.html)",
+      "Bash(curl -s https://yoosoo2217.github.io/my-blog/java-variables-and-types.html -o \"/c/Users/user/AppData/Local/Temp/claude/c--my-blog/54eed096-1801-49d1-b467-1423e71f0b86/scratchpad/live_comment_check.html\")",
+      "Bash(grep -c \"//\" \"/c/Users/user/AppData/Local/Temp/claude/c--my-blog/54eed096-1801-49d1-b467-1423e71f0b86/scratchpad/live_comment_check.html\")",
+      "Bash(powershell -NoProfile -Command 'Get-NetTCPConnection -LocalPort 9070 -ErrorAction SilentlyContinue | Select-Object -ExpandProperty OwningProcess | ForEach-Object { Stop-Process -Id $_ -Force }')",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:9070/live_comment_check_abs.html)",
+      "Bash(node shot_comment_bug.js)"
+    ]
+  }
+}
