@@ -3,7 +3,6 @@ title: "Git add, commit, push"
 date: 2026-08-30
 tags:
   - Git
-  - GitHub
 ---
 
 `add`와 `commit`은 왜 나뉘어 있을까? 한 번에 저장하면 될 것 같은데, 처음에는 이 구분이 가장 헷갈렸다.

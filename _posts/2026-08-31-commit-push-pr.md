@@ -3,7 +3,6 @@ title: "commit, push, PR 정리"
 date: 2026-08-31 10:00:00
 tags:
   - Git
-  - GitHub
 ---
 
 push까지 했는데 PR(Pull Request)은 또 무엇일까? `git merge`로 바로 합치면 되는데 왜 PR을 따로 만들까? commit, push, PR을 순서대로 정리했다.
