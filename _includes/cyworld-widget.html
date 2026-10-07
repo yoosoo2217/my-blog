@@ -346,6 +346,70 @@
 })();
 </script>
 
+<script>
+// Floating animation: instead of snapping to the top like plain `position:
+// sticky`, the sidebar glides after the page as you scroll (it eases toward
+// its target a little every frame). Without JS it stays a normal sticky box;
+// with reduced-motion preferred, or on the stacked small-screen layout, it
+// does not animate.
+(function () {
+	var box = document.querySelector('.cy-sidebar-sticky');
+	var col = box && box.parentNode;
+	if (!box || !col) { return; }
+
+	var TOP_GAP = 16;   // same gap the sticky version used
+	var EASE = 0.14;    // 0..1, higher = snappier
+	var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+	var current = 0;
+	var running = false;
+
+	function enabled() { return window.innerWidth > 900; }
+
+	function target() {
+		var z = parseFloat(box.style.zoom) || 1;
+		var colRect = col.getBoundingClientRect();
+		var boxH = box.getBoundingClientRect().height;
+		var max = Math.max(0, colRect.height - boxH);
+		var want = TOP_GAP - colRect.top;            // visual px to move down
+		return { px: Math.min(Math.max(want, 0), max), z: z };
+	}
+
+	function frame() {
+		if (!enabled()) { stop(); return; }
+		var t = target();
+		current += (t.px - current) * (reduce ? 1 : EASE);
+		if (Math.abs(t.px - current) < 0.3) { current = t.px; }
+		box.style.transform = 'translateY(' + (current / t.z) + 'px)';
+		if (current !== t.px) {
+			window.requestAnimationFrame(frame);
+		} else {
+			running = false;
+		}
+	}
+
+	function start() {
+		if (!enabled()) { stop(); return; }
+		box.classList.add('cy-float-anim');
+		if (!running) {
+			running = true;
+			window.requestAnimationFrame(frame);
+		}
+	}
+
+	function stop() {
+		running = false;
+		current = 0;
+		box.classList.remove('cy-float-anim');
+		box.style.transform = '';
+	}
+
+	window.addEventListener('scroll', start, { passive: true });
+	window.addEventListener('resize', start);
+	window.addEventListener('load', start);
+	start();
+})();
+</script>
+
 <style>
 .cy-sidebar {
 	flex: 0 0 220px;
@@ -359,6 +423,13 @@
 .cy-sidebar-sticky {
 	position: sticky;
 	top: 16px;
+}
+/* Added by the floating-animation script: it moves the box itself with an
+   eased transform, so the native sticky offset must not also apply. */
+.cy-sidebar-sticky.cy-float-anim {
+	position: relative;
+	top: 0;
+	will-change: transform;
 }
 .cy-visitors {
 	display: flex;
