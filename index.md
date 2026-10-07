@@ -266,21 +266,7 @@ show_profile: true
 
 </div>
 
-<!-- ==================== 방문자 수 ==================== -->
-
-<h2 style="margin-left:10px;">- VISITORS</h2>
-
-<div style="margin: 2rem 10px;">
-
-  <div class="win95-hitcounter">
-    <span class="win95-hitcounter-label">💾 HIT COUNT</span>
-    <img
-      src="https://api.visitorbadge.io/api/visitors?path=yoosoo2217%2Fmy-blog&label=VISITERS"
-      alt="VISITERS"
-    >
-  </div>
-
-</div>
+<!-- 방문자 수(HIT COUNT)는 왼쪽 사이드바(cyworld-widget.html)로 옮겼다. -->
 
 
 <!-- ==================== 캘린더 JavaScript ==================== -->

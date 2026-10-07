@@ -1,4 +1,5 @@
 <div class="cy-sidebar">
+<div class="cy-sidebar-sticky">
 	<div class="cy-window">
 		<div class="cy-titlebar">
 			<span class="cy-title-text">TODAY IS... 박유수</span>
@@ -115,6 +116,17 @@
 		<span class="cy-gb-text">방명록 남기기</span>
 		<span class="cy-gb-badge">NEW</span>
 	</a>
+
+	<div class="cy-visitors">
+		<div class="win95-hitcounter">
+			<span class="win95-hitcounter-label">💾 HIT COUNT</span>
+			<img
+				src="https://api.visitorbadge.io/api/visitors?path=yoosoo2217%2Fmy-blog&label=VISITERS"
+				alt="VISITERS"
+			>
+		</div>
+	</div>
+</div>
 </div>
 
 <script>
@@ -313,6 +325,28 @@
 	width: 220px;
 	font-family: Tahoma, "MS Sans Serif", Geneva, Verdana, sans-serif;
 }
+/* The blocks follow the page while scrolling. The wrapper sticks inside
+   .cy-sidebar, which is stretched to the full height of the row. If the
+   stack is taller than the screen, it scrolls on its own. */
+.cy-sidebar-sticky {
+	position: sticky;
+	top: 16px;
+	max-height: calc(100vh - 62px);
+	overflow-y: auto;
+	overflow-x: hidden;
+	scrollbar-width: thin;
+}
+.cy-visitors {
+	display: flex;
+	justify-content: center;
+	margin-top: 10px;
+}
+.cy-visitors .win95-hitcounter {
+	flex-wrap: wrap;
+	justify-content: center;
+	box-sizing: border-box;
+	max-width: 100%;
+}
 .cy-window {
 	width: 220px;
 	margin: 0;
@@ -398,8 +432,8 @@
 }
 .cy-photo-frame {
 	margin: 0 auto 8px;
-	width: 160px;
-	height: 192px;
+	width: 104px;
+	height: 120px;
 	background: #fff8ff;
 	border-width: 2px;
 	border-style: ridge groove groove ridge;
@@ -409,8 +443,8 @@
 	justify-content: center;
 }
 .cy-avatar {
-	width: 140px;
-	height: 168px;
+	width: 80px;
+	height: 96px;
 	image-rendering: pixelated;
 	image-rendering: crisp-edges;
 }
@@ -726,7 +760,7 @@
 
 @media (max-width: 640px) {
 	.cy-window, .cy-guestbook-btn, .cy-music-window { width: auto; }
-	.cy-photo-frame { width: 180px; height: 216px; }
-	.cy-avatar { width: 160px; height: 192px; }
+	.cy-photo-frame { width: 116px; height: 136px; }
+	.cy-avatar { width: 100px; height: 120px; }
 }
 </style>

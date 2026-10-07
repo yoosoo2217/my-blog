@@ -402,7 +402,19 @@
 					/* skip this block if anything goes wrong */
 				}
 			}
-			mermaid.initialize({ startOnLoad: false, theme: 'neutral' });
+			// Mermaid sizes each node box by measuring its text with its own
+				// font settings. The site's font (Tahoma, 14px, line-height 1.7)
+				// differs from Mermaid's default, so HTML labels overflowed and
+				// got clipped. Use the site's font, a smaller size, and SVG text
+				// (measured from the real rendered glyphs) so boxes fit the text.
+				mermaid.initialize({
+					startOnLoad: false,
+					theme: 'neutral',
+					fontFamily: 'Tahoma, "MS Sans Serif", Geneva, Verdana, sans-serif',
+					themeVariables: { fontSize: '13px' },
+					flowchart: { htmlLabels: false, useMaxWidth: true },
+					sequence: { useMaxWidth: true }
+				});
 			mermaid.run({ querySelector: '.mermaid' });
 		})();
 	</script>
