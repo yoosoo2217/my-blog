@@ -2,7 +2,7 @@
 title: "pinder 팀 프로젝트 회고"
 date: 2026-09-22
 tags:
-  - P:nder
+  - pinder
 ---
 
 ## 들어가며 (Situation)
