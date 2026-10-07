@@ -1,17 +1,22 @@
 ---
-title: "static 필드는 왜 인스턴스를 새로 만들어도 리셋되지 않을까"
+title: "static 필드는 왜 리셋되지 않을까"
 date: 2026-10-06
 tags:
   - Java
 ---
 
-[이전 글]({{ site.baseurl }}/java-method-overloading.html)에서 메소드 오버로딩을 정리했고, 이어서 오늘은 `static` 키워드를 직접 실험해봤다. `Application`과 `StaticFieldTest` 두 클래스를 만들어서, 인스턴스 필드와 `static` 필드가 객체를 새로 만들 때 각각 어떻게 다르게 동작하는지 값을 출력해가며 확인했다.
+인스턴스를 새로 만들면 필드가 다시 0으로 시작하는데, `static` 필드는 왜 값이 그대로 남아 있을까? `Application`과 `StaticFieldTest` 두 클래스를 만들어서, 인스턴스 필드와 `static` 필드가 객체를 새로 만들 때 각각 어떻게 동작하는지 값을 출력하며 확인했다. 앞선 주제는 [이전 글]({{ site.baseurl }}/java-method-overloading.html)에 정리해뒀다.
 
-## 1. static 키워드의 의미
+> **TL;DR**
+> - `static` 멤버는 인스턴스가 아니라 클래스에 속해서, 모든 인스턴스가 하나의 값을 공유한다.
+> - 인스턴스 필드는 `new`로 새 인스턴스를 만들 때마다 기본값으로 다시 시작하지만, `static` 필드는 값이 유지된다.
+> - `static` 멤버는 `this`가 아니라 `클래스명.멤버명`으로 접근한다.
+
+## 1. static은 클래스에 묶인 생명주기를 가진다
 
 `static`이 붙은 변수나 메소드는 객체(인스턴스)가 생성되는 시점이 아니라, **애플리케이션이 시작되는 시점**에 초기화된다. `static`은 "정적"이라는 뜻 그대로, 일반적인 객체의 생명주기(생성 → 사용 → 소멸)와는 다른, 클래스 자체에 묶인 생명주기를 가진다. 그래서 인스턴스를 몇 개를 만들든 `static` 멤버는 단 하나만 존재하고, 모든 인스턴스가 이 값을 공유한다.
 
-## 2. 실제 작성한 테스트 코드
+## 2. StaticFieldTest와 Application 코드
 
 필드와 메소드에 `static`을 붙인 경우와 안 붙인 경우를 나란히 비교해보려고 `StaticFieldTest` 클래스를 만들었다.
 
@@ -93,7 +98,7 @@ public class Application {
 
 `increaseNonstatic()`은 `this.nonStaticInt++`처럼 `this`로 접근하는 반면, `increasestatic()`은 `this` 없이 `StaticFieldTest.staticInt++`로 클래스 이름을 통해 접근한다. `static` 멤버는 특정 인스턴스에 속한 값이 아니라 클래스 자체에 속한 값이기 때문에, 인스턴스를 가리키는 `this`로 접근할 수 없다.
 
-## 3. 값이 바뀌는 과정을 따라가보기
+## 3. 인스턴스를 새로 만들어도 staticInt는 유지된다
 
 `Application`의 실행 흐름대로 `nonStaticInt`와 `staticInt`가 각각 어떻게 바뀌는지 정리하면 다음과 같다.
 
@@ -105,15 +110,17 @@ public class Application {
 
 `st1`의 `increaseNonstatic()`을 호출하면 `st1`이 가진 `nonStaticInt`만 1이 되고, `increasestatic()`을 호출하면 `StaticFieldTest` 클래스 전체가 공유하는 `staticInt`가 1이 된다. 이후 `st2`를 새로 생성하면, 인스턴스 필드인 `nonStaticInt`는 `st2`만의 새 값(기본값 0)으로 다시 시작하지만, `static` 필드인 `staticInt`는 `st2`를 새로 만든 것과 무관하게 이미 증가했던 값(1)을 그대로 유지한다. `static` 필드는 인스턴스가 아니라 클래스에 속해 있어서, 인스턴스를 아무리 새로 만들어도 리셋되지 않고 프로그램이 끝날 때까지 하나의 값을 공유한다는 걸 이 흐름으로 확인했다.
 
-## 4. 주의할 점
+## 4. main 메소드에 public이 빠져 있다 (확인 필요)
 
-- `Application.main()`이 `static void main(String[] args)`로 선언돼 있는데, `java` 명령으로 직접 실행하는 진입점(entry point)이 되려면 공식적으로는 `public static void main(String[] args)`처럼 `public`이 붙어야 한다. 지금 코드는 `public`이 빠져 있어서, 이 메소드 자체는 다른 클래스에서 호출하는 용도로는 쓸 수 있어도 커맨드라인에서 바로 실행하는 진입점으로는 동작하지 않을 수 있다. 다음에 작성할 땐 `public static void main(String[] args)` 형태를 지키려고 한다.
+- `Application.main()`이 `static void main(String[] args)`로 선언돼 있다. `java` 명령으로 직접 실행하는 진입점(entry point)이 되려면 전통적으로는 `public static void main(String[] args)`처럼 `public`이 붙어야 한다. 이 코드는 `public`이 빠져 있어서, 사용하는 Java 버전에 따라 커맨드라인에서 바로 실행되지 않을 수 있다. 버전별 허용 여부는 `확인 필요`다. 일반적인 형태인 `public static void main(String[] args)`를 지키려고 한다.
 
-## 오늘 정리
+## 5. 정리
 
-- `static`이 붙은 필드/메소드는 인스턴스 생성 시점이 아니라 애플리케이션 시작 시점에 초기화되고, 모든 인스턴스가 하나의 값을 공유한다는 걸 직접 확인했다.
-- 인스턴스 필드(`nonStaticInt`)는 `new`로 새 인스턴스를 만들 때마다 기본값으로 다시 시작하지만, `static` 필드(`staticInt`)는 인스턴스를 몇 개를 만들든 값이 유지된다는 차이를 `st1`, `st2` 두 인스턴스로 비교해서 확인했다.
-- `static` 멤버는 `this`로 접근할 수 없고, `클래스명.멤버명` 형태로 접근한다는 것도 `increaseNonstatic()`과 `increasestatic()`의 코드 차이로 확인했다.
+- `static`이 붙은 필드/메소드는 인스턴스 생성 시점이 아니라 애플리케이션 시작 시점에 초기화되고, 모든 인스턴스가 하나의 값을 공유한다.
+- 인스턴스 필드(`nonStaticInt`)는 `new`로 새 인스턴스를 만들 때마다 기본값으로 다시 시작하지만, `static` 필드(`staticInt`)는 인스턴스를 몇 개를 만들든 값이 유지된다. `st1`, `st2` 두 인스턴스로 비교해서 확인했다.
+- `static` 멤버는 `this`로 접근할 수 없고, `클래스명.멤버명` 형태로 접근한다.
+
+다음에 볼 것은 아래 "더 학습하면 좋은 개념"에 적었다.
 
 ## 더 학습하면 좋은 개념
 

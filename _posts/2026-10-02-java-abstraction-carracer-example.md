@@ -1,15 +1,20 @@
 ---
-title: "추상화 설계를 실제 코드로 — 카레이서와 자동차 구현하기"
+title: "카레이서와 자동차 추상화 구현"
 date: 2026-10-02 09:30:00
 tags:
   - Java
 ---
 
-[이전 글]({{ site.baseurl }}/java-encapsulation-monster-example.html)에서 캡슐화 문제를 Monster로 직접 겪어봤고, 오늘은 조금 더 과거로 돌아가서 — [추상화 글]({{ site.baseurl }}/java-abstraction-interfaces.html)에서 요구사항만 적어두고 설계까지만 했던 "카레이서와 자동차" 예제를 실제로 구현해봤다.
+설계까지만 해둔 "카레이서와 자동차" 요구사항 7개를 실제 코드로 옮기면 클래스와 메서드는 어떻게 나뉠까? [추상화 글]({{ site.baseurl }}/java-abstraction-interfaces.html)에서 요구사항과 설계만 정리했던 이 예제를 구현한다. [이전 글]({{ site.baseurl }}/java-encapsulation-monster-example.html)의 Monster 예제에서 다룬 캡슐화도 함께 적용된다.
 
-## 0. 다시 보는 요구사항과 설계
+> **TL;DR**
+> - 요구사항 7개를 `Car`(상태와 행위), `CarRacer`(`Car`를 감싸는 클래스), `Application`(메뉴) 세 클래스로 구현했다.
+> - `isOn`이 처음부터 `false`인 것은 Heap의 기본값 덕분이라서, "처음엔 멈춘 상태"라는 요구사항 1을 따로 코드로 쓰지 않아도 된다.
+> - `case 9`의 `break`는 `switch`만 빠져나가므로, `while`을 끝내려면 `switch` 밖에 `break`가 하나 더 필요하다.
 
-[추상화 글]({{ site.baseurl }}/java-abstraction-interfaces.html)에서 이미 정리했던 내용이라 간단히만 복습하면, 요구사항은 이렇다.
+## 1. 구현할 요구사항과 설계
+
+[추상화 글]({{ site.baseurl }}/java-abstraction-interfaces.html)에서 이미 정리한 내용이라 간단히 복습하면, 요구사항은 이렇다.
 
 ```text
 1. 자동차는 처음에 멈춘 상태로 대기한다.
@@ -21,9 +26,9 @@ tags:
 7. 자동차가 달리는 중이라면 시동을 끌 수 없다.
 ```
 
-여기서 "은/는, 이/가" 앞에 오는 단어가 대부분 클래스 후보라는 팁도 다시 나왔다 — `자동차`, `카레이서`. 오늘은 이 설계를 `Car`, `CarRacer`, `Application` 세 클래스로 실제 구현했다.
+"은/는, 이/가" 앞에 오는 단어(`자동차`, `카레이서`)가 대부분 클래스 후보다. 이 설계를 `Car`, `CarRacer`, `Application` 세 클래스로 구현한다.
 
-## 1. Car — 상태와 행위를 가진 자동차
+## 2. Car: 상태와 행위를 가진 자동차
 
 ```java
 public class Car {
@@ -85,11 +90,11 @@ public class Car {
 - `stop()`: 켜져 있고 달리는 중이면 속력을 0으로(요구사항 4), 켜져 있지만 멈춰 있으면 안내만(요구사항 5), 꺼져 있으면 또 다른 안내.
 - `turnOff()`: 달리는 중이면 끌 수 없다고 거부(요구사항 7), 멈춰 있으면 꺼준다(요구사항 6).
 
-### 주의할 점 — `isOn`이 처음부터 `false`인 이유
+### `isOn`이 처음부터 `false`인 이유
 
 파일 맨 위 주석에 "객체 생성 → 기본 생성자 호출(Heap 영역에 메모리 올림) → 그래서 false 타입으로 꺼짐(초깃값)"이라고 적혀 있었는데, 이건 [JVM 메모리 구조 글]({{ site.baseurl }}/java-jvm-memory-stack-heap.html)에서 정리했던 내용과 그대로 이어진다. `new Car()`로 인스턴스를 만들면 Heap에 올라간 `isOn` 필드는 값을 넣어주기 전까지 `boolean`의 기본값인 `false`로 채워진다. 그래서 요구사항 1("자동차는 처음에 멈춘 상태로 대기한다")을 코드로 따로 작성하지 않아도, Heap의 기본값 자체가 "꺼져 있고 멈춰 있는 상태"를 만들어준다.
 
-## 2. CarRacer — Car를 감싸서 캡슐화하기
+## 3. CarRacer: Car를 감싸서 캡슐화하기
 
 ```java
 public class CarRacer {
@@ -114,13 +119,13 @@ public class CarRacer {
 }
 ```
 
-`CarRacer`는 `Car`를 `private` 필드로 가지고 있다. `Application`은 `Car`를 직접 다루지 않고, 항상 `CarRacer`가 가진 네 개의 메서드(시동·전진·정지·시동끄기)를 통해서만 자동차를 조작한다. 어제 Monster 예제에서 본 "필드를 `private`으로 막으면, 메서드를 거치지 않고는 값을 바꿀 방법이 없어진다"는 원칙이 여기서는 클래스 단위로 한 번 더 적용된 셈이다 — `Application`은 `car.speed`나 `car.isOn`에는 아예 접근할 수 없고, `CarRacer`가 공개한 메서드만 쓸 수 있다.
+`CarRacer`는 `Car`를 `private` 필드로 가지고 있다. `Application`은 `Car`를 직접 다루지 않고, 항상 `CarRacer`가 가진 네 개의 메서드(시동·전진·정지·시동끄기)를 통해서만 자동차를 조작한다. 앞선 Monster 예제에서 본 "필드를 `private`으로 막으면, 메서드를 거치지 않고는 값을 바꿀 방법이 없어진다"는 원칙이 여기서는 클래스 단위로 한 번 더 적용된 셈이다 — `Application`은 `car.speed`나 `car.isOn`에는 아예 접근할 수 없고, `CarRacer`가 공개한 메서드만 쓸 수 있다.
 
-### 주의할 점 — 메서드 이름 오타(`stratUp`)
+### 메서드 이름 오타(`stratUp`)가 남긴 혼란
 
 `Car`의 메서드는 `startUp()`인데, `CarRacer`가 그걸 감싸는 메서드 이름은 `stratUp()`으로 `t`와 `r` 순서가 바뀌어 있다. 둘이 같은 이름일 필요는 없어서 컴파일되고 정상 동작은 하지만, 같은 기능을 감싼 메서드끼리 이름이 다르면 나중에 코드를 읽을 때 헷갈리기 쉽다. 실제로 이 오타 때문에 처음엔 `startUp()`과 `stratUp()`이 서로 다른 메서드인 줄 알고 잠깐 헷갈렸다.
 
-## 3. Application — Scanner와 반복문으로 메뉴 만들기
+## 4. Application: Scanner와 반복문으로 메뉴 만들기
 
 ```java
 Scanner sc = new Scanner(System.in);
@@ -167,16 +172,16 @@ while (true) {
 
 `while (true)`로 무한 반복하면서, 사용자가 숫자를 입력할 때마다 `switch`로 분기해서 `racer`의 메서드를 호출한다.
 
-### 주의할 점 — `switch` 안의 `break`와 `while`을 빠져나가는 `break`는 다른 `break`다
+### `switch` 안의 `break`와 `while`을 빠져나가는 `break`는 다르다
 
 `case 9: break;`는 `switch` 블록만 빠져나갈 뿐, 그 안에서는 아무 메서드도 호출하지 않고 그냥 `switch`를 끝낸다. 실제로 프로그램을 종료시키는 건 `switch` 바깥에 따로 있는 `if (no == 9) { ... break; }`다. 이 `break`는 `switch`가 아니라 `while`을 감싸고 있어서, 이 줄이 실행되면 무한 반복문 자체를 탈출한다. 똑같이 생긴 `break` 키워드라도 **자신을 감싸고 있는 가장 가까운 반복문이나 switch** 하나만 빠져나간다는 걸 이 코드로 확인했다 — 그래서 `case 9`의 `break`만으로는 `while`까지 끝낼 수 없어서, `switch` 밖에 조건문을 하나 더 둬야 했던 것이다.
 
-## 오늘 정리
+## 정리: 핵심 3가지와 다음에 볼 것
 
-- 추상화 과정에서 "요구사항 → 객체 후보 추출 → 메시지(행동) 추출 → 클래스 설계"까지 글로 정리했던 것을, 오늘은 `Car`/`CarRacer`/`Application` 세 클래스로 실제 구현해봤다.
-- `Car`의 필드(`speed`, `isOn`)가 Heap의 기본값(`0`, `false`)만으로 "처음엔 멈춰있고 꺼져있는 상태"라는 요구사항 1을 저절로 만족한다는 걸 확인했다.
-- `CarRacer`가 `Car`를 `private` 필드로 감싸서, `Application`이 `Car`에 직접 접근하지 못하게 캡슐화하는 걸 클래스 단위로 다시 확인했다.
-- `switch`의 `break`와 `while`의 `break`는 서로 다른 블록을 빠져나간다는 걸, 두 `break`가 나란히 쓰인 종료 로직으로 직접 확인했다.
+- "요구사항 → 객체 후보 추출 → 메시지(행동) 추출 → 클래스 설계"까지 한 추상화 결과를 `Car`/`CarRacer`/`Application` 세 클래스로 구현했다.
+- `Car`의 필드(`speed`, `isOn`)는 Heap의 기본값(`0`, `false`)만으로 요구사항 1을 만족한다. `CarRacer`는 `Car`를 `private` 필드로 감싸 `Application`의 직접 접근을 막는다.
+- `switch`의 `break`와 `while`을 끝내는 `break`는 서로 다른 블록을 빠져나간다.
+- 다음에 볼 것은 아래 "더 학습하면 좋은 개념"에 정리했다.
 
 ## 더 학습하면 좋은 개념
 

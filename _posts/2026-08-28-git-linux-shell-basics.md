@@ -1,5 +1,5 @@
 ---
-title: "리눅스 셸(Shell) 기초 정리"
+title: "리눅스 셸 기초"
 date: 2026-08-28 09:00:00
 tags:
   - Git
@@ -7,13 +7,46 @@ tags:
   - Shell
 ---
 
-## 이론
-### CLI 환경 
- - 유닉스 (CLI 기반의 운영체제) ↔ Windows, macOS(그래픽 기반의 운영체제)
- - 하드웨어(hardware) < 커널(kernel) < 운영체제(os) < 셸(shell) < 애플리케이션(application)
-### 셸 (Shell)
- - CLI를 통해 사람과 컴퓨터를 연결해주는 것
- - 종류
-    - sh (Bourne Shell) : 가장 초창기 기본 셸
-    - bash (Bourne Again Shell) : 지금도 많이 쓰이는 강력한 셸
-    - csh, ksh, zsh 등: 각각의 철학과 기능을 가진 다양한 셸들
+Git 명령어는 대부분 터미널에 글자를 입력해서 실행한다. 마우스로 누르지 않고 글자로 컴퓨터를 다루는 환경에서, 사람의 명령은 어떤 경로로 컴퓨터에 전달될까?
+
+> **TL;DR**
+> - 유닉스는 CLI(명령어 입력) 기반 운영체제이고, Windows와 macOS는 그래픽 기반이다.
+> - 셸(Shell)은 CLI를 통해 사람과 컴퓨터를 연결해 주는 프로그램이다.
+> - 셸에는 sh, bash, csh, ksh, zsh 등이 있다.
+
+## CLI 환경은 그래픽 환경과 무엇이 다를까
+
+CLI는 Command Line Interface의 약자로, 명령어를 글자로 입력해서 컴퓨터를 다루는 방식이다.
+
+| 구분 | 운영체제 | 조작 방식 |
+|---|---|---|
+| CLI 기반 | 유닉스 | 명령어 입력 |
+| 그래픽 기반 | Windows, macOS | 아이콘과 창 조작 |
+
+> 위 표는 수업 내용을 그대로 옮겼다. macOS도 유닉스 계열로 알고 있어서 분류가 맞는지 `확인 필요`.
+
+컴퓨터는 아래처럼 층층이 쌓인 구조이고, 사용자는 가장 바깥쪽에서 안쪽으로 명령을 전달한다.
+
+```text
+하드웨어(hardware) < 커널(kernel) < 운영체제(os) < 셸(shell) < 애플리케이션(application)
+```
+
+## 셸은 사람과 컴퓨터 사이에서 무엇을 할까
+
+셸은 CLI를 통해 사람과 컴퓨터를 연결해 주는 역할을 한다. 사용자가 입력한 명령이 셸을 거쳐 컴퓨터에 전달된다.
+
+| 셸 | 설명 |
+|---|---|
+| sh (Bourne Shell) | 가장 초창기 기본 셸 |
+| bash (Bourne Again Shell) | 지금도 많이 쓰이는 셸 |
+| csh, ksh, zsh 등 | 각각의 철학과 기능을 가진 다른 셸들 |
+
+## 정리
+
+- CLI 환경에서는 셸이 사람과 컴퓨터를 이어 준다.
+- 셸의 종류는 여러 가지이고, 그중 bash를 많이 쓴다.
+- 다음에는 셸에서 실제로 입력하는 기본 명령어를 정리할 예정이다.
+
+## 참고 자료
+
+- [GNU Bash Reference Manual](https://www.gnu.org/software/bash/manual/bash.html)

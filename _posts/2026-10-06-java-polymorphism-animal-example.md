@@ -1,13 +1,18 @@
 ---
-title: "Animal·Raccoon·Cat으로 다시 확인한 다형성과 다운캐스팅"
+title: "다형성과 다운캐스팅: Animal 예제"
 date: 2026-10-06
 tags:
   - Java
 ---
 
-[이전 글]({{ site.baseurl }}/java-inheritance-override.html)에서 `Car`-`CapsCar`로 상속과 오버라이딩을 정리했는데, 오늘 마지막으로 [예전에 정리했던 다형성 개념]({{ site.baseurl }}/java-polymorphism.html)을 `Animal`-`Raccoon`-`Cat` 예제로 직접 다시 실습해봤다. 특히 동적 바인딩과 다운캐스팅이 실제 코드에서 언제, 왜 필요한지를 중심으로 확인했다.
+`Animal` 타입 변수에 `Raccoon`을 담고 `bark()`를 호출하면 누구의 메서드가 실행될까? 그리고 `Raccoon`만의 `bite()`는 왜 바로 호출되지 않을까? [예전에 정리했던 다형성 개념]({{ site.baseurl }}/java-polymorphism.html)을 `Animal`-`Raccoon`-`Cat` 예제로 다시 실습하며 동적 바인딩과 다운캐스팅이 필요한 이유를 확인했다. 직전에는 [상속과 오버라이딩 글]({{ site.baseurl }}/java-inheritance-override.html)을 정리했다.
 
-## 1. 실제 작성한 테스트 코드
+> **TL;DR**
+> - 부모 타입 변수로 호출해도 런타임에는 실제 인스턴스가 재정의한 메서드가 실행된다(동적 바인딩).
+> - 자식만의 고유 메서드는 부모 타입 변수로 호출할 수 없고, 다운캐스팅이 필요하다.
+> - `Animal a1 = new Raccoon();`은 되고 `Raccoon r1 = new Animal();`은 안 된다(IS-A 관계).
+
+## 1. 실습에 쓴 Animal, Raccoon, Cat 코드
 
 부모 클래스 `Animal`은 `eat()`, `run()`, `bark()` 세 메서드를 가진다.
 
@@ -155,15 +160,15 @@ public class Application01 {
 }
 ```
 
-## 2. a1.bark()는 왜 "너구리출신이지" 를 출력할까
+## 2. a1.bark()는 왜 "너구리출신이지"를 출력할까
 
 `Animal a1 = new Raccoon();`은 **업캐스팅**이다. `a1`의 컴파일 타임 타입은 `Animal`이지만, 실제로 메모리에 만들어진 인스턴스는 `Raccoon`이다. 이 상태에서 `a1.bark()`를 호출하면, 컴파일 시점에는 `Animal.bark()`와 연결돼 있는 것처럼 보이지만 실제 실행 시점(런타임)에는 `a1`이 가리키는 진짜 인스턴스인 `Raccoon`의 `bark()`가 호출된다. 그래서 `a1.bark()`의 결과는 `Animal`의 "동물이 울어요..."가 아니라 `Raccoon`이 재정의한 "너구리출신이지!!!!!!!!!!!!!!"가 출력된다. 이게 **동적 바인딩**이다 — `eat()`, `run()`도 마찬가지로 `Animal` 타입 변수를 통해 호출하더라도, 실제 인스턴스가 재정의한 메서드가 호출된다.
 
-## 3. bite()는 왜 바로 호출이 안 될까
+## 3. bite()는 왜 다운캐스팅해야 호출될까
 
 반면 `a1.bite()`는 바로 호출할 수 없다. `bite()`는 `Animal`에는 없고 `Raccoon`에만 있는 고유 메서드이기 때문이다. `a1`의 컴파일 타임 타입이 `Animal`인 이상, 컴파일러는 `a1`을 `Animal`이 가진 멤버(`eat`, `run`, `bark`)로만 다룰 수 있다고 판단하고, `Animal`에 없는 `bite()`는 애초에 존재하지 않는 멤버로 취급해서 컴파일 에러를 낸다. 그래서 `((Raccoon) a1).bite();`처럼 **다운캐스팅**으로 "이 변수는 사실 `Raccoon`이야"라고 명시적으로 알려줘야, 그제서야 `Raccoon`만의 `bite()`에 접근할 수 있다.
 
-정리하면, 같은 `a1`이라는 변수 하나로도 두 가지 호출 방식이 갈린다.
+같은 `a1`이라는 변수 하나로도 호출 결과가 갈린다.
 
 | 호출 | 가능 여부 | 이유 |
 |---|---|---|
@@ -171,11 +176,13 @@ public class Application01 {
 | `a1.bite()` | 불가능 (컴파일 에러) | `bite()`는 `Animal`에 없는, `Raccoon`만의 고유 메서드 |
 | `((Raccoon) a1).bite()` | 가능 | 다운캐스팅으로 컴파일러에게 실제 타입이 `Raccoon`임을 알려줬기 때문 |
 
-## 오늘 정리
+## 4. 정리
 
-- `Animal a1 = new Raccoon();`처럼 부모 타입 변수에 자식 인스턴스를 담는 업캐스팅을 직접 해보고, `a1.bark()`를 호출했을 때 컴파일 타임 타입(`Animal`)이 아니라 런타임의 실제 타입(`Raccoon`)이 가진 재정의 메서드가 호출되는 동적 바인딩을 확인했다.
-- `Animal`에 없는 `Raccoon` 고유 메서드(`bite()`)는 `Animal` 타입 변수로는 호출할 수 없고, `((Raccoon) a1).bite()`처럼 다운캐스팅을 해야만 접근할 수 있다는 걸 컴파일 에러를 직접 겪으며 확인했다.
-- `Raccoon`은 `Animal`이지만 `Animal`이 `Raccoon`은 아니라는 IS-A 관계를, `Animal a1 = new Raccoon();`은 되고 `Raccoon r1 = new Animal();`은 안 된다는 주석으로 다시 짚었다.
+- `Animal a1 = new Raccoon();`처럼 부모 타입 변수에 자식 인스턴스를 담는 업캐스팅을 하면, `a1.bark()`는 컴파일 타임 타입(`Animal`)이 아니라 런타임의 실제 타입(`Raccoon`)이 재정의한 메서드를 호출한다(동적 바인딩).
+- `Animal`에 없는 `Raccoon` 고유 메서드(`bite()`)는 `((Raccoon) a1).bite()`처럼 다운캐스팅을 해야만 접근할 수 있다.
+- `Raccoon`은 `Animal`이지만 `Animal`이 `Raccoon`은 아니다. 그래서 `Animal a1 = new Raccoon();`은 되고 `Raccoon r1 = new Animal();`은 안 된다.
+
+다음에 볼 것은 아래 "더 학습하면 좋은 개념"에 적었다.
 
 ## 더 학습하면 좋은 개념
 

@@ -1,14 +1,19 @@
 ---
-title: "CSS flex, grid, transform 실습 정리"
+title: "CSS flex·grid·transform 정리"
 date: 2026-09-03
 tags:
   - CSS
   - 실습파일정리
 ---
 
-[지난 글]({{ site.baseurl }}/css-선택자-실습-정리.html)에서 CSS 선택자를 정리했고, 이번에는 **레이아웃(block/inline), flex, grid, transform/애니메이션**을 정리한다. 마찬가지로 실습은 따라 했지만 개념이 흐릿했던 부분이라, 코드마다 왜 그렇게 동작하는지를 함께 정리했다.
+실습 코드는 따라 쳤는데, 카드가 왜 가로로 놓이고 hover하면 왜 떠오르는지 설명하려니 개념이 흐릿했다. [지난 글]({{ site.baseurl }}/css-선택자-실습-정리.html)의 CSS 선택자에 이어, 이번에는 레이아웃(block/inline), flex, grid, transform/애니메이션을 코드마다 동작 이유와 함께 정리한다.
 
-## 1. 블록(block)과 인라인(inline)
+> **TL;DR**
+> - flex는 한 방향 줄 정렬, grid는 행과 열을 함께 쓰는 칸 배치이고, 둘 다 `display` 속성값이다.
+> - `transform`은 모양을 바꾸고, `transition`은 상태 변화를 부드럽게 잇고, `animation`은 스스로 반복 재생한다.
+> - Tailwind는 속성 하나당 클래스 하나, Bootstrap은 완성된 컴포넌트 클래스를 쓴다.
+
+## 1. 태그는 화면에서 어떤 공간을 차지할까: block과 inline
 
 flex/grid를 배우기 전에, 먼저 태그가 화면에서 차지하는 공간의 기본 성질부터 짚었다.
 
@@ -40,7 +45,7 @@ flex/grid를 배우기 전에, 먼저 태그가 화면에서 차지하는 공간
 
 `display` 속성으로 `div`를 `inline`처럼, `span`을 `block`처럼 강제로 바꿀 수 있다는 걸 실습으로 확인했다. flex/grid도 결국 이 `display` 속성값 중 하나(`flex`, `grid`)라서, 먼저 기본 성질을 아는 게 순서상 중요했다.
 
-## 2. flex 레이아웃
+## 2. 카드를 가로로 배치하려면: flex
 
 `div`는 기본적으로 세로로 쌓이므로, 카드 3개를 가로로 배치하면서 화면 너비에 맞춰 유연하게 정렬하기는 어렵다. 이 문제를 해결하기 위해 flexbox를 배웠다.
 
@@ -93,7 +98,7 @@ flex/grid를 배우기 전에, 먼저 태그가 화면에서 차지하는 공간
 
 `align-items`의 기본값은 `stretch`인데, 이것을 `flex-start`로 바꾸지 않으면 모든 아이템의 높이가 컨테이너 높이만큼 자동으로 늘어난다. 실습에서 설명 문단(`desc`)이 있는 카드만 내용이 길어도 다른 카드들이 함께 높이가 맞춰지는 걸 확인했다.
 
-## 3. grid 레이아웃
+## 3. 행과 열을 함께 지정하려면: grid
 
 카드가 6개로 늘어나면서, 한 줄로만 배치하는 flex 대신 **행과 열을 함께 지정**하는 grid를 배웠다.
 
@@ -150,7 +155,7 @@ flex/grid를 배우기 전에, 먼저 태그가 화면에서 차지하는 공간
 
 grid는 행(row) 개수를 따로 지정하지 않아도, 열(`grid-template-columns`)만 정해주면 내용물 개수에 맞춰 자동으로 행이 늘어난다는 특징이 있다.
 
-## 4. transform과 애니메이션
+## 4. hover 이동과 깜빡임: transform과 animation
 
 카드에 마우스를 올렸을 때 움직이는 효과와, 배지가 깜빡이는 효과를 vanilla CSS로 직접 만들어봤다.
 
@@ -198,7 +203,7 @@ grid는 행(row) 개수를 따로 지정하지 않아도, 열(`grid-template-col
 
 `transition`은 "상태가 바뀔 때(예: hover 진입/이탈)" 자동으로 부드럽게 연결해주는 것이고, `animation`은 반복 재생처럼 **스스로 계속 움직이는** 효과라는 차이를 배웠다.
 
-## 5. 직접 쓴 CSS vs Tailwind/Bootstrap
+## 5. 직접 쓴 CSS와 Tailwind·Bootstrap 비교
 
 같은 카드 UI(위 4번의 `.card`)를 vanilla CSS로 만든 버전과, CDN으로 불러온 유틸리티 클래스(Tailwind, Bootstrap)로 만든 버전을 비교해봤다.
 
@@ -226,18 +231,19 @@ grid는 행(row) 개수를 따로 지정하지 않아도, 열(`grid-template-col
 
 CSS 프레임워크는 CSS를 직접 작성하는 대신, CDN으로 미리 만들어진 스타일 규칙(클래스)을 가져와 쓰는 방식이라는 걸 배웠다. Tailwind는 `p-4`(padding), `text-lg`(font-size)처럼 **속성 하나하나에 대응하는 유틸리티 클래스**를 조합하는 방식이고, Bootstrap은 `.btn`, `.card`처럼 **이미 완성된 컴포넌트 클래스**를 통째로 가져다 쓰는 방식이라는 차이가 가장 인상 깊었다.
 
-## 막혔던 것
+## 막혔던 것과 해결
 
 - `.card:hover`와 `.card :hover`(공백 있음)를 처음엔 같은 뜻인 줄 알았는데, 공백이 들어가면 "카드 안의 자식 요소에 마우스가 올라갔을 때"라는 완전히 다른 의미가 된다는 걸 알고 놀랐다.
 - flex의 `justify-content`(주축)와 `align-items`(교차축)가 어느 방향인지 계속 헷갈렸는데, `flex-direction: row`일 땐 주축=가로, 교차축=세로라고 방향을 먼저 그려보고 나서야 정리됐다.
 - grid의 `fr` 단위가 `%`나 `px`와 뭐가 다른지 몰랐는데, "남은 공간을 비율로 나눈다"는 뜻이라는 걸 알고 나서야 `repeat(3, 1fr)`이 왜 3등분인지 이해했다.
 - CSS 파일 안에 `border: 3px soild rgb(0, 0, 0);`처럼 `solid`를 `soild`로 잘못 쓴 오타가 있었다. 오타가 나면 그 속성 전체가 조용히 무시된다는 걸 실습으로 확인했다 (에러가 나지 않아서 찾기 더 어려웠다).
 
-## 오늘 정리
+## 정리
 
 - block/inline이라는 기본 성질 위에, `display: flex`와 `display: grid`로 레이아웃을 자유롭게 바꿀 수 있다는 걸 배웠다.
 - flex는 "한 줄로 정렬", grid는 "칸을 만들어 배치"라는 목적 차이가 있고, 상황에 따라 골라 쓰면 된다는 걸 알았다.
 - `transform`/`transition`/`animation`으로 정적인 화면에 움직임을 줄 수 있고, Tailwind 같은 프레임워크는 같은 결과를 클래스 조합만으로도 만들 수 있다는 걸 비교해봤다.
+- 다음에 볼 것 : flex 아이템 속성(`flex-grow` 등)과 반응형(`@media`)이다. 아래 "더 학습하면 좋은 개념"에 정리했다.
 
 ## 더 학습하면 좋은 개념
 
