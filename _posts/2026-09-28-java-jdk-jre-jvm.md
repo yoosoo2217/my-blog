@@ -1,5 +1,5 @@
 ---
-title: "JDK·JRE·JVM 차이 정리"
+title: "JDK·JRE·JVM"
 date: 2026-09-28 09:00:00
 tags:
   - Java

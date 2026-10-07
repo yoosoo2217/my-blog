@@ -2,9 +2,7 @@
 title: "포카칩 계산기와 PR 충돌"
 date: 2026-09-30
 tags:
-  - Java
-  - Git
-  - GitHub
+  - 개발
 ---
 
 세 명이 한 파일의 같은 자리에 각자 코드를 한 줄씩 추가하면 어떻게 될까? 카페 계산기 팀 프로젝트(포카칩)에서 `MultiplyCalculator`를 맡아 만들면서, 첫 번째 PR은 그냥 들어갔는데 두 번째부터는 `Application.java`에서 충돌이 난 이유를 확인했다. 브랜치와 PR의 기본 흐름은 [commit, push, PR 글]({{ site.baseurl }}/commit-push-pr.html)에서 정리했다.

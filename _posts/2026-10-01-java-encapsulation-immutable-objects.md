@@ -1,5 +1,5 @@
 ---
-title: "캡슐화와 불변 객체, Java Bean"
+title: "캡슐화와 불변 객체"
 date: 2026-10-01 12:30:00
 tags:
   - Java

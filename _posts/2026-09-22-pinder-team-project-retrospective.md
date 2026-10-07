@@ -2,10 +2,7 @@
 title: "pinder 팀 프로젝트 회고"
 date: 2026-09-22
 tags:
-  - Git
-  - GitHub
-  - AI
-  - 기획
+  - P:nder
 ---
 
 ## 들어가며 (Situation)

@@ -3,7 +3,7 @@ title: "CSS flex·grid·transform 정리"
 date: 2026-09-03
 tags:
   - CSS
-  - 실습파일정리
+  - 실습
 ---
 
 실습 코드는 따라 쳤는데, 카드가 왜 가로로 놓이고 hover하면 왜 떠오르는지 설명하려니 개념이 흐릿했다. [지난 글]({{ site.baseurl }}/css-선택자-실습-정리.html)의 CSS 선택자에 이어, 이번에는 레이아웃(block/inline), flex, grid, transform/애니메이션을 코드마다 동작 이유와 함께 정리한다.
