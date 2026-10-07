@@ -1,0 +1,76 @@
+/* giscus custom theme: Windows 95 look for the guestbook comments.
+   Starts from giscus' own light theme (so every variable it needs exists),
+   then overrides the colors, font and corners. */
+@import url("https://giscus.app/themes/light.css");
+
+main {
+	--color-fg-default: #000000;
+	--color-fg-muted: #4a444a;
+	--color-fg-subtle: #4a444a;
+
+	--color-canvas-default: #fff8ff;
+	--color-canvas-overlay: #fff8ff;
+	--color-canvas-inset: #ffffff;
+	--color-canvas-subtle: #bfb8bf;
+
+	--color-border-default: #7f787f;
+	--color-border-muted: #7f787f;
+
+	--color-accent-fg: #0000ff;
+	--color-accent-emphasis: #00007f;
+	--color-accent-muted: #00007f66;
+	--color-accent-subtle: #d8d8f0;
+
+	--color-btn-text: #000000;
+	--color-btn-bg: #cfcfcf;
+	--color-btn-border: #000000;
+	--color-btn-shadow: inset 1px 1px 0 #fdfdfd, inset -1px -1px 0 #8a8a8a;
+	--color-btn-inset-shadow: none;
+	--color-btn-hover-bg: #dadada;
+	--color-btn-hover-border: #000000;
+	--color-btn-active-bg: #bfb8bf;
+	--color-btn-active-border: #000000;
+	--color-btn-selected-bg: #bfb8bf;
+
+	--color-btn-primary-text: #ffffff;
+	--color-btn-primary-bg: #00007f;
+	--color-btn-primary-border: #000000;
+	--color-btn-primary-shadow: inset 1px 1px 0 #5a5ab4, inset -1px -1px 0 #00003a;
+	--color-btn-primary-inset-shadow: none;
+	--color-btn-primary-hover-bg: #0000a8;
+	--color-btn-primary-hover-border: #000000;
+	--color-btn-primary-selected-bg: #00005a;
+	--color-btn-primary-disabled-text: #bfb8bf;
+	--color-btn-primary-disabled-bg: #7f7fa8;
+	--color-btn-primary-disabled-border: #4a444a;
+
+	--color-segmented-control-bg: #bfb8bf;
+	--color-segmented-control-button-bg: #fff8ff;
+	--color-segmented-control-button-selected-border: #000000;
+}
+
+html,
+body,
+main,
+button,
+input,
+textarea,
+select {
+	font-family: Tahoma, "MS Sans Serif", Geneva, Verdana, sans-serif;
+	font-size: 12px;
+}
+
+/* Windows 95 has no rounded corners. */
+main *,
+main *::before,
+main *::after {
+	border-radius: 0 !important;
+}
+
+/* Sunken text areas, like the classic edit control. */
+main textarea {
+	border: 2px solid;
+	border-color: #7f787f #fff8ff #fff8ff #7f787f;
+	background: #ffffff;
+	color: #000000;
+}

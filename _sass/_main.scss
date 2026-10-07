@@ -1129,6 +1129,33 @@ html.win95-no-window-anim {
 	content: "▾ 접기";
 }
 
+// --- Guestbook window (giscus comments live inside it) ----------------------
+.gb-window {
+	margin: 14px 0;
+	padding: 2px;
+	background: #bfb8bf;
+	@include win95-raised();
+}
+.gb-titlebar {
+	padding: 3px 6px;
+	background: #00007f;
+	color: #bfb8bf;
+	font-size: 12px;
+	font-weight: bold;
+}
+.gb-body {
+	margin: 4px;
+	padding: 8px;
+	min-height: 120px;
+	background: #fff8ff;
+	@include win95-etched();
+
+	.giscus,
+	.giscus-frame {
+		width: 100%;
+	}
+}
+
 // --- Post window maximized ("크게 보기") -------------------------------------
 // The explorer window above folds away completely and the post window fills
 // the screen down to the taskbar (30px). The post body scrolls on its own so
