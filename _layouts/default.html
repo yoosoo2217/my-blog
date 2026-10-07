@@ -397,7 +397,15 @@
 					var div = document.createElement('div');
 					div.className = 'mermaid';
 					div.textContent = src;
-					wrapper.parentNode.replaceChild(div, wrapper);
+					// Wrap each diagram in a small Win95 window (title bar + sunken body).
+						var frame = document.createElement('div');
+						frame.className = 'win95-diagram';
+						var bar = document.createElement('div');
+						bar.className = 'win95-diagram-title';
+						bar.textContent = '📊 Diagram.exe';
+						frame.appendChild(bar);
+						frame.appendChild(div);
+						wrapper.parentNode.replaceChild(frame, wrapper);
 				} catch (e) {
 					/* skip this block if anything goes wrong */
 				}
@@ -409,9 +417,43 @@
 				// (measured from the real rendered glyphs) so boxes fit the text.
 				mermaid.initialize({
 					startOnLoad: false,
-					theme: 'neutral',
+					theme: 'base',
 					fontFamily: 'Tahoma, "MS Sans Serif", Geneva, Verdana, sans-serif',
-					themeVariables: { fontSize: '13px' },
+					// Windows 95 palette: gray "button" nodes with black outlines,
+					// navy arrows, cream background, classic yellow notes.
+					themeVariables: {
+						fontSize: '13px',
+						background: '#fff8ff',
+						primaryColor: '#cfcfcf',
+						primaryTextColor: '#000000',
+						primaryBorderColor: '#000000',
+						secondaryColor: '#bfb8bf',
+						tertiaryColor: '#fff8ff',
+						mainBkg: '#cfcfcf',
+						nodeBorder: '#000000',
+						lineColor: '#00007f',
+						textColor: '#000000',
+						titleColor: '#000000',
+						clusterBkg: '#fff8ff',
+						clusterBorder: '#7f787f',
+						edgeLabelBackground: '#fff8ff',
+						noteBkgColor: '#ffffc8',
+						noteBorderColor: '#7f787f',
+						noteTextColor: '#000000',
+						actorBkg: '#cfcfcf',
+						actorBorder: '#000000',
+						actorTextColor: '#000000',
+						actorLineColor: '#7f787f',
+						signalColor: '#00007f',
+						signalTextColor: '#000000',
+						labelBoxBkgColor: '#bfb8bf',
+						labelBoxBorderColor: '#000000',
+						labelTextColor: '#000000',
+						loopTextColor: '#000000',
+						activationBkgColor: '#bfb8bf',
+						activationBorderColor: '#000000',
+						sequenceNumberColor: '#ffffff'
+					},
 					flowchart: { htmlLabels: false, useMaxWidth: true },
 					sequence: { useMaxWidth: true }
 				});

@@ -613,7 +613,6 @@ ul.topbar {
 	// Mermaid diagrams inherit the prose line-height (1.7) and the <p>
 	// bottom margin, which make node labels taller than their boxes.
 	.mermaid {
-		margin-bottom: 15px;
 		overflow-x: auto;
 		text-align: center;
 		line-height: normal;
@@ -621,6 +620,55 @@ ul.topbar {
 		p {
 			margin: 0;
 			line-height: normal;
+		}
+	}
+
+	// Each diagram sits in a small Win95 window: raised gray frame, navy title
+	// bar, and a cream sunken body. Nodes get crisp edges and a hard offset
+	// shadow instead of a soft one, like classic raised buttons.
+	.win95-diagram {
+		margin: 4px 0 18px;
+		padding: 2px;
+		background: #bfb8bf;
+		@include win95-raised();
+	}
+	.win95-diagram-title {
+		padding: 3px 6px;
+		background: #00007f;
+		color: #bfb8bf;
+		font-size: 12px;
+		font-weight: bold;
+	}
+	.win95-diagram .mermaid {
+		margin: 4px;
+		padding: 14px 10px;
+		background: #fff8ff;
+		@include win95-etched();
+
+		svg {
+			max-width: 100%;
+			height: auto;
+		}
+		.node rect,
+		.node polygon,
+		.node path,
+		.node circle,
+		.actor,
+		.labelBox,
+		.note {
+			shape-rendering: crispEdges;
+		}
+		.node rect,
+		.node polygon,
+		.actor {
+			stroke-width: 1.5px;
+			filter: drop-shadow(2px 2px 0 #7f787f);
+		}
+		.edgePath .path,
+		.flowchart-link,
+		.messageLine0,
+		.messageLine1 {
+			stroke-width: 1.5px;
 		}
 	}
 
