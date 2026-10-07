@@ -410,7 +410,13 @@
 						}
 					}
 					div.textContent = src;
-					wrapper.parentNode.replaceChild(div, wrapper);
+					// Markdown renders the block as <pre><code class="language-mermaid">.
+					// Replace the <pre> too, otherwise its gray code box stays around
+					// the diagram.
+					var host = (wrapper.tagName === 'CODE' && wrapper.parentNode && wrapper.parentNode.tagName === 'PRE')
+						? wrapper.parentNode
+						: wrapper;
+					host.parentNode.replaceChild(div, host);
 				} catch (e) {
 					/* skip this block if anything goes wrong */
 				}

@@ -607,6 +607,7 @@ ul.topbar {
 		font-size: 13px;
 		background: #f0f0f0;
 		border: 1px solid #c8c8c8;
+		border-radius: 2px;
 		padding: 1px 4px;
 	}
 
@@ -710,10 +711,11 @@ ul.topbar {
 	pre {
 		margin-bottom: 15px;
 		padding: 10px 12px;
+		// Same flat card as the Mermaid nodes: pale gray fill, 1px border,
+		// almost-square corners (no thick ridge frame).
 		background: #f4f4f4;
-		border-width: 2px;
-		border-style: ridge groove groove ridge;
-		border-color: #7f787f #fff8ff #fff8ff #7f787f;
+		border: 1px solid #7f787f;
+		border-radius: 2px;
 		overflow-x: auto;
 
 		code {
