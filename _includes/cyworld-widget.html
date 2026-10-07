@@ -117,12 +117,15 @@
 		<span class="cy-gb-badge">NEW</span>
 	</a>
 
-	<div class="cy-visitors">
-		<div class="win95-hitcounter">
-			<span class="win95-hitcounter-label">💾 HIT COUNT</span>
+	<div class="cy-visitors-window">
+		<div class="cy-titlebar">
+			<span class="cy-title-text">💾 Hit Counter</span>
+			<span class="cy-title-btn">▢</span>
+		</div>
+		<div class="cy-visitors-body">
 			<img
-				src="https://api.visitorbadge.io/api/visitors?path=yoosoo2217%2Fmy-blog&label=VISITERS"
-				alt="VISITERS"
+				src="https://api.visitorbadge.io/api/visitors?path=yoosoo2217%2Fmy-blog&label=VISITORS"
+				alt="방문자 수"
 			>
 		</div>
 	</div>
@@ -431,16 +434,34 @@
 	top: 0;
 	will-change: transform;
 }
-.cy-visitors {
-	display: flex;
-	justify-content: center;
+/* Visitor counter drawn as a small Win95 window: gray raised frame, blue
+   title bar, and a black sunken "LCD" well that holds the badge image. */
+.cy-visitors-window {
+	width: 220px;
 	margin-top: 10px;
-}
-.cy-visitors .win95-hitcounter {
-	flex-wrap: wrap;
-	justify-content: center;
+	background: #bfb8bf;
+	border: 2px solid;
+	border-color: #fff8ff #000000 #000000 #fff8ff;
 	box-sizing: border-box;
+	font-family: Tahoma, "MS Sans Serif", Geneva, Verdana, sans-serif;
+	font-size: 12px;
+	color: #000000;
+}
+.cy-visitors-body {
+	margin: 4px;
+	padding: 6px;
+	background: #000000;
+	border-width: 2px;
+	border-style: ridge groove groove ridge;
+	border-color: #7f787f #fff8ff #fff8ff #7f787f;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.cy-visitors-body img {
+	display: block;
 	max-width: 100%;
+	image-rendering: pixelated;
 }
 .cy-window {
 	width: 220px;
@@ -526,9 +547,9 @@
 	border-color: #7f787f #fff8ff #fff8ff #7f787f;
 }
 .cy-photo-frame {
-	margin: 0 auto 4px;
-	width: 76px;
-	height: 88px;
+	margin: 0 auto 6px;
+	width: 96px;
+	height: 112px;
 	background: #fff8ff;
 	border-width: 2px;
 	border-style: ridge groove groove ridge;
@@ -538,8 +559,8 @@
 	justify-content: center;
 }
 .cy-avatar {
-	width: 60px;
-	height: 72px;
+	width: 80px;
+	height: 96px;
 	image-rendering: pixelated;
 	image-rendering: crisp-edges;
 }
@@ -856,10 +877,10 @@
 /* Compact layout: every block (TODAY IS, Cruise FM, guestbook, visitors)
    has to fit on one screen at the same time, so spacing and sizes are
    trimmed here instead of editing each rule above. */
-.cy-sidebar .cy-panel { margin: 4px; padding: 5px 6px; }
+.cy-sidebar .cy-panel { margin: 5px; padding: 7px 6px; }
 .cy-sidebar .cy-titlebar { padding: 2px 4px; }
-.cy-sidebar .cy-caption { font-size: 11px; line-height: 1.35; padding: 0 2px 4px; }
-.cy-sidebar .cy-divider { margin: 0 2px 4px; }
+.cy-sidebar .cy-caption { font-size: 12px; line-height: 1.4; padding: 0 2px 6px; }
+.cy-sidebar .cy-divider { margin: 0 2px 5px; }
 .cy-sidebar .cy-statusbar { padding: 1px 6px; }
 .cy-sidebar .cy-music-window { margin-top: 6px; }
 .cy-sidebar .cy-mp-menubar { padding: 1px 7px; font-size: 10px; }
@@ -875,11 +896,11 @@
 .cy-sidebar .cy-mp-seek-row { padding-top: 0; }
 .cy-sidebar .cy-mp-status-item { padding: 1px 6px; }
 .cy-sidebar .cy-guestbook-btn { margin-top: 6px; padding: 6px 10px; font-size: 12px; }
-.cy-sidebar .cy-visitors { margin-top: 6px; }
+.cy-sidebar .cy-visitors-window { margin-top: 6px; }
 
 @media (max-width: 640px) {
-	.cy-window, .cy-guestbook-btn, .cy-music-window { width: auto; }
-	.cy-photo-frame { width: 76px; height: 88px; }
-	.cy-avatar { width: 60px; height: 72px; }
+	.cy-window, .cy-guestbook-btn, .cy-music-window, .cy-visitors-window { width: auto; }
+	.cy-photo-frame { width: 96px; height: 112px; }
+	.cy-avatar { width: 80px; height: 96px; }
 }
 </style>
