@@ -635,17 +635,30 @@ ul.topbar {
 			height: auto;
 		}
 
-		// Neutral card (default): same gray as the code-block background.
+		// Windows 95 look: nodes are raised gray buttons. The bevel itself (light
+		// top/left, dark bottom/right lines) is drawn by the script as .cy-bevel
+		// paths, so the rect only supplies the face color and has no outline.
 		.node rect,
-		.node polygon,
-		.node circle,
 		.actor {
-			fill: #f4f4f4;
-			stroke: #7f787f;
-			stroke-width: 1px;
-			rx: 2px;
-			ry: 2px;
+			fill: #cfcfcf !important;
+			stroke: none !important;
+			rx: 0;
+			ry: 0;
 			shape-rendering: crispEdges;
+		}
+		// Diamonds and circles can't carry a rectangular bevel: flat, thin outline.
+		.node polygon,
+		.node circle {
+			fill: #cfcfcf !important;
+			stroke: #000000 !important;
+			stroke-width: 1px;
+			shape-rendering: crispEdges;
+		}
+		.cy-bevel {
+			fill: none;
+			stroke-width: 1px;
+			shape-rendering: crispEdges;
+			pointer-events: none;
 		}
 		.node text,
 		.node tspan,
@@ -654,18 +667,16 @@ ul.topbar {
 			fill: #000000;
 		}
 
-		// Roles picked by the script from the node's exact label.
+		// Roles picked by the script from the node's exact label: only the
+		// button face changes color.
 		.node.cy-mm-stage rect {
-			fill: #fbe9ea !important;
-			stroke: #d0011b !important;
+			fill: #f3cfd3 !important;
 		}
 		.node.cy-mm-local rect {
-			fill: #e6e6f5 !important;
-			stroke: #00007f !important;
+			fill: #d5d5ee !important;
 		}
 		.node.cy-mm-remote rect {
-			fill: #cfe8d6 !important;
-			stroke: #1a9c4b !important;
+			fill: #bfe0c9 !important;
 		}
 
 		// Thin navy arrows; the line stays quieter than the cards.
@@ -688,7 +699,7 @@ ul.topbar {
 		.edgeLabel rect,
 		.edgeLabel .background {
 			fill: #fff8ff;
-			stroke: none;
+			stroke: none !important;
 			opacity: 1;
 		}
 		.edgeLabel text,
@@ -711,11 +722,13 @@ ul.topbar {
 	pre {
 		margin-bottom: 15px;
 		padding: 10px 12px;
-		// Same flat card as the Mermaid nodes: pale gray fill, 1px border,
-		// almost-square corners (no thick ridge frame).
-		background: #f4f4f4;
-		border: 1px solid #7f787f;
-		border-radius: 2px;
+		// Windows 95 sunken edit field: white inside, dark top/left edge, light
+		// bottom/right edge, plus a second inner shade line.
+		background: #ffffff;
+		border: 1px solid;
+		border-color: #7f787f #fff8ff #fff8ff #7f787f;
+		border-radius: 0;
+		box-shadow: inset 1px 1px 0 #000000, inset -1px -1px 0 #bfb8bf;
 		overflow-x: auto;
 
 		code {

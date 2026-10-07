@@ -496,6 +496,32 @@
 					if (COMMAND.test(text(labels[e]))) { labels[e].classList.add('cy-mm-cmd'); }
 				}
 
+				// Windows 95 raised-button bevel: draw light lines on the top/left
+				// and dark lines on the bottom/right (outer pair + inner pair) right
+				// over each node's rectangle.
+				var rects = box.querySelectorAll('.node rect, rect.actor');
+				for (var q = 0; q < rects.length; q++) {
+					var rc = rects[q];
+					if (rc.getAttribute('data-bevel')) { continue; }
+					rc.setAttribute('data-bevel', '1');
+					var bx = parseFloat(rc.getAttribute('x')), by = parseFloat(rc.getAttribute('y'));
+					var bw = parseFloat(rc.getAttribute('width')), bh = parseFloat(rc.getAttribute('height'));
+					if (isNaN(bx) || isNaN(by) || isNaN(bw) || isNaN(bh)) { continue; }
+					var edges = [
+						{ d: 'M' + (bx + 0.5) + ',' + (by + bh - 0.5) + 'L' + (bx + 0.5) + ',' + (by + 0.5) + 'L' + (bx + bw - 0.5) + ',' + (by + 0.5), c: '#fff8ff' },
+						{ d: 'M' + (bx + 1.5) + ',' + (by + bh - 1.5) + 'L' + (bx + 1.5) + ',' + (by + 1.5) + 'L' + (bx + bw - 1.5) + ',' + (by + 1.5), c: '#e8e4e8' },
+						{ d: 'M' + (bx + 1.5) + ',' + (by + bh - 1.5) + 'L' + (bx + bw - 1.5) + ',' + (by + bh - 1.5) + 'L' + (bx + bw - 1.5) + ',' + (by + 1.5), c: '#7f787f' },
+						{ d: 'M' + (bx + 0.5) + ',' + (by + bh - 0.5) + 'L' + (bx + bw - 0.5) + ',' + (by + bh - 0.5) + 'L' + (bx + bw - 0.5) + ',' + (by + 0.5), c: '#000000' }
+					];
+					for (var g = edges.length - 1; g >= 0; g--) {
+						var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+						path.setAttribute('d', edges[g].d);
+						path.setAttribute('class', 'cy-bevel');
+						path.setAttribute('stroke', edges[g].c);
+						rc.parentNode.insertBefore(path, rc.nextSibling);
+					}
+				}
+
 				// Smaller arrowheads so the line and its head stay light.
 				var heads = box.querySelectorAll('marker');
 				for (var h = 0; h < heads.length; h++) {
