@@ -388,76 +388,141 @@
 	<script>
 		(function () {
 			if (!window.mermaid) { return; }
+
+			// Replace each ```mermaid code block with a plain .mermaid div (no
+			// extra window or frame around it).
 			var containers = document.querySelectorAll('[class*="language-mermaid"]');
 			for (var i = 0; i < containers.length; i++) {
 				try {
 					var wrapper = containers[i];
 					var codeEl = wrapper.querySelector('code') || wrapper;
-					var src = codeEl.textContent;
 					var div = document.createElement('div');
 					div.className = 'mermaid';
+					var src = codeEl.textContent;
+					// A left-to-right chart with 5 or more boxes gets too wide to
+					// read, so draw it top-down instead (same nodes and arrows).
+					if (/^\s*(flowchart|graph)\s+LR\b/.test(src)) {
+						var ids = {};
+						var found = src.match(/[A-Za-z0-9_]+(?=\s*[\[\(\{])/g) || [];
+						for (var k = 0; k < found.length; k++) { ids[found[k]] = 1; }
+						if (Object.keys(ids).length >= 5) {
+							src = src.replace(/^(\s*(?:flowchart|graph)\s+)LR\b/, '$1TD');
+						}
+					}
 					div.textContent = src;
-					// Wrap each diagram in a small Win95 window (title bar + sunken body).
-						var frame = document.createElement('div');
-						frame.className = 'win95-diagram';
-						var bar = document.createElement('div');
-						bar.className = 'win95-diagram-title';
-						bar.textContent = '📊 Diagram.exe';
-						frame.appendChild(bar);
-						frame.appendChild(div);
-						wrapper.parentNode.replaceChild(frame, wrapper);
+					wrapper.parentNode.replaceChild(div, wrapper);
 				} catch (e) {
 					/* skip this block if anything goes wrong */
 				}
 			}
-			// Mermaid sizes each node box by measuring its text with its own
-				// font settings. The site's font (Tahoma, 14px, line-height 1.7)
-				// differs from Mermaid's default, so HTML labels overflowed and
-				// got clipped. Use the site's font, a smaller size, and SVG text
-				// (measured from the real rendered glyphs) so boxes fit the text.
-				mermaid.initialize({
-					startOnLoad: false,
-					theme: 'base',
-					fontFamily: 'Tahoma, "MS Sans Serif", Geneva, Verdana, sans-serif',
-					// Windows 95 palette: gray "button" nodes with black outlines,
-					// navy arrows, cream background, classic yellow notes.
-					themeVariables: {
-						fontSize: '13px',
-						background: '#fff8ff',
-						primaryColor: '#cfcfcf',
-						primaryTextColor: '#000000',
-						primaryBorderColor: '#000000',
-						secondaryColor: '#bfb8bf',
-						tertiaryColor: '#fff8ff',
-						mainBkg: '#cfcfcf',
-						nodeBorder: '#000000',
-						lineColor: '#00007f',
-						textColor: '#000000',
-						titleColor: '#000000',
-						clusterBkg: '#fff8ff',
-						clusterBorder: '#7f787f',
-						edgeLabelBackground: '#fff8ff',
-						noteBkgColor: '#ffffc8',
-						noteBorderColor: '#7f787f',
-						noteTextColor: '#000000',
-						actorBkg: '#cfcfcf',
-						actorBorder: '#000000',
-						actorTextColor: '#000000',
-						actorLineColor: '#7f787f',
-						signalColor: '#00007f',
-						signalTextColor: '#000000',
-						labelBoxBkgColor: '#bfb8bf',
-						labelBoxBorderColor: '#000000',
-						labelTextColor: '#000000',
-						loopTextColor: '#000000',
-						activationBkgColor: '#bfb8bf',
-						activationBorderColor: '#000000',
-						sequenceNumberColor: '#ffffff'
-					},
-					flowchart: { htmlLabels: false, useMaxWidth: true },
-					sequence: { useMaxWidth: true }
-				});
-			mermaid.run({ querySelector: '.mermaid' });
+
+			// Mermaid sizes each node box by measuring its text with its own font
+			// settings, so use the site's font and SVG text (measured from the real
+			// glyphs) so labels never overflow their boxes. Colors reuse the blog's
+			// palette: neutral gray cards, navy lines, cream page background.
+			mermaid.initialize({
+				startOnLoad: false,
+				theme: 'base',
+				fontFamily: 'Tahoma, "MS Sans Serif", Geneva, Verdana, sans-serif',
+				themeVariables: {
+					fontSize: '14px',
+					background: '#fff8ff',
+					primaryColor: '#f4f4f4',
+					primaryTextColor: '#000000',
+					primaryBorderColor: '#7f787f',
+					secondaryColor: '#f4f4f4',
+					tertiaryColor: '#fff8ff',
+					mainBkg: '#f4f4f4',
+					nodeBorder: '#7f787f',
+					lineColor: '#00007f',
+					textColor: '#000000',
+					titleColor: '#000000',
+					clusterBkg: '#fff8ff',
+					clusterBorder: '#7f787f',
+					edgeLabelBackground: '#fff8ff',
+					noteBkgColor: '#f4f4f4',
+					noteBorderColor: '#7f787f',
+					noteTextColor: '#000000',
+					actorBkg: '#f4f4f4',
+					actorBorder: '#7f787f',
+					actorTextColor: '#000000',
+					actorLineColor: '#7f787f',
+					signalColor: '#00007f',
+					signalTextColor: '#000000',
+					labelBoxBkgColor: '#f4f4f4',
+					labelBoxBorderColor: '#7f787f',
+					labelTextColor: '#000000',
+					loopTextColor: '#000000',
+					activationBkgColor: '#e6e6f5',
+					activationBorderColor: '#00007f',
+					sequenceNumberColor: '#ffffff'
+				},
+				// Curved edges keep opposite arrows (push / pull) apart; extra
+				// spacing leaves room for the arrow labels.
+				flowchart: { htmlLabels: false, useMaxWidth: false, curve: 'basis', nodeSpacing: 36, rankSpacing: 38, padding: 12 },
+				sequence: { useMaxWidth: false }
+			});
+
+			// A node gets a color role only when its whole label is the name of a
+			// Git area, so action steps like "push: GitHub로 올리기" stay neutral.
+			var ROLES = [
+				{ cls: 'cy-mm-stage',  re: /^(스테이징(\s*영역)?|Staging\s*Area)$/i },
+				{ cls: 'cy-mm-local',  re: /^(Local\s*Repository|로컬\s*저장소)$/i },
+				{ cls: 'cy-mm-remote', re: /^(GitHub\s*(원격\s*저장소|Remote)|원격\s*저장소|GitHub\s*Remote)$/i }
+			];
+			// Arrow labels that are Git commands get a navy tint.
+			var COMMAND = /(^|\s)(git\s+)?(add|commit|push|pull|reset|merge|clone|checkout|fetch|rebase|stash|branch|스테이징|커밋|되돌리기)(\s|\(|$)|git\s/i;
+
+			function text(el) {
+				return (el.textContent || '').replace(/\s+/g, ' ').trim();
+			}
+
+			function polish(box) {
+				var nodes = box.querySelectorAll('.node');
+				for (var n = 0; n < nodes.length; n++) {
+					var label = text(nodes[n]);
+					for (var r = 0; r < ROLES.length; r++) {
+						if (ROLES[r].re.test(label)) { nodes[n].classList.add(ROLES[r].cls); break; }
+					}
+				}
+				var labels = box.querySelectorAll('.edgeLabel');
+				for (var e = 0; e < labels.length; e++) {
+					if (COMMAND.test(text(labels[e]))) { labels[e].classList.add('cy-mm-cmd'); }
+				}
+
+				// Smaller arrowheads so the line and its head stay light.
+				var heads = box.querySelectorAll('marker');
+				for (var h = 0; h < heads.length; h++) {
+					heads[h].setAttribute('markerWidth', '7');
+					heads[h].setAttribute('markerHeight', '7');
+				}
+
+				// Keep text readable: shrink a wide diagram only down to 80%;
+				// anything wider scrolls inside its own box instead.
+				var svg = box.querySelector('svg');
+				if (!svg) { return; }
+				var vb = svg.viewBox && svg.viewBox.baseVal;
+				var natural = vb && vb.width ? vb.width : svg.getBoundingClientRect().width;
+				var room = box.clientWidth;
+				var scale = natural > room && room > 0 ? Math.max(room / natural, 0.8) : 1;
+				svg.removeAttribute('height');
+				svg.style.width = (natural * scale) + 'px';
+			}
+
+			function polishAll() {
+				var boxes = document.querySelectorAll('.mermaid');
+				for (var b = 0; b < boxes.length; b++) { polish(boxes[b]); }
+			}
+
+			var done = mermaid.run({ querySelector: '.mermaid' });
+			if (done && done.then) {
+				done.then(polishAll, function () {});
+			}
+			var resizeTimer;
+			window.addEventListener('resize', function () {
+				clearTimeout(resizeTimer);
+				resizeTimer = setTimeout(polishAll, 150);
+			});
 		})();
 	</script>
 	<div class="footer">

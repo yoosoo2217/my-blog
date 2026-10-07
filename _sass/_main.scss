@@ -610,65 +610,100 @@ ul.topbar {
 		padding: 1px 4px;
 	}
 
-	// Mermaid diagrams inherit the prose line-height (1.7) and the <p>
-	// bottom margin, which make node labels taller than their boxes.
+	// Mermaid diagrams (scoped to .mermaid only). No outer window or box: the
+	// diagram sits directly on the page. Nodes are small flat cards with a pale
+	// fill and a 1px border taken from colors the blog already uses; arrows are
+	// thin and navy; git commands on the arrows are tinted navy.
 	.mermaid {
+		margin: 18px 0 22px;
+		padding: 4px 0 6px;
 		overflow-x: auto;
 		text-align: center;
 		line-height: normal;
+		background: none;
+		border: 0;
 
 		p {
 			margin: 0;
 			line-height: normal;
 		}
-	}
-
-	// Each diagram sits in a small Win95 window: raised gray frame, navy title
-	// bar, and a cream sunken body. Nodes get crisp edges and a hard offset
-	// shadow instead of a soft one, like classic raised buttons.
-	.win95-diagram {
-		margin: 4px 0 18px;
-		padding: 2px;
-		background: #bfb8bf;
-		@include win95-raised();
-	}
-	.win95-diagram-title {
-		padding: 3px 6px;
-		background: #00007f;
-		color: #bfb8bf;
-		font-size: 12px;
-		font-weight: bold;
-	}
-	.win95-diagram .mermaid {
-		margin: 4px;
-		padding: 14px 10px;
-		background: #fff8ff;
-		@include win95-etched();
 
 		svg {
-			max-width: 100%;
+			display: inline-block;
+			max-width: none;
 			height: auto;
 		}
+
+		// Neutral card (default): same gray as the code-block background.
 		.node rect,
 		.node polygon,
-		.node path,
 		.node circle,
-		.actor,
-		.labelBox,
-		.note {
+		.actor {
+			fill: #f4f4f4;
+			stroke: #7f787f;
+			stroke-width: 1px;
+			rx: 2px;
+			ry: 2px;
 			shape-rendering: crispEdges;
 		}
-		.node rect,
-		.node polygon,
-		.actor {
-			stroke-width: 1.5px;
-			filter: drop-shadow(2px 2px 0 #7f787f);
+		.node text,
+		.node tspan,
+		.actor text,
+		.actor tspan {
+			fill: #000000;
 		}
-		.edgePath .path,
+
+		// Roles picked by the script from the node's exact label.
+		.node.cy-mm-stage rect {
+			fill: #fbe9ea !important;
+			stroke: #d0011b !important;
+		}
+		.node.cy-mm-local rect {
+			fill: #e6e6f5 !important;
+			stroke: #00007f !important;
+		}
+		.node.cy-mm-remote rect {
+			fill: #cfe8d6 !important;
+			stroke: #1a9c4b !important;
+		}
+
+		// Thin navy arrows; the line stays quieter than the cards.
 		.flowchart-link,
+		.edgePath .path,
 		.messageLine0,
 		.messageLine1 {
-			stroke-width: 1.5px;
+			stroke: #00007f;
+			stroke-width: 1px !important;
+		}
+		.arrowheadPath,
+		.marker,
+		marker path {
+			fill: #00007f;
+			stroke: #00007f;
+		}
+
+		// Arrow labels: quiet gray text on the page color, so the line does not
+		// run through the letters; git commands are tinted navy.
+		.edgeLabel rect,
+		.edgeLabel .background {
+			fill: #fff8ff;
+			stroke: none;
+			opacity: 1;
+		}
+		.edgeLabel text,
+		.edgeLabel tspan {
+			fill: #4a444a;
+		}
+		// A page-colored halo around the label text clears the line behind it.
+		.edgeLabel text {
+			paint-order: stroke;
+			stroke: #fff8ff;
+			stroke-width: 6px;
+			stroke-linejoin: round;
+		}
+		.edgeLabel.cy-mm-cmd text,
+		.edgeLabel.cy-mm-cmd tspan {
+			fill: #00007f;
 		}
 	}
 
