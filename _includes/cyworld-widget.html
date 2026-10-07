@@ -431,9 +431,9 @@
 	border-color: #7f787f #fff8ff #fff8ff #7f787f;
 }
 .cy-photo-frame {
-	margin: 0 auto 8px;
-	width: 104px;
-	height: 120px;
+	margin: 0 auto 4px;
+	width: 76px;
+	height: 88px;
 	background: #fff8ff;
 	border-width: 2px;
 	border-style: ridge groove groove ridge;
@@ -443,8 +443,8 @@
 	justify-content: center;
 }
 .cy-avatar {
-	width: 80px;
-	height: 96px;
+	width: 60px;
+	height: 72px;
 	image-rendering: pixelated;
 	image-rendering: crisp-edges;
 }
@@ -758,9 +758,33 @@
 	color: #000000;
 }
 
+/* Compact layout: every block (TODAY IS, Cruise FM, guestbook, visitors)
+   has to fit on one screen at the same time, so spacing and sizes are
+   trimmed here instead of editing each rule above. */
+.cy-sidebar .cy-panel { margin: 4px; padding: 5px 6px; }
+.cy-sidebar .cy-titlebar { padding: 2px 4px; }
+.cy-sidebar .cy-caption { font-size: 11px; line-height: 1.35; padding: 0 2px 4px; }
+.cy-sidebar .cy-divider { margin: 0 2px 4px; }
+.cy-sidebar .cy-statusbar { padding: 1px 6px; }
+.cy-sidebar .cy-music-window { margin-top: 6px; }
+.cy-sidebar .cy-mp-menubar { padding: 1px 7px; font-size: 10px; }
+.cy-sidebar .cy-mp-panel { gap: 3px; }
+.cy-sidebar .cy-mp-art { width: 30px; height: 30px; font-size: 16px; }
+.cy-sidebar .cy-mp-display-time { font-size: 12px; }
+.cy-sidebar .cy-mp-btn-transport { font-size: 11px; padding: 2px 0; }
+.cy-sidebar .cy-mp-btn-icon { width: 20px; height: 17px; }
+.cy-sidebar .cy-mp-info-row { padding-top: 0; gap: 6px; }
+.cy-sidebar .cy-mp-fields { gap: 1px; }
+.cy-sidebar .cy-mp-field-box { padding: 0 4px; font-size: 10px; }
+.cy-sidebar .cy-mp-vol-btn { width: 20px; height: 12px; font-size: 11px; }
+.cy-sidebar .cy-mp-seek-row { padding-top: 0; }
+.cy-sidebar .cy-mp-status-item { padding: 1px 6px; }
+.cy-sidebar .cy-guestbook-btn { margin-top: 6px; padding: 6px 10px; font-size: 12px; }
+.cy-sidebar .cy-visitors { margin-top: 6px; }
+
 @media (max-width: 640px) {
 	.cy-window, .cy-guestbook-btn, .cy-music-window { width: auto; }
-	.cy-photo-frame { width: 116px; height: 136px; }
-	.cy-avatar { width: 100px; height: 120px; }
+	.cy-photo-frame { width: 76px; height: 88px; }
+	.cy-avatar { width: 60px; height: 72px; }
 }
 </style>
