@@ -319,6 +319,33 @@
 })();
 </script>
 
+<script>
+// Keep every sidebar block (TODAY IS, Cruise FM, guestbook, visitors) on one
+// screen without a scrollbar: measure the natural height and, only if it is
+// taller than the room under the sticky offset and above the taskbar, shrink
+// it with CSS zoom. Re-measured on resize and when the visitor badge loads.
+(function () {
+	var box = document.querySelector('.cy-sidebar-sticky');
+	if (!box) { return; }
+	function fit() {
+		box.style.zoom = '';
+		if (window.innerWidth <= 900) { return; } // stacked layout, no sticky
+		var room = window.innerHeight - 62; // 16px top offset + 30px taskbar + margin
+		var natural = box.offsetHeight;
+		if (natural > room && natural > 0) {
+			box.style.zoom = String(Math.max(0.55, room / natural));
+		}
+	}
+	fit();
+	window.addEventListener('resize', fit);
+	window.addEventListener('load', fit);
+	var imgs = box.querySelectorAll('img');
+	for (var i = 0; i < imgs.length; i++) {
+		imgs[i].addEventListener('load', fit);
+	}
+})();
+</script>
+
 <style>
 .cy-sidebar {
 	flex: 0 0 220px;
@@ -326,15 +353,12 @@
 	font-family: Tahoma, "MS Sans Serif", Geneva, Verdana, sans-serif;
 }
 /* The blocks follow the page while scrolling. The wrapper sticks inside
-   .cy-sidebar, which is stretched to the full height of the row. If the
-   stack is taller than the screen, it scrolls on its own. */
+   .cy-sidebar, which is stretched to the full height of the row. No inner
+   scrollbar: if the stack is taller than the screen, the script at the end of
+   this file shrinks it (CSS zoom) until every block fits. */
 .cy-sidebar-sticky {
 	position: sticky;
 	top: 16px;
-	max-height: calc(100vh - 62px);
-	overflow-y: auto;
-	overflow-x: hidden;
-	scrollbar-width: thin;
 }
 .cy-visitors {
 	display: flex;
