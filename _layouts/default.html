@@ -172,8 +172,9 @@
 				<div class="btn btn_max"><span class="fa fa-window-maximize"></span></div>
 				<div class="btn"><span class="fa fa-window-minimize"></span></div>
 			</div>
+			{% if page.date %}<div class="win95-progress" id="win95-progress" role="progressbar" aria-label="읽기 진행률" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="win95-progress-fill"></div></div>{% endif %}
 			<ul class="topbar win95-postbar">
-				<li>{{ page.date | date: '%B %-d, %Y' }}</li>
+				<li>{{ page.date | date: '%B %-d, %Y' }}{% if page.last_modified_at %}<span class="win95-postbar-modified" title="마지막 수정일">&nbsp;· 수정 {{ page.last_modified_at | date: '%b %-d, %Y' }}</span>{% endif %}</li>
 				{% if page.date %}
 				<li>
 					<button type="button" class="win95-fav-toggle" id="win95-fav-toggle" data-url="{{ site.baseurl }}{{ page.url }}" data-title="{{ page.title | escape }}" aria-pressed="false" title="즐겨찾기에 추가">☆ Favorite</button>
@@ -234,6 +235,27 @@
 				</span>
 				{% endif %}
 			</div>
+			{% assign related = "" | split: "" %}
+			{% for tag in page.tags %}
+				{% assign tag_posts_rel = site.tags[tag] | sort: "date" | reverse %}
+				{% for p in tag_posts_rel %}
+					{% if p.url != page.url and related.size < 3 %}
+						{% unless related contains p %}
+							{% assign related = related | push: p %}
+						{% endunless %}
+					{% endif %}
+				{% endfor %}
+			{% endfor %}
+			{% if related.size > 0 %}
+			<div class="post_related">
+				<div class="post_related-head">📂 관련 글</div>
+				<ul class="post_related-list">
+					{% for p in related %}
+					<li><a href="{{ site.baseurl }}{{ p.url }}"><img src="{{ site.baseurl }}/assets/img/file.ico" alt="" />{{ p.title }}<span class="post_related-date">{{ p.date | date: '%Y.%m.%d' }}</span></a></li>
+					{% endfor %}
+				</ul>
+			</div>
+			{% endif %}
 			{% endif %}
 		</div>
     {% endif %}
@@ -414,6 +436,39 @@
 					writeFavs(favs);
 					setState(idx === -1);
 				});
+			}
+
+			// --- Reading progress bar --------------------------------------------
+			// Fixed to the top of the viewport. Normally the page itself scrolls;
+			// when the post window is maximized .post_content scrolls on its own,
+			// so measure whichever one is actually scrolling.
+			var progress = document.getElementById('win95-progress');
+			var pc = document.querySelector('.post_content');
+			if (progress && pc) {
+				var fill = progress.firstElementChild;
+				var ticking = false;
+				var update = function () {
+					ticking = false;
+					var ratio;
+					var inner = pc.scrollHeight - pc.clientHeight;
+					if (inner > 2 && getComputedStyle(pc).overflowY !== 'visible' && pc.scrollTop > 0) {
+						ratio = pc.scrollTop / inner;
+					} else {
+						var rect = pc.getBoundingClientRect();
+						var total = rect.height - window.innerHeight;
+						ratio = total > 0 ? -rect.top / total : (rect.top < 0 ? 1 : 0);
+					}
+					ratio = Math.max(0, Math.min(1, ratio));
+					fill.style.width = (ratio * 100) + '%';
+					progress.setAttribute('aria-valuenow', String(Math.round(ratio * 100)));
+				};
+				var onScroll = function () {
+					if (!ticking) { ticking = true; requestAnimationFrame(update); }
+				};
+				window.addEventListener('scroll', onScroll, { passive: true });
+				window.addEventListener('resize', onScroll);
+				pc.addEventListener('scroll', onScroll, { passive: true });
+				update();
 			}
 		})();
 	</script>

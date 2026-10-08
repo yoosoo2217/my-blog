@@ -25,10 +25,26 @@ show_profile: true
   >
 </div>
 
-<p id="search-hint" style="color:#555; font-size:0.85rem;">제목, 태그, 본문 내용을 검색해주세용!</p>
+<p id="search-hint" style="color:#555; font-size:0.85rem;">제목, 태그, 본문 내용을 검색해주세용! 단어를 띄어쓰면 모두 포함된 글만 찾아요.</p>
+<p id="search-count" style="color:#555; font-size:0.85rem; display:none;"></p>
 <p id="search-empty" style="color:#555; display:none;">검색 결과가 없습니당..</p>
 
 <ul id="search-results" style="list-style:none; padding:0; margin:0;"></ul>
+
+<style>
+  #search-results mark {
+    background: #00007f;
+    color: #ffffff;
+    padding: 0 1px;
+  }
+  .search-snippet {
+    margin-top: 3px;
+    font-size: 0.8rem;
+    color: #444;
+    line-height: 1.5;
+    word-break: break-word;
+  }
+</style>
 
 <script>
 (function () {
@@ -36,6 +52,7 @@ show_profile: true
   var results = document.getElementById('search-results');
   var empty = document.getElementById('search-empty');
   var hint = document.getElementById('search-hint');
+  var count = document.getElementById('search-count');
   var data = [];
 
   fetch('{{ site.baseurl }}/search.json')
@@ -43,9 +60,40 @@ show_profile: true
     .then(function (json) { data = json; })
     .catch(function () { data = []; });
 
-  function render(list) {
+  function esc(s) {
+    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  function escRe(s) {
+    return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  }
+
+  // Escapes the text, then wraps every search term in <mark>.
+  function highlight(text, terms) {
+    var safe = esc(text);
+    if (!terms.length) { return safe; }
+    var re = new RegExp('(' + terms.map(function (t) { return escRe(esc(t)); }).join('|') + ')', 'gi');
+    return safe.replace(re, '<mark>$1</mark>');
+  }
+
+  // ~40 characters either side of the earliest match in the body text.
+  function snippet(content, terms) {
+    var lower = content.toLowerCase();
+    var at = -1;
+    for (var i = 0; i < terms.length; i++) {
+      var p = lower.indexOf(terms[i]);
+      if (p !== -1 && (at === -1 || p < at)) { at = p; }
+    }
+    if (at === -1) { return ''; }
+    var start = Math.max(0, at - 40);
+    var end = Math.min(content.length, at + 80);
+    return (start > 0 ? '… ' : '') + content.slice(start, end) + (end < content.length ? ' …' : '');
+  }
+
+  function render(list, terms) {
     results.innerHTML = '';
-    list.forEach(function (post) {
+    list.forEach(function (item) {
+      var post = item.post;
       var li = document.createElement('li');
       li.style.padding = '8px 0';
       li.style.borderBottom = '1px solid #ccc';
@@ -60,15 +108,23 @@ show_profile: true
       var a = document.createElement('a');
       a.href = post.url;
       a.style.color = '#000000';
-      a.innerHTML = '<strong>' + post.title + '</strong>';
+      a.innerHTML = '<strong>' + highlight(post.title, terms) + '</strong>';
       li.appendChild(a);
 
       if (post.tags && post.tags.length) {
         var tagSpan = document.createElement('div');
         tagSpan.style.fontSize = '0.75rem';
         tagSpan.style.color = '#888';
-        tagSpan.textContent = post.tags.join(', ');
+        tagSpan.innerHTML = highlight(post.tags.join(', '), terms);
         li.appendChild(tagSpan);
+      }
+
+      var snip = snippet(post.content, terms);
+      if (snip) {
+        var s = document.createElement('div');
+        s.className = 'search-snippet';
+        s.innerHTML = highlight(snip, terms);
+        li.appendChild(s);
       }
 
       results.appendChild(li);
@@ -81,23 +137,36 @@ show_profile: true
     if (!q) {
       results.innerHTML = '';
       empty.style.display = 'none';
+      count.style.display = 'none';
       hint.style.display = 'block';
       return;
     }
 
     hint.style.display = 'none';
+    var terms = q.split(/\s+/);
 
-    var matches = data.filter(function (post) {
-      var haystack = (
-        post.title + ' ' +
-        (post.tags || []).join(' ') + ' ' +
-        post.content
-      ).toLowerCase();
-      return haystack.indexOf(q) !== -1;
+    var matches = [];
+    data.forEach(function (post) {
+      var title = post.title.toLowerCase();
+      var tags = (post.tags || []).join(' ').toLowerCase();
+      var content = post.content.toLowerCase();
+      var inTitle = 0;
+      for (var i = 0; i < terms.length; i++) {
+        var t = terms[i];
+        var hitTitle = title.indexOf(t) !== -1;
+        if (!hitTitle && tags.indexOf(t) === -1 && content.indexOf(t) === -1) { return; }
+        if (hitTitle) { inTitle++; }
+      }
+      matches.push({ post: post, score: inTitle });
     });
 
+    // Posts whose title matches come first; otherwise keep newest-first order.
+    matches.sort(function (a, b) { return b.score - a.score; });
+
     empty.style.display = matches.length === 0 ? 'block' : 'none';
-    render(matches);
+    count.style.display = matches.length === 0 ? 'none' : 'block';
+    count.textContent = matches.length + '개의 글을 찾았어요';
+    render(matches, terms);
   });
 })();
 </script>
