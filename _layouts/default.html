@@ -138,22 +138,18 @@
 				</li>
 			</ul>
 		</div>
-		<div class="post_list{% if page.tag %} post_list-details{% endif %}" id="post_list">
+		<div class="post_list post_list-details" id="post_list">
 			{% if page.tag %}
-				{% assign tag_posts = site.tags[page.tag] | sort: "date" | reverse %}
+				{% assign list_posts = site.tags[page.tag] | sort: "date" | reverse %}
+			{% else %}
+				{% assign list_posts = site.posts %}
+			{% endif %}
 				<div class="tag-results-cols"><span>Name</span><span>Modified</span></div>
 				<ul class="tag-results-list">
-					{% for post in tag_posts %}
+					{% for post in list_posts %}
 					<li><a href="{{ site.baseurl }}{{ post.url }}" title="{{ post.title }}"><span class="tag-results-name"><img src="{{ site.baseurl }}/assets/img/file.ico" alt="" /><span class="tag-results-title">{{ post.title }}</span></span><span class="tag-results-date">{{ post.date | date: "%Y-%m-%d" }}</span></a></li>
 					{% endfor %}
 				</ul>
-			{% else %}
-				<ul>
-					{% for post in site.posts %}
-					<li><a href="{{ site.baseurl }}{{ post.url }}" title="{{ post.title }}"><img src="{{ site.baseurl }}/assets/img/file.ico" title="{{ post.title }}" />{{ post.title }}</a></li>
-					{% endfor %}
-				</ul>
-			{% endif %}
 		</div>
 		<div class="post_total">
 			{% if page.tag %}
@@ -164,11 +160,11 @@
 			<div class="right">&nbsp;</div>
 		</div>
 	</div>
-	{% if page.title and page.layout != 'tag' %}
+	{% if page.title %}
         <div class="content">
 			<div class="post_title">
 				<img src="{{ site.baseurl }}/assets/img/file.png" />
-				<h1>{{  page.title  }}</h1>
+				<h1>{% if page.layout == 'tag' %}{{ site.name }}{% else %}{{ page.title }}{% endif %}</h1>
 				<a href="{{ site.baseurl }}/" class="win95-close-btn"><div class="btn"><span class="fa fa-times"></span></div></a>
 				<div class="btn btn_max"><span class="fa fa-window-maximize"></span></div>
 				<div class="btn"><span class="fa fa-window-minimize"></span></div>

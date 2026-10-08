@@ -2,6 +2,10 @@
 layout: default
 ---
 {% comment %}
-The tag's post list is drawn by default.html inside the file explorer window
-(.post_list), so this layout has no body of its own.
+Tag pages show the same lower window as the home page; only the file pane in
+the explorer window above changes to the selected tag's posts. The home body
+is kept in _includes/home.html so index.md and this layout share it, and is
+run through markdownify to be processed the way index.md's body is.
 {% endcomment %}
+{% capture home_body %}{% include home.html %}{% endcapture %}
+{{ home_body | markdownify }}
