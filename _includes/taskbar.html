@@ -5,10 +5,21 @@
 
 	<a href="{{ site.baseurl }}/" class="win95-home-btn" title="홈으로">🏠</a>
 
-	<div class="win95-taskbar-window" title="{% if page.layout == 'tag' %}{{ site.name }}{% else %}{{ page.title | default: site.name }}{% endif %}">
+	{% if page.layout == 'tag' %}
+	<div class="win95-taskbar-window win95-taskbar-window-inactive" title="{{ site.name }}">
 		<span class="win95-taskbar-window-icon">📄</span>
-		{% if page.layout == 'tag' %}{{ site.name }}{% else %}{{ page.title | default: site.name }}{% endif %}
+		{{ site.name }}
 	</div>
+	<div class="win95-taskbar-window" title="TAG: {{ page.tag }}">
+		<span class="win95-taskbar-window-icon">📁</span>
+		TAG: {{ page.tag }}
+	</div>
+	{% else %}
+	<div class="win95-taskbar-window" title="{{ page.title | default: site.name }}">
+		<span class="win95-taskbar-window-icon">📄</span>
+		{{ page.title | default: site.name }}
+	</div>
+	{% endif %}
 
 	<div class="win95-clock" id="win95-clock">--:--</div>
 

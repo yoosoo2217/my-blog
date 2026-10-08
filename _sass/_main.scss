@@ -101,6 +101,13 @@ button, input, select, textarea {
 	align-items: center;
 	gap: 4px;
 }
+// A background window next to the active one (e.g. the home window while a
+// tag folder is open): raised like an unpressed taskbar button, capped width
+// so the active window keeps the remaining space.
+.win95-taskbar-window.win95-taskbar-window-inactive {
+	@include win95-raised(1px);
+	flex: 0 1 190px;
+}
 .win95-clock {
 	@include win95-raised-pressed(1px);
 	flex-shrink: 0;
