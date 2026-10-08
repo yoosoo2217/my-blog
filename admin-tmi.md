@@ -166,7 +166,7 @@ sitemap: false
 	min-width: 160px;
 	padding: 4px 6px;
 	border: 2px solid;
-	border-color: #7f787f #fff8ff #fff8ff #7f787f;
+	border-color: #7f7d7f #fbfaf7 #fbfaf7 #7f7d7f;
 	font-family: inherit;
 	font-size: 13px;
 	box-sizing: border-box;
@@ -176,7 +176,7 @@ sitemap: false
 	box-sizing: border-box;
 	padding: 6px 8px;
 	border: 2px solid;
-	border-color: #7f787f #fff8ff #fff8ff #7f787f;
+	border-color: #7f7d7f #fbfaf7 #fbfaf7 #7f7d7f;
 	font-family: inherit;
 	font-size: 13px;
 	line-height: 1.5;
@@ -187,14 +187,14 @@ sitemap: false
 	background: #cfcfcf;
 	color: #000000;
 	border: 2px solid;
-	border-color: #fff8ff #000000 #000000 #fff8ff;
+	border-color: #fbfaf7 #000000 #000000 #fbfaf7;
 	font-family: inherit;
 	font-size: 13px;
 	padding: 4px 10px;
 	cursor: pointer;
 }
 .tmi-admin button:active {
-	border-color: #000000 #fff8ff #fff8ff #000000;
+	border-color: #000000 #fbfaf7 #fbfaf7 #000000;
 }
 #tmi-status {
 	font-size: 12px;

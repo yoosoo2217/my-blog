@@ -8,17 +8,17 @@ main {
 	--color-fg-muted: #4a444a;
 	--color-fg-subtle: #4a444a;
 
-	--color-canvas-default: #fff8ff;
-	--color-canvas-overlay: #fff8ff;
+	--color-canvas-default: #fbfaf7;
+	--color-canvas-overlay: #fbfaf7;
 	--color-canvas-inset: #ffffff;
-	--color-canvas-subtle: #bfb8bf;
+	--color-canvas-subtle: #c0bec0;
 
-	--color-border-default: #7f787f;
-	--color-border-muted: #7f787f;
+	--color-border-default: #7f7d7f;
+	--color-border-muted: #7f7d7f;
 
 	--color-accent-fg: #0000ff;
-	--color-accent-emphasis: #00007f;
-	--color-accent-muted: #00007f66;
+	--color-accent-emphasis: #0a246a;
+	--color-accent-muted: #0a246a66;
 	--color-accent-subtle: #d8d8f0;
 
 	--color-btn-text: #000000;
@@ -28,24 +28,24 @@ main {
 	--color-btn-inset-shadow: none;
 	--color-btn-hover-bg: #dadada;
 	--color-btn-hover-border: #000000;
-	--color-btn-active-bg: #bfb8bf;
+	--color-btn-active-bg: #c0bec0;
 	--color-btn-active-border: #000000;
-	--color-btn-selected-bg: #bfb8bf;
+	--color-btn-selected-bg: #c0bec0;
 
 	--color-btn-primary-text: #ffffff;
-	--color-btn-primary-bg: #00007f;
+	--color-btn-primary-bg: #0a246a;
 	--color-btn-primary-border: #000000;
 	--color-btn-primary-shadow: inset 1px 1px 0 #5a5ab4, inset -1px -1px 0 #00003a;
 	--color-btn-primary-inset-shadow: none;
 	--color-btn-primary-hover-bg: #0000a8;
 	--color-btn-primary-hover-border: #000000;
 	--color-btn-primary-selected-bg: #00005a;
-	--color-btn-primary-disabled-text: #bfb8bf;
+	--color-btn-primary-disabled-text: #c0bec0;
 	--color-btn-primary-disabled-bg: #7f7fa8;
 	--color-btn-primary-disabled-border: #4a444a;
 
-	--color-segmented-control-bg: #bfb8bf;
-	--color-segmented-control-button-bg: #fff8ff;
+	--color-segmented-control-bg: #c0bec0;
+	--color-segmented-control-button-bg: #fbfaf7;
 	--color-segmented-control-button-selected-border: #000000;
 }
 
@@ -70,7 +70,7 @@ main *::after {
 /* Sunken text areas, like the classic edit control. */
 main textarea {
 	border: 2px solid;
-	border-color: #7f787f #fff8ff #fff8ff #7f787f;
+	border-color: #7f7d7f #fbfaf7 #fbfaf7 #7f7d7f;
 	background: #ffffff;
 	color: #000000;
 }

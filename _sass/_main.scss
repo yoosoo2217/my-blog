@@ -1,5 +1,5 @@
 body {
-	background: #008082;
+	background: #4f8a8b;
 	font-family: Tahoma, "MS Sans Serif", Geneva, Verdana, sans-serif;
 	font-size: 13px;
 	padding-bottom: 32px; // leaves room for the fixed .win95-taskbar
@@ -9,8 +9,8 @@ body {
 // The same two border-color pairs already show up all over this file
 // (raised buttons/panels, sunken/etched panels) — named here so new UI
 // (tabs, group boxes) can reuse them instead of re-deriving the colors.
-$win95-highlight: #fff8ff;
-$win95-shadow: #7f787f;
+$win95-highlight: #fbfaf7;
+$win95-shadow: #7f7d7f;
 $win95-darkshadow: #000000;
 
 @mixin win95-raised($size: 2px) {
@@ -61,7 +61,7 @@ $win95-dither: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'
 	align-items: center;
 	gap: 4px;
 	padding: 0 3px;
-	background: #bfb8bf;
+	background: #c0bec0;
 	border-top: 1px solid $win95-light;
 	box-shadow: inset 0 1px 0 $win95-highlight;
 	z-index: 1000;
@@ -82,7 +82,7 @@ $win95-dither: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'
 	display: flex;
 	align-items: center;
 	gap: 4px;
-	background: #bfb8bf;
+	background: #c0bec0;
 	font-weight: bold;
 	font-size: 12px;
 	padding: 0 8px 0 5px;
@@ -106,7 +106,7 @@ $win95-dither: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'
 	justify-content: center;
 	width: 24px;
 	margin-right: 6px;
-	background: #bfb8bf;
+	background: #c0bec0;
 	font-size: 13px;
 	text-decoration: none;
 	cursor: pointer;
@@ -145,7 +145,7 @@ $win95-dither: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'
 // tag folder is open): raised, plain gray, normal weight.
 .win95-taskbar-window.win95-taskbar-window-inactive {
 	@include win95-tb-raised();
-	background: #bfb8bf;
+	background: #c0bec0;
 	font-weight: normal;
 }
 .win95-taskbar-window-icon {
@@ -161,7 +161,7 @@ $win95-dither: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'
 	justify-content: center;
 	padding: 0 12px;
 	min-width: 56px;
-	background: #bfb8bf;
+	background: #c0bec0;
 	border: 1px solid;
 	border-color: $win95-shadow $win95-highlight $win95-highlight $win95-shadow;
 }
@@ -170,7 +170,7 @@ $win95-dither: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'
 	left: 4px;
 	bottom: 32px;
 	@include win95-raised();
-	background: #bfb8bf;
+	background: #c0bec0;
 	min-width: 180px;
 	z-index: 1001;
 	padding: 2px;
@@ -190,7 +190,7 @@ $win95-dither: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'
 		font-size: 13px;
 	}
 	li a:hover, li a:focus {
-		background: #00007f;
+		background: #0a246a;
 		color: #ffffff;
 	}
 }
@@ -215,7 +215,7 @@ $win95-dither: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'
 
 	thead th {
 		@include win95-raised(1px);
-		background: #bfb8bf;
+		background: #c0bec0;
 		text-align: left;
 		font-weight: normal;
 		padding: 4px 10px;
@@ -238,7 +238,7 @@ $win95-dither: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'
 	}
 
 	tbody tr:hover {
-		background: #00007f;
+		background: #0a246a;
 
 		td, a {
 			color: #ffffff;
@@ -254,7 +254,7 @@ $win95-dither: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'
 // --- Weekly study flow (home page) ---------------------------------------
 .win95-weekflow {
 	@include win95-etched();
-	background: #fff8ff;
+	background: #fbfaf7;
 	width: min(94%, 1100px);
 	margin: 1rem 10px 2rem;
 	padding: 14px 18px;
@@ -277,7 +277,7 @@ $win95-dither: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'
 .win95-weekflow-title {
 	font-weight: 700;
 	font-size: 14px;
-	color: #00007f;
+	color: #0a246a;
 	flex: 1 1 auto;
 }
 .win95-weekflow-all {
@@ -301,11 +301,11 @@ $win95-dither: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'
 .win95-weekflow-weeklabel {
 	font-weight: 700;
 	font-size: 12px;
-	color: #7f787f;
+	color: #7f7d7f;
 	margin-bottom: 12px;
 }
 .win95-weekflow-current .win95-weekflow-weeklabel {
-	color: #00007f;
+	color: #0a246a;
 }
 .win95-weekflow-range {
 	font-weight: 400;
@@ -344,8 +344,8 @@ $win95-dither: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'
 	width: 9px;
 	height: 9px;
 	border-radius: 50%;
-	background: #bfb8bf;
-	border: 1px solid #7f787f;
+	background: #c0bec0;
+	border: 1px solid #7f7d7f;
 	margin-bottom: 8px;
 	box-sizing: border-box;
 }
@@ -356,10 +356,10 @@ $win95-dither: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'
 .win95-weekflow-date {
 	font-size: 11px;
 	font-weight: 700;
-	color: #7f787f;
+	color: #7f7d7f;
 }
 .win95-weekflow-current .win95-weekflow-date {
-	color: #00007f;
+	color: #0a246a;
 }
 .win95-weekflow-post-title {
 	font-size: 12px;
@@ -377,7 +377,7 @@ $win95-dither: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'
 .win95-weekflow-more {
 	margin-top: 8px;
 	font-size: 11px;
-	color: #7f787f;
+	color: #7f7d7f;
 }
 @media (max-width: 640px) {
 	.win95-weekflow-weeks {
@@ -395,9 +395,9 @@ $win95-dither: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'
 .wrapper, .content {
 	width: min(94%, 1100px);
 	margin: 20px auto;
-	background: #bfb8bf;
+	background: #c0bec0;
 	border: 2px solid;
-	border-color: #fff8ff #000000 #000000 #fff8ff;
+	border-color: #fbfaf7 #000000 #000000 #fbfaf7;
 	padding: 2px 0;
 	box-sizing: border-box;
 }
@@ -448,7 +448,7 @@ $win95-dither: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'
 	position: relative;
 
 	h1 {
-		color: #bfb8bf;
+		color: #c0bec0;
 		font-size: 14px;
 		font-weight: bold;
 	}
@@ -475,7 +475,7 @@ $win95-dither: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'
 		height: 11px;
 		float: right;
 		border: 2px solid;
-		border-color: #fff8ff #000000 #000000 #fff8ff;
+		border-color: #fbfaf7 #000000 #000000 #fbfaf7;
 
 		span {
 			font-size: 11px;
@@ -519,10 +519,10 @@ ul.topbar {
 	}
 }
 .post_list, .tag_list, .post_content {
-	background: #fff8ff;
+	background: #fbfaf7;
 	border-width: 2px;
 	border-style: ridge groove groove ridge;
-	border-color: #7f787f #fff8ff #fff8ff #7f787f;
+	border-color: #7f7d7f #fbfaf7 #fbfaf7 #7f7d7f;
 }
 .post_list {
 	width: 70.2%;
@@ -592,7 +592,7 @@ ul.topbar {
     padding:0 0 0 2px;
 }
 #tag-list li a {
-    background: #fff8ff;
+    background: #fbfaf7;
     display:block;
 }
 #tag-list li ul li {
@@ -740,21 +740,21 @@ ul.topbar {
 		.edgePath .path,
 		.messageLine0,
 		.messageLine1 {
-			stroke: #00007f;
+			stroke: #0a246a;
 			stroke-width: 1px !important;
 		}
 		.arrowheadPath,
 		.marker,
 		marker path {
-			fill: #00007f;
-			stroke: #00007f;
+			fill: #0a246a;
+			stroke: #0a246a;
 		}
 
 		// Arrow labels: quiet gray text on the page color, so the line does not
 		// run through the letters; git commands are tinted navy.
 		.edgeLabel rect,
 		.edgeLabel .background {
-			fill: #fff8ff;
+			fill: #fbfaf7;
 			stroke: none !important;
 			opacity: 1;
 		}
@@ -765,13 +765,13 @@ ul.topbar {
 		// A page-colored halo around the label text clears the line behind it.
 		.edgeLabel text {
 			paint-order: stroke;
-			stroke: #fff8ff;
+			stroke: #fbfaf7;
 			stroke-width: 6px;
 			stroke-linejoin: round;
 		}
 		.edgeLabel.cy-mm-cmd text,
 		.edgeLabel.cy-mm-cmd tspan {
-			fill: #00007f;
+			fill: #0a246a;
 		}
 	}
 
@@ -780,7 +780,7 @@ ul.topbar {
 	.win95-codewin {
 		margin: 15px 0 18px;
 		padding: 2px;
-		background: #bfb8bf;
+		background: #c0bec0;
 		@include win95-raised();
 
 		.win95-codewin-bar {
@@ -788,7 +788,7 @@ ul.topbar {
 			align-items: center;
 			justify-content: space-between;
 			padding: 2px 4px 2px 6px;
-			background: #00007f;
+			background: #0a246a;
 			color: #ffffff;
 			font-family: Tahoma, "MS Sans Serif", Geneva, Verdana, sans-serif;
 			font-size: 12px;
@@ -798,14 +798,14 @@ ul.topbar {
 			margin-top: 2px;
 			background: #ffffff;
 			border: 1px solid;
-			border-color: #7f787f #fff8ff #fff8ff #7f787f;
-			box-shadow: inset 1px 1px 0 #000000, inset -1px -1px 0 #bfb8bf;
+			border-color: #7f7d7f #fbfaf7 #fbfaf7 #7f7d7f;
+			box-shadow: inset 1px 1px 0 #000000, inset -1px -1px 0 #c0bec0;
 			overflow-x: auto;
 		}
 		.mermaid {
 			margin: 0;
 			padding: 12px 8px;
-			background: #fff8ff;
+			background: #fbfaf7;
 		}
 		pre {
 			margin: 0;
@@ -821,9 +821,9 @@ ul.topbar {
 		// bottom/right edge, plus a second inner shade line.
 		background: #ffffff;
 		border: 1px solid;
-		border-color: #7f787f #fff8ff #fff8ff #7f787f;
+		border-color: #7f7d7f #fbfaf7 #fbfaf7 #7f7d7f;
 		border-radius: 0;
-		box-shadow: inset 1px 1px 0 #000000, inset -1px -1px 0 #bfb8bf;
+		box-shadow: inset 1px 1px 0 #000000, inset -1px -1px 0 #c0bec0;
 		overflow-x: auto;
 
 		code {
@@ -913,7 +913,7 @@ ul.topbar {
 	}
 }
 .hljs {
-	background: #fff8ff;
+	background: #fbfaf7;
 }
 .footer {
 	font-size: 12px;
@@ -951,7 +951,7 @@ ul.topbar {
 	align-items: center;
 	gap: 8px;
 	padding: 6px 10px;
-	background: #bfb8bf;
+	background: #c0bec0;
 	color: #000000;
 	text-decoration: none;
 	cursor: pointer;
@@ -1007,7 +1007,7 @@ ul.topbar {
 		span {
 			@include win95-raised(1px);
 			padding: 2px 8px;
-			background: #bfb8bf;
+			background: #c0bec0;
 			line-height: 1.3;
 			box-sizing: border-box;
 		}
@@ -1041,7 +1041,7 @@ ul.topbar {
 		}
 		a:hover,
 		a:focus {
-			background: #00007f;
+			background: #0a246a;
 			color: #ffffff;
 			outline: 0;
 		}
@@ -1079,7 +1079,7 @@ ul.topbar {
 	margin: 10px auto 0;
 	padding: 6px 10px 8px;
 	box-sizing: border-box;
-	background: #bfb8bf;
+	background: #c0bec0;
 	@include win95-etched();
 	font-family: Tahoma, "MS Sans Serif", Geneva, Verdana, sans-serif;
 }
@@ -1108,7 +1108,7 @@ ul.topbar {
 	}
 	a:hover,
 	a:focus {
-		background: #00007f;
+		background: #0a246a;
 		color: #ffffff;
 	}
 	img {
@@ -1132,7 +1132,7 @@ ul.topbar {
 	left: 0;
 	right: 0;
 	height: 4px;
-	background: #bfb8bf;
+	background: #c0bec0;
 	border-bottom: 1px solid $win95-darkshadow;
 	z-index: 1000;
 	pointer-events: none;
@@ -1140,7 +1140,7 @@ ul.topbar {
 .win95-progress-fill {
 	width: 0;
 	height: 100%;
-	background: #00007f;
+	background: #0a246a;
 }
 .win95-postbar-modified {
 	color: #555555;
@@ -1148,7 +1148,7 @@ ul.topbar {
 }
 .post_nav-disabled {
 	@include win95-etched();
-	background: #bfb8bf;
+	background: #c0bec0;
 	color: #8a848a;
 	cursor: default;
 }
@@ -1262,14 +1262,14 @@ ul.topbar {
 	background-color: #cccccc;
 	border-width: 2px;
 	border-style: groove ridge ridge groove;
-	border-color: #fff8ff #000000 #000000 #fff8ff;
+	border-color: #fbfaf7 #000000 #000000 #fbfaf7;
 } /* this will style the thumb, ignoring the track */
  
 ::-webkit-scrollbar-button {
 	background-color: #cccccc;
 	border-width: 2px;
 	border-style: groove ridge ridge groove;
-	border-color: #fff8ff #000000 #000000 #fff8ff;
+	border-color: #fbfaf7 #000000 #000000 #fbfaf7;
 	background-position: center center;
 	background-repeat: no-repeat;
 
@@ -1341,13 +1341,13 @@ html.win95-no-window-anim {
 // File-explorer folder selection — reuses the same navy/white highlight
 // the Explorer-style post table already uses on hover, rather than
 // inventing a new "selected" look or a new open-folder icon asset.
-// #tag-list li a already sets its own background (#fff8ff) with an ID
+// #tag-list li a already sets its own background (#fbfaf7) with an ID
 // selector, which otherwise beats a plain class selector here and left
 // the selected state's white text sitting on that same near-white
 // background instead of the intended navy — so this also has to be
 // scoped under #tag-list to actually win.
 #tag-list .win95-folder.win95-folder-selected > a {
-	background: #00007f;
+	background: #0a246a;
 	color: #ffffff;
 }
 
@@ -1364,7 +1364,7 @@ html.win95-no-window-anim {
 	position: fixed;
 	inset: 0;
 	z-index: 10000;
-	background: #008082;
+	background: #4f8a8b;
 	display: flex;
 	align-items: center;
 	justify-content: center;
@@ -1381,7 +1381,7 @@ html.win95-no-window-anim {
 	min-width: 260px;
 	padding: 20px 26px;
 	border: 2px solid;
-	border-color: #7f787f #000000 #000000 #7f787f;
+	border-color: #7f7d7f #000000 #000000 #7f7d7f;
 	font-size: 13px;
 	line-height: 1.8;
 	white-space: nowrap;
@@ -1396,7 +1396,7 @@ html.win95-no-window-anim {
 	width: 100%;
 	height: 10px;
 	background: #000000;
-	border: 1px solid #7f787f;
+	border: 1px solid #7f7d7f;
 	box-sizing: border-box;
 }
 .win95-boot-bar-fill {
@@ -1415,7 +1415,7 @@ html.win95-no-window-anim {
 	width: 100%;
 	margin-top: 14px;
 	padding: 6px 10px;
-	background: #bfb8bf;
+	background: #c0bec0;
 	color: #000000;
 	font-family: inherit;
 	font-size: 12px;
@@ -1662,7 +1662,7 @@ ul.win95-postbar {
 	right: 0;
 	margin-top: 1px;
 	@include win95-raised();
-	background: #bfb8bf;
+	background: #c0bec0;
 	list-style: none;
 	min-width: 200px;
 	max-width: 280px;
@@ -1696,7 +1696,7 @@ ul.win95-postbar {
 }
 .win95-toc-list li a:hover,
 .win95-toc-list li a:focus {
-	background: #00007f;
+	background: #0a246a;
 	color: #ffffff;
 }
 
@@ -1707,7 +1707,7 @@ ul.win95-postbar {
 	gap: 6px;
 	background: #000000;
 	border: 2px solid;
-	border-color: #7f787f #fff8ff #fff8ff #7f787f;
+	border-color: #7f7d7f #fbfaf7 #fbfaf7 #7f7d7f;
 	padding: 4px 8px;
 }
 .win95-hitcounter img {
@@ -1748,4 +1748,166 @@ ul.win95-postbar {
 	.win95-explorer-collapsed.win95-explorer-expanded .post_total {
 		transition: none !important;
 	}
+}
+
+// ==========================================================================
+// Refinement layer — "refined retro OS"
+// Keeps the Windows 95/98 look and calms it down: shorter title bars with
+// white text, one-pixel sunken panes inside the windows, a clear difference
+// between the big windows (2px bevel) and the small floating ones (1px bevel),
+// lighter dividers, and a clearer type hierarchy in the main window.
+// Only values are overridden here; nothing above is removed.
+// ==========================================================================
+$win95-divider: #a9a7a9;
+
+// --- Window frames -------------------------------------------------------
+.wrapper, .content {
+	padding: 3px 2px;
+}
+.default_title, .post_title {
+	padding: 1px 4px 2px;
+
+	h1 {
+		color: #ffffff;
+		font-size: 13px;
+		line-height: 18px;
+	}
+}
+// Panes inside the big windows: a single sunken pixel border instead of the
+// double ridge/groove.
+.post_list, .tag_list, .post_content {
+	border-width: 1px;
+	border-style: solid;
+	border-color: $win95-shadow $win95-highlight $win95-highlight $win95-shadow;
+	box-shadow: inset 1px 1px 0 $win95-darkshadow;
+}
+
+// --- Menu / toolbar dividers: quieter -----------------------------------
+.wrapper ul.topbar a + a,
+ul.win95-postbar > li + li {
+	border-left-color: $win95-divider;
+}
+
+// --- Main window: type hierarchy -----------------------------------------
+.home-progress {
+	margin: 22px 10px 6px;
+}
+.home-eyebrow {
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: 0.12em;
+	color: #6a6866;
+	margin-bottom: 2px;
+}
+.post_content .home-progress-text {
+	margin: 0 0 8px;
+	font-size: 22px;
+	line-height: 1.2;
+	color: #111111;
+
+	strong {
+		font-weight: 700;
+	}
+}
+.home-progress-pct {
+	margin-left: 8px;
+	font-size: 13px;
+	color: #555555;
+}
+.home-progress-bar {
+	box-sizing: border-box;
+	max-width: 520px;
+	height: 12px;
+	background: #ffffff;
+	border: 1px solid;
+	border-color: $win95-shadow $win95-highlight $win95-highlight $win95-shadow;
+	box-shadow: inset 1px 1px 0 $win95-darkshadow;
+	overflow: hidden;
+}
+.home-progress-fill {
+	width: 0;
+	height: 100%;
+	background: #0a246a;
+}
+.post_content .home-section {
+	margin: 28px 10px 8px;
+	padding-bottom: 4px;
+	border-bottom: 1px solid #d3d1cd;
+	font-size: 12px;
+	font-weight: 700;
+	letter-spacing: 0.1em;
+	color: #3a3836;
+}
+
+// RECENT STUDY LOG table: flat header, light row lines, quiet secondary columns.
+.win95-explorer-list {
+	margin: 12px 10px 28px;
+	border: 1px solid;
+	border-color: $win95-shadow $win95-highlight $win95-highlight $win95-shadow;
+	box-shadow: inset 1px 1px 0 $win95-darkshadow;
+
+	// Beat the generic ".post_content table, th, td" 1px dark grid.
+	table th,
+	table td {
+		border-width: 0;
+	}
+	thead th {
+		border-bottom: 1px solid #cfcdc9;
+		box-shadow: none;
+		background: #eceae6;
+		padding: 5px 12px;
+		font-size: 11px;
+		letter-spacing: 0.04em;
+		color: #555555;
+	}
+	tbody td {
+		padding: 7px 12px;
+		border-bottom: 1px solid #f0eee9;
+	}
+	tbody td:nth-child(2),
+	tbody td:nth-child(3) {
+		color: #7a7875;
+		font-size: 12px;
+	}
+	tbody tr:last-child td {
+		border-bottom: 0;
+	}
+}
+
+// --- Small floating windows (TODAY IS / Cruise FM / Hit Counter) ----------
+// Same look, but compact: 1px bevel, shorter title bars, and the tiniest
+// text bumped up to stay readable.
+.top-row .cy-sidebar {
+	.cy-window,
+	.cy-music-window,
+	.cy-visitors-window {
+		border-width: 1px;
+		box-shadow: inset 1px 1px 0 $win95-light, inset -1px -1px 0 $win95-shadow;
+	}
+	.cy-titlebar {
+		padding: 1px 4px;
+		min-height: 18px;
+		font-size: 11px;
+		color: #ffffff;
+	}
+	.cy-panel {
+		border-width: 1px;
+		border-style: solid;
+		box-shadow: inset 1px 1px 0 $win95-darkshadow;
+	}
+	.cy-mp-menubar,
+	.cy-mp-field-box {
+		font-size: 11px;
+	}
+}
+
+// --- Taskbar: clearer hierarchy -------------------------------------------
+.win95-taskbar-window {
+	flex-basis: 190px;
+}
+.win95-clock {
+	min-width: 48px;
+	padding: 0 8px;
+	font-size: 11px;
+	color: #333333;
 }

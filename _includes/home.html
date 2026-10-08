@@ -3,29 +3,16 @@
 
 <!-- ==================== 전체 진행률 ==================== -->
 
-<div style="margin: 2rem 10px;">
+<div class="home-progress">
 
-  <p id="progress-text" style="font-size:1.2rem; font-weight:700; margin-bottom:6px;">
+  <div class="home-eyebrow">STUDY PROGRESS</div>
+
+  <p id="progress-text" class="home-progress-text">
     loading...
   </p>
 
-  <div style="
-    width:90%;
-    max-width:520px;
-    height:14px;
-    background:#fff8ff;
-    border-width:2px;
-    border-style:ridge groove groove ridge;
-    border-color:#7f787f #fff8ff #fff8ff #7f787f;
-    overflow:hidden;
-  ">
-    <div id="progress-bar-fill"
-         style="
-           height:100%;
-           width:0%;
-           background:#00007f;
-         ">
-    </div>
+  <div class="home-progress-bar">
+    <div id="progress-bar-fill" class="home-progress-fill"></div>
   </div>
 
 </div>
@@ -59,14 +46,9 @@
   var pct =
     Math.round((day / totalDays) * 100);
 
-  document.getElementById('progress-text').textContent =
-    ' - DAY ' +
-    day +
-    ' / ' +
-    totalDays +
-    ' (' +
-    pct +
-    '%)';
+  document.getElementById('progress-text').innerHTML =
+    'DAY <strong>' + day + '</strong> / ' + totalDays +
+    ' <span class="home-progress-pct">' + pct + '%</span>';
 
   var fill = document.getElementById('progress-bar-fill');
   var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -96,7 +78,7 @@
 
 <!-- ==================== 최근 학습 기록 ==================== -->
  
-<h2 style="margin-left:10px;">- RECENT STUDY LOG</h2>
+<h2 class="home-section">RECENT STUDY LOG</h2>
 
 <div class="win95-explorer-list">
   <table>
@@ -122,7 +104,7 @@
 
 <!-- ==================== 학습 캘린더 ==================== -->
 
-<h2 style="margin-left:10px;">- STUDY CALENDAR</h2>
+<h2 class="home-section">STUDY CALENDAR</h2>
 
 <p style="color:#777; font-size:0.9rem;">
 
@@ -132,10 +114,10 @@
   margin:1rem 10px;
   padding:1.3rem;
   max-width:600px;
-  background:#fff8ff;
+  background:#fbfaf7;
   border-width:2px;
   border-style:ridge groove groove ridge;
-  border-color:#7f787f #fff8ff #fff8ff #7f787f;
+  border-color:#7f7d7f #fbfaf7 #fbfaf7 #7f7d7f;
 ">
 
   <div style="
@@ -150,15 +132,15 @@
       style="
         border-width:2px;
         border-style:solid;
-        border-color:#fff8ff #000000 #000000 #fff8ff;
-        background:#bfb8bf;
+        border-color:#fbfaf7 #000000 #000000 #fbfaf7;
+        background:#c0bec0;
         cursor:pointer;
         font-size:1rem;
         padding:2px 10px;
         font-family:Tahoma, 'MS Sans Serif', Geneva, Verdana, sans-serif;
       "
-      onmousedown="this.style.borderColor='#000000 #fff8ff #fff8ff #000000'"
-      onmouseup="this.style.borderColor='#fff8ff #000000 #000000 #fff8ff'"
+      onmousedown="this.style.borderColor='#000000 #fbfaf7 #fbfaf7 #000000'"
+      onmouseup="this.style.borderColor='#fbfaf7 #000000 #000000 #fbfaf7'"
     >
       ←
     </button>
@@ -170,15 +152,15 @@
       style="
         border-width:2px;
         border-style:solid;
-        border-color:#fff8ff #000000 #000000 #fff8ff;
-        background:#bfb8bf;
+        border-color:#fbfaf7 #000000 #000000 #fbfaf7;
+        background:#c0bec0;
         cursor:pointer;
         font-size:1rem;
         padding:2px 10px;
         font-family:Tahoma, 'MS Sans Serif', Geneva, Verdana, sans-serif;
       "
-      onmousedown="this.style.borderColor='#000000 #fff8ff #fff8ff #000000'"
-      onmouseup="this.style.borderColor='#fff8ff #000000 #000000 #fff8ff'"
+      onmousedown="this.style.borderColor='#000000 #fbfaf7 #fbfaf7 #000000'"
+      onmouseup="this.style.borderColor='#fbfaf7 #000000 #000000 #fbfaf7'"
     >
       →
     </button>
@@ -207,7 +189,7 @@
 
 <!-- ==================== 주간 학습 흐름 ==================== -->
 
-<h2 style="margin-left:10px;">- WEEKLY STUDY FLOW</h2>
+<h2 class="home-section">WEEKLY STUDY FLOW</h2>
 
 <div class="win95-weekflow">
   <div class="win95-weekflow-header">
@@ -254,10 +236,10 @@
 
 <!-- ==================== GitHub 연동 ==================== -->
 
-<h2 style="margin-left:10px;">- GITHUB WORKS</h2>
+<h2 class="home-section">GITHUB WORKS</h2>
 <div style="margin:30px 10px 0;">
 
-  <img src="https://streak-stats.demolab.com/?user=yoosoo2217&ring=00007F&fire=00007F&currStreakLabel=00007F">
+  <img src="https://streak-stats.demolab.com/?user=yoosoo2217&ring=0A246A&fire=0A246A&currStreakLabel=0A246A">
 
 </div>
 
@@ -375,7 +357,7 @@ function renderCalendar() {
 
     if (postsByDate.hasOwnProperty(fullDate)) {
 
-      cell.style.background = "#00007F";
+      cell.style.background = "#0a246a";
       cell.style.color = "white";
       cell.style.fontWeight = "600";
 

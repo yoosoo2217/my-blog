@@ -15,10 +15,10 @@ show_profile: true
       max-width:400px;
       padding:6px 8px;
       box-sizing:border-box;
-      background:#fff8ff;
+      background:#fbfaf7;
       border-width:2px;
       border-style:ridge groove groove ridge;
-      border-color:#7f787f #fff8ff #fff8ff #7f787f;
+      border-color:#7f7d7f #fbfaf7 #fbfaf7 #7f7d7f;
       font-family:Tahoma, 'MS Sans Serif', Geneva, Verdana, sans-serif;
       font-size:13px;
     "
@@ -33,7 +33,7 @@ show_profile: true
 
 <style>
   #search-results mark {
-    background: #00007f;
+    background: #0a246a;
     color: #ffffff;
     padding: 0 1px;
   }

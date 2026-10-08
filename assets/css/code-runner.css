@@ -1,5 +1,5 @@
 /* Code Runner UI — reuses the Windows 95 theme's own button/panel look
-   (see _sass/_main.scss: #bfb8bf grey, #fff8ff highlight, ridge/groove
+   (see _sass/_main.scss: #c0bec0 grey, #fbfaf7 highlight, ridge/groove
    borders) so it doesn't clash with the rest of the site. */
 
 .code-runner-wrap {
@@ -11,9 +11,9 @@
 	align-items: center;
 	justify-content: space-between;
 	gap: 6px;
-	background: #bfb8bf;
+	background: #c0bec0;
 	border: 2px solid;
-	border-color: #fff8ff #000000 #000000 #fff8ff;
+	border-color: #fbfaf7 #000000 #000000 #fbfaf7;
 	border-bottom: none;
 	padding: 2px 6px;
 	font-family: Tahoma, "MS Sans Serif", Geneva, Verdana, sans-serif;
@@ -26,9 +26,9 @@
 }
 
 .code-runner-btn {
-	background: #bfb8bf;
+	background: #c0bec0;
 	border: 2px solid;
-	border-color: #fff8ff #000000 #000000 #fff8ff;
+	border-color: #fbfaf7 #000000 #000000 #fbfaf7;
 	font-family: Tahoma, "MS Sans Serif", Geneva, Verdana, sans-serif;
 	font-size: 11px;
 	padding: 1px 8px;
@@ -38,11 +38,11 @@
 }
 
 .code-runner-btn:active {
-	border-color: #000000 #fff8ff #fff8ff #000000;
+	border-color: #000000 #fbfaf7 #fbfaf7 #000000;
 }
 
 .code-runner-btn[disabled] {
-	color: #7f787f;
+	color: #7f7d7f;
 	cursor: default;
 }
 
@@ -50,7 +50,7 @@
 	margin: 0 0 15px 0;
 	border: 2px solid;
 	border-style: ridge groove groove ridge;
-	border-color: #7f787f #fff8ff #fff8ff #7f787f;
+	border-color: #7f7d7f #fbfaf7 #fbfaf7 #7f7d7f;
 	background: #000000;
 	max-width: 100%;
 	overflow: hidden;
@@ -58,7 +58,7 @@
 
 .code-runner-console-title {
 	background: #000080;
-	color: #fff8ff;
+	color: #fbfaf7;
 	font-family: Tahoma, "MS Sans Serif", Geneva, Verdana, sans-serif;
 	font-size: 11px;
 	font-weight: bold;
@@ -69,9 +69,9 @@
 }
 
 .code-runner-clear-btn {
-	background: #bfb8bf;
+	background: #c0bec0;
 	border: 2px solid;
-	border-color: #fff8ff #000000 #000000 #fff8ff;
+	border-color: #fbfaf7 #000000 #000000 #fbfaf7;
 	font-family: Tahoma, "MS Sans Serif", Geneva, Verdana, sans-serif;
 	font-size: 10px;
 	padding: 0 4px;
@@ -80,7 +80,7 @@
 }
 
 .code-runner-clear-btn:active {
-	border-color: #000000 #fff8ff #fff8ff #000000;
+	border-color: #000000 #fbfaf7 #fbfaf7 #000000;
 }
 
 .code-runner-output {

@@ -11,7 +11,7 @@ show_profile: true
 {% assign java_posts = site.tags['Java'] | sort: "date" %}
 {% for post in java_posts %}
   <li style="margin-bottom:0.9rem; line-height:1.4;">
-    <a href="{{ site.baseurl }}{{ post.url }}" style="color:#00007f; font-weight:700; text-decoration:none;">{{ post.title }}</a>
+    <a href="{{ site.baseurl }}{{ post.url }}" style="color:#0a246a; font-weight:700; text-decoration:none;">{{ post.title }}</a>
     <div style="font-size:0.75rem; color:#888;">{{ post.date | date: "%Y.%m.%d" }}</div>
   </li>
 {% endfor %}
