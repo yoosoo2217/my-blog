@@ -311,14 +311,14 @@
 					var btn = document.createElement('button');
 					btn.type = 'button';
 					btn.className = 'win95-copy-btn';
-					btn.textContent = '복사';
+					btn.textContent = 'copy';
 					btn.addEventListener('click', function () {
 						var text = pre.getAttribute('data-code-text') || '';
 						var done = function () {
-							btn.textContent = '복사됨!';
+							btn.textContent = 'copied';
 							btn.classList.add('win95-copy-btn-done');
 							setTimeout(function () {
-								btn.textContent = '복사';
+								btn.textContent = 'copy';
 								btn.classList.remove('win95-copy-btn-done');
 							}, 1500);
 						};
