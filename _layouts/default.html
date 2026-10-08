@@ -146,7 +146,7 @@
 			{% else %}
 				{% assign list_posts = site.posts %}
 			{% endif %}
-				<div class="tag-results-cols"><span>Name</span><span>Modified</span></div>
+				<div class="tag-results-cols"><span>Name</span><span>Created</span></div>
 				<ul class="tag-results-list">
 					{% for post in list_posts %}
 					<li><a href="{{ site.baseurl }}{{ post.url }}" title="{{ post.title }}"><span class="tag-results-name"><img src="{{ site.baseurl }}/assets/img/file.ico" alt="" /><span class="tag-results-title">{{ post.title }}</span></span><span class="tag-results-date">{{ post.date | date: "%Y-%m-%d" }}</span></a></li>
