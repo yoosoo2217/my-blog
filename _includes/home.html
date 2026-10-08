@@ -106,82 +106,18 @@
 
 <h2 class="home-section">STUDY CALENDAR</h2>
 
-<p style="color:#777; font-size:0.9rem;">
+<div id="study-calendar" class="win95-cal">
 
-</p>
-
-<div id="study-calendar" style="
-  margin:1rem 10px;
-  padding:1.3rem;
-  max-width:600px;
-  background:#fbfaf7;
-  border-width:2px;
-  border-style:ridge groove groove ridge;
-  border-color:#7f7d7f #fbfaf7 #fbfaf7 #7f7d7f;
-">
-
-  <div style="
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:1rem;
-  ">
-
-    <button
-      onclick="changeMonth(-1)"
-      style="
-        border-width:2px;
-        border-style:solid;
-        border-color:#fbfaf7 #000000 #000000 #fbfaf7;
-        background:#c0bec0;
-        cursor:pointer;
-        font-size:1rem;
-        padding:2px 10px;
-        font-family:Tahoma, 'MS Sans Serif', Geneva, Verdana, sans-serif;
-      "
-      onmousedown="this.style.borderColor='#000000 #fbfaf7 #fbfaf7 #000000'"
-      onmouseup="this.style.borderColor='#fbfaf7 #000000 #000000 #fbfaf7'"
-    >
-      ←
-    </button>
-
-    <strong id="calendar-title"></strong>
-
-    <button
-      onclick="changeMonth(1)"
-      style="
-        border-width:2px;
-        border-style:solid;
-        border-color:#fbfaf7 #000000 #000000 #fbfaf7;
-        background:#c0bec0;
-        cursor:pointer;
-        font-size:1rem;
-        padding:2px 10px;
-        font-family:Tahoma, 'MS Sans Serif', Geneva, Verdana, sans-serif;
-      "
-      onmousedown="this.style.borderColor='#000000 #fbfaf7 #fbfaf7 #000000'"
-      onmouseup="this.style.borderColor='#fbfaf7 #000000 #000000 #fbfaf7'"
-    >
-      →
-    </button>
-
+  <div class="win95-cal-head">
+    <button type="button" class="win95-cal-nav" onclick="changeMonth(-1)" aria-label="이전 달">◀</button>
+    <strong id="calendar-title" class="win95-cal-title"></strong>
+    <button type="button" class="win95-cal-nav" onclick="changeMonth(1)" aria-label="다음 달">▶</button>
   </div>
 
-  <div id="calendar-grid" style="
-    display:grid;
-    grid-template-columns:repeat(7, 1fr);
-    gap:5px;
-    text-align:center;
-  ">
-  </div>
+  <div id="calendar-grid" class="win95-cal-grid"></div>
 
-  <div id="calendar-selected" style="
-    margin-top:1rem;
-    padding-top:0.8rem;
-    border-top:1px solid #ccc;
-    font-size:0.9rem;
-  ">
-    <span style="color:#777;">날짜를 선택하면 그날그날 공부한 내용을 볼 수 잇오! ↑(￣︶￣)↑　</span>
+  <div id="calendar-selected" class="win95-cal-selected">
+    <span class="win95-cal-hint">날짜를 선택하면 그날 공부한 내용을 볼 수 있어요 ↑(￣︶￣)↑</span>
   </div>
 
 </div>
@@ -269,118 +205,57 @@ function renderCalendar() {
 
   var year = currentDate.getFullYear();
   var month = currentDate.getMonth();
+  var firstDay = new Date(year, month, 1).getDay();
+  var lastDate = new Date(year, month + 1, 0).getDate();
 
-  var firstDay =
-    new Date(year, month, 1).getDay();
+  var now = new Date();
+  var todayString =
+    now.getFullYear() + "-" +
+    String(now.getMonth() + 1).padStart(2, "0") + "-" +
+    String(now.getDate()).padStart(2, "0");
 
-  var lastDate =
-    new Date(year, month + 1, 0).getDate();
+  document.getElementById("calendar-title").textContent =
+    year + "." + String(month + 1).padStart(2, "0");
 
-  var title =
-    document.getElementById("calendar-title");
-
-  title.textContent =
-    year + "." + (month + 1) + ".";
-
-  var grid =
-    document.getElementById("calendar-grid");
-
+  var grid = document.getElementById("calendar-grid");
   grid.innerHTML = "";
 
-
-  var days = [
-    "Sun",
-    "Mon",
-    "Tue",
-    "Wed",
-    "Thu",
-    "Fri",
-    "Sat"
-  ];
-
-
-  days.forEach(function(day) {
-
-    var header =
-      document.createElement("div");
-
+  ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].forEach(function (day, i) {
+    var header = document.createElement("div");
+    header.className = "win95-cal-dow" + (i === 0 ? " is-sun" : "");
     header.textContent = day;
-
-    header.style.fontWeight = "600";
-    header.style.fontSize = "0.8rem";
-    header.style.padding = "5px";
-
     grid.appendChild(header);
-
   });
 
-
   for (var i = 0; i < firstDay; i++) {
-
-    var empty =
-      document.createElement("div");
-
+    var empty = document.createElement("div");
+    empty.className = "win95-cal-cell is-empty";
     grid.appendChild(empty);
-
   }
 
+  for (let date = 1; date <= lastDate; date++) {
 
-  for (
-    let date = 1;
-    date <= lastDate;
-    date++
-  ) {
-
-    var cell =
-      document.createElement("div");
-
-    let monthString =
-      String(month + 1).padStart(2, "0");
-
-    let dateString =
+    var cell = document.createElement("div");
+    let fullDate =
+      year + "-" +
+      String(month + 1).padStart(2, "0") + "-" +
       String(date).padStart(2, "0");
 
-    let fullDate =
-      year +
-      "-" +
-      monthString +
-      "-" +
-      dateString;
-
-
+    cell.className = "win95-cal-cell";
     cell.textContent = date;
 
-    cell.style.padding = "8px 4px";
-    cell.style.fontSize = "0.85rem";
-    cell.style.cursor = "pointer";
-
-
-    if (postsByDate.hasOwnProperty(fullDate)) {
-
-      cell.style.background = "#0a246a";
-      cell.style.color = "white";
-      cell.style.fontWeight = "600";
-
-    }
-
-    if (fullDate === selectedDate) {
-
-      cell.style.outline = "2px solid #ff8800";
-      cell.style.outlineOffset = "-2px";
-
-    }
+    if (new Date(year, month, date).getDay() === 0) { cell.classList.add("is-sun"); }
+    if (postsByDate.hasOwnProperty(fullDate)) { cell.classList.add("has-post"); }
+    if (fullDate === todayString) { cell.classList.add("is-today"); }
+    if (fullDate === selectedDate) { cell.classList.add("is-selected"); }
 
     cell.addEventListener("click", function () {
-
       selectedDate = fullDate;
       renderCalendar();
       showPostsForDate(fullDate);
-
     });
 
-
     grid.appendChild(cell);
-
   }
 
 }
@@ -388,39 +263,24 @@ function renderCalendar() {
 
 function showPostsForDate(dateStr) {
 
-  var panel =
-    document.getElementById("calendar-selected");
-
-  var posts =
-    postsByDate[dateStr] || [];
+  var panel = document.getElementById("calendar-selected");
+  var posts = postsByDate[dateStr] || [];
 
   var html =
-    '<div style="font-weight:600; margin-bottom:6px;">' +
-    dateStr +
-    '</div>';
+    '<div class="win95-cal-selhead"><span>' + dateStr + '</span><span>' +
+    posts.length + ' object(s)</span></div>';
 
   if (posts.length === 0) {
-
-    html +=
-      '<div style="color:#777;">이 날은 작성한 글이 없습니다.</div>';
-
+    html += '<div class="win95-cal-empty">이 날은 작성한 글이 없습니다.</div>';
   } else {
-
-    html += '<ul style="margin:0; padding-left:1.2rem;">';
-
+    html += '<ul class="win95-cal-files">';
     posts.forEach(function (post) {
-
       html +=
-        '<li><a href="' +
-        post.url +
-        '">' +
-        post.title +
-        '</a></li>';
-
+        '<li><a href="' + post.url + '">' +
+        '<img src="{{ site.baseurl }}/assets/img/file.ico" alt="" />' +
+        '<span>' + post.title + '</span></a></li>';
     });
-
     html += '</ul>';
-
   }
 
   panel.innerHTML = html;
