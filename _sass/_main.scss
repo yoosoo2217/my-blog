@@ -94,8 +94,15 @@ $win95-dither: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'
 	@include win95-tb-pressed();
 	padding: 1px 7px 0 6px;
 }
+// Start button logo: four small squares drawn with one box-shadow, in the
+// blog's navy and teal (no emoji, so it looks the same on every system).
 .win95-start-icon {
-	font-size: 14px;
+	flex-shrink: 0;
+	width: 6px;
+	height: 6px;
+	margin: 0 9px 0 1px;
+	background: #0a246a;
+	box-shadow: 7px 0 0 #4f8a8b, 0 7px 0 #4f8a8b, 7px 7px 0 #0a246a;
 }
 // Quick-launch style home button, followed by an etched vertical divider.
 .win95-home-btn {
@@ -148,9 +155,23 @@ $win95-dither: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'
 	background: #c0bec0;
 	font-weight: normal;
 }
+// Same pixel icons the explorer uses, so taskbar and windows match.
 .win95-taskbar-window-icon {
 	flex-shrink: 0;
-	font-size: 13px;
+	width: 14px;
+	height: 14px;
+	image-rendering: pixelated;
+}
+.win95-taskbar-window-text {
+	min-width: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.win95-home-icon {
+	font-size: 16px;
+	line-height: 1;
+	color: #0a246a;
+	font-weight: 700;
 }
 // System tray: sunken field pushed to the right edge, holding the clock.
 .win95-clock {
@@ -171,10 +192,31 @@ $win95-dither: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'
 	bottom: 32px;
 	@include win95-raised();
 	background: #c0bec0;
-	min-width: 180px;
+	min-width: 210px;
 	z-index: 1001;
-	padding: 2px;
+	padding: 2px 2px 2px 28px;
 	font-family: Tahoma, "MS Sans Serif", Geneva, Verdana, sans-serif;
+
+	// Classic vertical banner down the left edge of the menu.
+	&::before {
+		content: "YOOSOO OS";
+		position: absolute;
+		left: 2px;
+		top: 2px;
+		bottom: 2px;
+		width: 22px;
+		box-sizing: border-box;
+		padding: 8px 0;
+		background: #0a246a;
+		color: #ffffff;
+		font-size: 13px;
+		font-weight: 700;
+		letter-spacing: 0.14em;
+		line-height: 22px;
+		writing-mode: vertical-rl;
+		transform: rotate(180deg);
+		text-align: start;
+	}
 
 	ul {
 		list-style: none;
@@ -1910,144 +1952,4 @@ ul.win95-postbar > li + li {
 	padding: 0 8px;
 	font-size: 11px;
 	color: #333333;
-}
-
-// --- Lower part of the main window ----------------------------------------
-// STUDY CALENDAR: a clean sunken panel, small flat-bevel month buttons, a
-// tight grid and quiet weekday labels.
-.home-calendar {
-	box-sizing: border-box;
-	max-width: 600px;
-	margin: 12px 10px 28px;
-	padding: 14px 16px 12px;
-	background: #ffffff;
-	border: 1px solid;
-	border-color: $win95-shadow $win95-highlight $win95-highlight $win95-shadow;
-	box-shadow: inset 1px 1px 0 $win95-darkshadow;
-}
-.home-cal-head {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	margin-bottom: 10px;
-
-	strong {
-		font-size: 13px;
-		font-weight: 700;
-	}
-}
-.home-cal-btn {
-	@include win95-tb-raised();
-	background: #c0bec0;
-	color: #000000;
-	font-family: Tahoma, "MS Sans Serif", Geneva, Verdana, sans-serif;
-	font-size: 12px;
-	line-height: 1.4;
-	padding: 1px 12px;
-	cursor: pointer;
-}
-.home-cal-btn:active {
-	@include win95-tb-pressed();
-	padding: 2px 11px 0 13px;
-}
-.home-cal-grid {
-	display: grid;
-	grid-template-columns: repeat(7, 1fr);
-	gap: 2px;
-	text-align: center;
-
-	> div {
-		font-size: 12px;
-	}
-	// First seven cells are the weekday labels.
-	> div:nth-child(-n+7) {
-		font-size: 11px !important;
-		font-weight: 400 !important;
-		letter-spacing: 0.04em;
-		color: #6a6866;
-	}
-	> div:hover {
-		background: #eceae6;
-	}
-}
-.home-cal-selected {
-	margin-top: 12px;
-	padding-top: 10px;
-	border-top: 1px solid #d3d1cd;
-	font-size: 13px;
-}
-
-// WEEKLY STUDY FLOW: single sunken panel; the "current" markers use the navy
-// accent instead of a separate green.
-.win95-weekflow {
-	margin: 12px 10px 28px;
-	padding: 14px 18px;
-	border: 1px solid;
-	border-color: $win95-shadow $win95-highlight $win95-highlight $win95-shadow;
-	box-shadow: inset 1px 1px 0 $win95-darkshadow;
-	background: #ffffff;
-}
-.win95-weekflow-dot {
-	background: #0a246a;
-}
-.win95-weekflow-title {
-	font-size: 13px;
-	color: #333333;
-}
-.win95-weekflow-current .win95-weekflow-node {
-	background: #0a246a;
-	border-color: #0a246a;
-}
-
-// GITHUB WORKS: the streak image sits in its own sunken panel.
-.home-github {
-	box-sizing: border-box;
-	max-width: 600px;
-	margin: 12px 10px 28px;
-	padding: 14px;
-	background: #ffffff;
-	border: 1px solid;
-	border-color: $win95-shadow $win95-highlight $win95-highlight $win95-shadow;
-	box-shadow: inset 1px 1px 0 $win95-darkshadow;
-	text-align: center;
-
-	img {
-		display: block;
-		max-width: 100%;
-		height: auto;
-		margin: 0 auto;
-	}
-}
-
-// Footer note (pocket money): a small panel under a hairline instead of
-// bare floating text between <hr> and <br>.
-.donate-wrap {
-	display: flow-root;
-	margin-top: 28px;
-	padding-top: 14px;
-	border-top: 1px solid #d3d1cd;
-}
-.post_content .donate {
-	float: right;
-	max-width: 340px;
-	padding: 10px 14px;
-	background: #f3f1ed;
-	border: 1px solid;
-	border-color: $win95-shadow $win95-highlight $win95-highlight $win95-shadow;
-
-	p {
-		margin: 0 0 8px;
-		font-size: 12px;
-		line-height: 1.6;
-		color: #444444;
-		text-align: right;
-	}
-	p:last-child {
-		margin-bottom: 0;
-	}
-	.donate-title {
-		font-size: 11px;
-		letter-spacing: 0.08em;
-		color: #222222;
-	}
 }

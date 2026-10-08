@@ -1,23 +1,23 @@
 <div class="win95-taskbar">
 	<button type="button" class="win95-start-btn" id="win95-start-btn" aria-haspopup="true" aria-expanded="false">
-		<span class="win95-start-icon">🪟</span> 시작
+		<span class="win95-start-icon" aria-hidden="true"></span>시작
 	</button>
 
-	<a href="{{ site.baseurl }}/" class="win95-home-btn" title="홈으로">🏠</a>
+	<a href="{{ site.baseurl }}/" class="win95-home-btn" title="홈으로"><span class="win95-home-icon">⌂</span></a>
 
 	{% if page.layout == 'tag' %}
 	<div class="win95-taskbar-window win95-taskbar-window-inactive" title="{{ site.name }}">
-		<span class="win95-taskbar-window-icon">📄</span>
-		{{ site.name }}
+		<img class="win95-taskbar-window-icon" src="{{ site.baseurl }}/assets/img/file.ico" alt="" />
+		<span class="win95-taskbar-window-text">{{ site.name }}</span>
 	</div>
 	<div class="win95-taskbar-window" title="TAG: {{ page.tag }}">
-		<span class="win95-taskbar-window-icon">📁</span>
-		TAG: {{ page.tag }}
+		<img class="win95-taskbar-window-icon" src="{{ site.baseurl }}/assets/img/folder.ico" alt="" />
+		<span class="win95-taskbar-window-text">TAG: {{ page.tag }}</span>
 	</div>
 	{% else %}
 	<div class="win95-taskbar-window" title="{{ page.title | default: site.name }}">
-		<span class="win95-taskbar-window-icon">📄</span>
-		{{ page.title | default: site.name }}
+		<img class="win95-taskbar-window-icon" src="{{ site.baseurl }}/assets/img/file.ico" alt="" />
+		<span class="win95-taskbar-window-text">{{ page.title | default: site.name }}</span>
 	</div>
 	{% endif %}
 
