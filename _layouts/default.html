@@ -266,6 +266,46 @@
 	<script src="{{ site.baseurl }}/assets/js/001.js"></script>
 	<script src="{{ site.baseurl }}/assets/js/002.js"></script>
 	<script>
+		// Wraps an element (code <pre> or .mermaid div) in a Windows 95 window:
+		// navy title bar with a name and three decorative buttons, raised frame.
+		window.__win95Wrap = function (el, title) {
+			if (!el || !el.parentNode) { return; }
+			var win = document.createElement('div');
+			win.className = 'win95-codewin';
+			var bar = document.createElement('div');
+			bar.className = 'win95-codewin-bar';
+			var name = document.createElement('span');
+			name.className = 'win95-codewin-title';
+			name.textContent = title;
+			var btns = document.createElement('span');
+			btns.className = 'win95-codewin-btns';
+			var marks = ['_', '□', '×'];
+			for (var m = 0; m < marks.length; m++) {
+				var b = document.createElement('span');
+				b.textContent = marks[m];
+				btns.appendChild(b);
+			}
+			bar.appendChild(name);
+			bar.appendChild(btns);
+			var body = document.createElement('div');
+			body.className = 'win95-codewin-body';
+			el.parentNode.insertBefore(win, el);
+			body.appendChild(el);
+			win.appendChild(bar);
+			win.appendChild(body);
+		};
+
+		(function () {
+			var pres = document.querySelectorAll('.post_content pre');
+			for (var p = 0; p < pres.length; p++) {
+				var holder = pres[p].closest('[class*="language-"]');
+				var m = holder && holder.className.match(/language-([\w+#-]+)/);
+				if (m && m[1] === 'mermaid') { continue; }
+				window.__win95Wrap(pres[p], (m ? m[1] : 'code') + '.txt');
+			}
+		})();
+	</script>
+	<script>
 		(function () {
 			var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -417,6 +457,7 @@
 						? wrapper.parentNode
 						: wrapper;
 					host.parentNode.replaceChild(div, host);
+					if (window.__win95Wrap) { window.__win95Wrap(div, 'diagram.mmd'); }
 				} catch (e) {
 					/* skip this block if anything goes wrong */
 				}

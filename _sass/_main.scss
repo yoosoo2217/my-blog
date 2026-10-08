@@ -719,6 +719,61 @@ ul.topbar {
 		}
 	}
 
+	// Windows 95 window around every code block and mermaid diagram: gray raised
+	// frame, navy title bar with decorative buttons, sunken body.
+	.win95-codewin {
+		margin: 15px 0 18px;
+		padding: 2px;
+		background: #bfb8bf;
+		@include win95-raised();
+
+		.win95-codewin-bar {
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			padding: 2px 3px 2px 6px;
+			background: #00007f;
+			color: #ffffff;
+			font-family: Tahoma, "MS Sans Serif", Geneva, Verdana, sans-serif;
+			font-size: 12px;
+			font-weight: bold;
+		}
+		.win95-codewin-btns {
+			display: flex;
+			gap: 2px;
+
+			span {
+				@include win95-raised(1px);
+				width: 16px;
+				height: 14px;
+				line-height: 12px;
+				text-align: center;
+				background: #bfb8bf;
+				color: #000000;
+				font-size: 11px;
+				font-weight: bold;
+			}
+		}
+		.win95-codewin-body {
+			margin-top: 2px;
+			background: #ffffff;
+			border: 1px solid;
+			border-color: #7f787f #fff8ff #fff8ff #7f787f;
+			box-shadow: inset 1px 1px 0 #000000, inset -1px -1px 0 #bfb8bf;
+			overflow-x: auto;
+		}
+		.mermaid {
+			margin: 0;
+			padding: 12px 8px;
+			background: #fff8ff;
+		}
+		pre {
+			margin: 0;
+			border: 0;
+			box-shadow: none;
+		}
+	}
+
 	pre {
 		margin-bottom: 15px;
 		padding: 10px 12px;
