@@ -1363,6 +1363,43 @@ ul.win95-postbar {
 		box-shadow: -1px 0 0 $win95-highlight;
 	}
 }
+// File explorer menu row (About / 검색 / 방명록 / ...): same toolbar treatment
+// as the post toolbar — flat items, thin etched dividers, bevel on hover,
+// pressed while clicked. Scoped to .wrapper so the post toolbar is untouched.
+.wrapper ul.topbar {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	padding: 2px 10px;
+
+	a {
+		display: flex;
+		align-items: center;
+	}
+	a + a {
+		margin-left: 6px;
+		padding-left: 6px;
+		border-left: 1px solid $win95-shadow;
+		box-shadow: -1px 0 0 $win95-highlight;
+	}
+	li {
+		margin: 0;
+		padding: 2px 6px;
+		border: 1px solid transparent;
+		font-size: 12px;
+		line-height: 1.2;
+		cursor: pointer;
+	}
+	a:hover li {
+		background: #e4e0e4;
+		border-color: $win95-highlight $win95-shadow $win95-shadow $win95-highlight;
+	}
+	a:active li {
+		background: #d8d4d8;
+		border-color: $win95-shadow $win95-highlight $win95-highlight $win95-shadow;
+		padding: 3px 5px 1px 7px;
+	}
+}
 .win95-fav-toggle,
 .win95-toc-toggle {
 	background: transparent;
