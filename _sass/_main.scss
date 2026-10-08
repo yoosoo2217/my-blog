@@ -1342,6 +1342,7 @@ html.win95-doc-maximized {
 	color: #000000;
 	font-family: inherit;
 	font-size: 11px;
+	line-height: 1.2;
 	padding: 2px 6px;
 	cursor: pointer;
 }
@@ -1362,9 +1363,10 @@ html.win95-doc-maximized {
 	background: #e8e8e8;
 	color: #000000;
 	font-family: Tahoma, "MS Sans Serif", Geneva, Verdana, sans-serif;
-	font-size: 10px;
+	font-size: 9px;
 	font-weight: normal;
-	padding: 1px 6px;
+	line-height: 1.2;
+	padding: 0 5px;
 	cursor: pointer;
 }
 .win95-copy-btn:active {
@@ -1386,7 +1388,8 @@ html.win95-doc-maximized {
 	background: #cfcfcf;
 	padding: 2px 8px;
 	font-family: Tahoma, "MS Sans Serif", Geneva, Verdana, sans-serif;
-	font-size: 13px;
+	font-size: 11px;
+	line-height: 1.2;
 	cursor: pointer;
 }
 .win95-toc-toggle:active,
