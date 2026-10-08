@@ -39,18 +39,21 @@
 			}
 		})();
 	</script>
-	<div id="win95-boot" class="win95-boot">
-		<div class="win95-boot-text">
-			<div class="win95-boot-title">YOOSOO COMPUTER SYSTEM</div>
-			<div class="win95-boot-line" data-boot-line>Initializing...</div>
-			<div class="win95-boot-line" data-boot-line>Loading study logs...</div>
-			<div class="win95-boot-line" data-boot-line>Loading GitHub...</div>
-			<div class="win95-boot-line" data-boot-line>Loading TMI...</div>
-			<div class="win95-boot-bar"><div class="win95-boot-bar-fill" data-boot-bar></div></div>
-			<div class="win95-boot-line win95-boot-welcome" data-boot-welcome>Welcome<span class="win95-cursor">_</span></div>
-			<button type="button" class="win95-boot-enter" id="win95-boot-enter" data-boot-enter hidden>유수의 블로그 들어가기 ▶</button>
+		<div id="win95-boot" class="win95-boot">
+			<div class="win95-boot-text">
+				<div class="win95-boot-title">YOOSOO COMPUTER SYSTEM</div>
+				<div class="win95-boot-bios">BIOS v1.0 &nbsp;·&nbsp; 640K RAM</div>
+				<div class="win95-boot-lines">
+					<div class="win95-boot-line" data-boot-line><span>Initializing...</span><i class="win95-boot-dots"></i><b class="win95-boot-ok" data-boot-ok>OK</b></div>
+					<div class="win95-boot-line" data-boot-line><span>Loading study logs...</span><i class="win95-boot-dots"></i><b class="win95-boot-ok" data-boot-ok>OK</b></div>
+					<div class="win95-boot-line" data-boot-line><span>Loading GitHub...</span><i class="win95-boot-dots"></i><b class="win95-boot-ok" data-boot-ok>OK</b></div>
+					<div class="win95-boot-line" data-boot-line><span>Loading TMI...</span><i class="win95-boot-dots"></i><b class="win95-boot-ok" data-boot-ok>OK</b></div>
+				</div>
+				<div class="win95-boot-bar"><div class="win95-boot-bar-fill" data-boot-bar></div></div>
+				<div class="win95-boot-line win95-boot-welcome" data-boot-welcome>SYSTEM READY<span class="win95-cursor">_</span></div>
+				<button type="button" class="win95-boot-enter" id="win95-boot-enter" data-boot-enter hidden>유수의 블로그 들어가기 ▶</button>
+			</div>
 		</div>
-	</div>
 	<script>
 		// This is a real landing screen now, not just a decorative intro —
 		// it waits for the "들어가기" button before showing the site, and
@@ -67,52 +70,52 @@
 				return;
 			}
 
-			var lines = boot.querySelectorAll('[data-boot-line]');
-			var welcome = boot.querySelector('[data-boot-welcome]');
-			var bar = boot.querySelector('[data-boot-bar]');
-			var enterBtn = boot.querySelector('[data-boot-enter]');
+				var lines = boot.querySelectorAll('.win95-boot-lines [data-boot-line]');
+				var oks = boot.querySelectorAll('[data-boot-ok]');
+				var welcome = boot.querySelector('[data-boot-welcome]');
+				var bar = boot.querySelector('[data-boot-bar]');
+				var enterBtn = boot.querySelector('[data-boot-enter]');
 
-			function closeBoot() {
-				try { sessionStorage.setItem('yusu-booted', '1'); } catch (e) { /* private mode etc. */ }
+				function closeBoot() {
+					try { sessionStorage.setItem('yusu-booted', '1'); } catch (e) { /* private mode etc. */ }
+					if (reduceMotion) {
+						if (boot.parentNode) { boot.parentNode.removeChild(boot); }
+						return;
+					}
+					boot.classList.add('win95-boot-hide');
+					setTimeout(function () {
+						if (boot.parentNode) { boot.parentNode.removeChild(boot); }
+					}, 200);
+				}
+				enterBtn.addEventListener('click', closeBoot);
+
 				if (reduceMotion) {
-					if (boot.parentNode) { boot.parentNode.removeChild(boot); }
+					bar.style.width = '100%';
+					enterBtn.hidden = false;
 					return;
 				}
-				boot.classList.add('win95-boot-hide');
+
+				// Each line appears, then flips to OK; the bar advances one step per line.
+				var STEP = 480;
+				for (var i = 0; i < lines.length; i++) {
+					lines[i].style.visibility = 'hidden';
+					oks[i].style.visibility = 'hidden';
+				}
+				welcome.style.visibility = 'hidden';
+
+				Array.prototype.forEach.call(lines, function (el, idx) {
+					setTimeout(function () { el.style.visibility = 'visible'; }, idx * STEP);
+					setTimeout(function () {
+						oks[idx].style.visibility = 'visible';
+						bar.style.width = Math.round((idx + 1) / lines.length * 100) + '%';
+					}, idx * STEP + Math.round(STEP * 0.7));
+				});
 				setTimeout(function () {
-					if (boot.parentNode) { boot.parentNode.removeChild(boot); }
-				}, 200);
-			}
-			enterBtn.addEventListener('click', closeBoot);
-
-			if (reduceMotion) {
-				bar.style.width = '100%';
-				enterBtn.hidden = false;
-				return;
-			}
-
-			for (var i = 0; i < lines.length; i++) {
-				if (lines[i] !== welcome) { lines[i].style.visibility = 'hidden'; }
-			}
-			welcome.style.visibility = 'hidden';
-
-			var revealDelays = [0, 300, 600, 900];
-			var loadingLines = [];
-			for (var j = 0; j < lines.length; j++) {
-				if (lines[j] !== welcome) { loadingLines.push(lines[j]); }
-			}
-			loadingLines.forEach(function (el, idx) {
-				setTimeout(function () { el.style.visibility = 'visible'; }, revealDelays[idx] || 0);
-			});
-			requestAnimationFrame(function () {
-				requestAnimationFrame(function () { bar.style.width = '100%'; });
-			});
-			setTimeout(function () {
-				welcome.style.visibility = 'visible';
-				enterBtn.hidden = false;
-				enterBtn.focus();
-			}, 1500);
-		})();
+					welcome.style.visibility = 'visible';
+					enterBtn.hidden = false;
+					enterBtn.focus();
+				}, lines.length * STEP + 150);
+			})();
 	</script>
 	<div class="top-row{% if page.show_profile %} has-sidebar{% endif %}{% if page.date %} win95-explorer-collapsed{% endif %}">
 	<div class="wrapper">
