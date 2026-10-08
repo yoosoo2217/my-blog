@@ -965,7 +965,7 @@ ul.topbar {
 	}
 	.tag-results-list {
 		margin: 0;
-		padding: 0;
+		padding: 6px 0 4px;
 
 		li {
 			display: block;
@@ -979,7 +979,7 @@ ul.topbar {
 		a {
 			display: flex;
 			align-items: center;
-			padding: 1px 0;
+			padding: 3px 0;
 			color: #000000;
 			line-height: 1.3;
 		}

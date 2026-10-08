@@ -120,8 +120,10 @@
 			<img src="{{ site.baseurl }}/assets/img/mycomputer.png" />
 			{% if page.tag %}
 				<h1>{{ page.tag }}</h1>
-			{% else %}
+			{% elsif page.date %}
 				<h1>{{ site.name }}</h1>
+			{% else %}
+				<h1>(C:)</h1>
 			{% endif %}
 			<span class="win95-explorer-toggle-label"></span>
 		</div>
