@@ -728,7 +728,10 @@ ul.topbar {
 		@include win95-raised();
 
 		.win95-codewin-bar {
-			padding: 3px 6px;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			padding: 2px 4px 2px 6px;
 			background: #00007f;
 			color: #ffffff;
 			font-family: Tahoma, "MS Sans Serif", Geneva, Verdana, sans-serif;
@@ -1356,16 +1359,13 @@ html.win95-doc-maximized {
 }
 .win95-copy-btn {
 	@include win95-raised(1px);
-	position: absolute;
-	top: 6px;
-	right: 6px;
 	background: #e8e8e8;
 	color: #000000;
 	font-family: Tahoma, "MS Sans Serif", Geneva, Verdana, sans-serif;
 	font-size: 10px;
-	padding: 2px 6px;
+	font-weight: normal;
+	padding: 1px 6px;
 	cursor: pointer;
-	z-index: 2;
 }
 .win95-copy-btn:active {
 	@include win95-raised-pressed(1px);

@@ -335,7 +335,8 @@
 							document.body.removeChild(ta);
 						}
 					});
-					pre.appendChild(btn);
+					var bar = pre.parentNode && pre.parentNode.previousSibling;
+					if (bar && bar.classList && bar.classList.contains('win95-codewin-bar')) { bar.appendChild(btn); } else { pre.appendChild(btn); }
 				})(codeBlocks[i]);
 			}
 
