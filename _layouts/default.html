@@ -298,7 +298,8 @@
 		(function () {
 			var pres = document.querySelectorAll('.post_content pre');
 			for (var p = 0; p < pres.length; p++) {
-				var holder = pres[p].closest('[class*="language-"]');
+				if (pres[p].querySelector('[class*="language-mermaid"]') || pres[p].closest('[class*="language-mermaid"]')) { continue; }
+				var holder = pres[p].querySelector('code[class*="language-"]') || pres[p].closest('[class*="language-"]');
 				var m = holder && holder.className.match(/language-([\w+#-]+)/);
 				if (m && m[1] === 'mermaid') { continue; }
 				window.__win95Wrap(pres[p], (m ? m[1] : 'code') + '.txt');
