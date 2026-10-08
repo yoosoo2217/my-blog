@@ -4,6 +4,8 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+	<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-dynamic-subset.css">
 	<link rel="stylesheet" href="{{ site.baseurl }}/assets/css/atom-one-light.css">
     {% if page.title or page.title == 'me' %}
         <title>{{ page.title }}</title>
@@ -521,7 +523,7 @@
 			mermaid.initialize({
 				startOnLoad: false,
 				theme: 'base',
-				fontFamily: 'Tahoma, "MS Sans Serif", Geneva, Verdana, sans-serif',
+				fontFamily: 'Pretendard, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
 				themeVariables: {
 					fontSize: '14px',
 					background: '#fbfaf7',

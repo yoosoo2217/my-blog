@@ -5,7 +5,8 @@ tags:
   - Git
 ---
 
-push까지 했는데 PR(Pull Request)은 또 무엇일까? `git merge`로 바로 합치면 되는데 왜 PR을 따로 만들까? commit, push, PR을 순서대로 정리했다.
+push까지 했는데 PR(Pull Request)은 또 무엇일까?  
+`git merge`로 바로 합치면 되는데 왜 PR을 따로 만들까? commit, push, PR을 순서대로 정리했다.
 
 > **TL;DR**
 > - commit은 로컬에 저장 지점을 남기고, push는 그 기록을 GitHub로 올린다.
@@ -40,7 +41,8 @@ flowchart LR
 ```
 
 순서로 보면 **commit(로컬에 저장) → push(GitHub에 올림) → PR(합쳐달라고 요청 + 리뷰) → merge(실제로 합침)** 흐름이다.
-push까지는 내 브랜치를 GitHub에 올리는 것뿐이고, PR을 만들어야 비로소 "리뷰 받고 합치는" 절차가 시작된다. 이 점이 헷갈렸던 부분이다.
+push까지는 내 브랜치를 GitHub에 올리는 것뿐이고, PR을 만들어야 비로소 "리뷰 받고 합치는" 절차가 시작된다.  
+이 점이 헷갈렸던 부분이다.
 
 ## 정리
 

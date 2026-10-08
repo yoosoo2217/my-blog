@@ -5,7 +5,9 @@ tags:
   - Java
 ---
 
-설계까지만 해둔 "카레이서와 자동차" 요구사항 7개를 실제 코드로 옮기면 클래스와 메서드는 어떻게 나뉠까? [추상화 글]({{ site.baseurl }}/java-abstraction-interfaces.html)에서 요구사항과 설계만 정리했던 이 예제를 구현한다. [이전 글]({{ site.baseurl }}/java-encapsulation-monster-example.html)의 Monster 예제에서 다룬 캡슐화도 함께 적용된다.
+설계까지만 해둔 "카레이서와 자동차" 요구사항 7개를 실제 코드로 옮기면 클래스와 메서드는 어떻게 나뉠까?  
+[추상화 글]({{ site.baseurl }}/java-abstraction-interfaces.html)에서 요구사항과 설계만 정리했던 이 예제를 구현한다.  
+[이전 글]({{ site.baseurl }}/java-encapsulation-monster-example.html)의 Monster 예제에서 다룬 캡슐화도 함께 적용된다.
 
 > **TL;DR**
 > - 요구사항 7개를 `Car`(상태와 행위), `CarRacer`(`Car`를 감싸는 클래스), `Application`(메뉴) 세 클래스로 구현했다.
@@ -26,7 +28,8 @@ tags:
 7. 자동차가 달리는 중이라면 시동을 끌 수 없다.
 ```
 
-"은/는, 이/가" 앞에 오는 단어(`자동차`, `카레이서`)가 대부분 클래스 후보다. 이 설계를 `Car`, `CarRacer`, `Application` 세 클래스로 구현한다.
+"은/는, 이/가" 앞에 오는 단어(`자동차`, `카레이서`)가 대부분 클래스 후보다.  
+이 설계를 `Car`, `CarRacer`, `Application` 세 클래스로 구현한다.
 
 ## 2. Car: 상태와 행위를 가진 자동차
 
@@ -92,7 +95,9 @@ public class Car {
 
 ### `isOn`이 처음부터 `false`인 이유
 
-파일 맨 위 주석에 "객체 생성 → 기본 생성자 호출(Heap 영역에 메모리 올림) → 그래서 false 타입으로 꺼짐(초깃값)"이라고 적혀 있었는데, 이건 [JVM 메모리 구조 글]({{ site.baseurl }}/java-jvm-memory-stack-heap.html)에서 정리했던 내용과 그대로 이어진다. `new Car()`로 인스턴스를 만들면 Heap에 올라간 `isOn` 필드는 값을 넣어주기 전까지 `boolean`의 기본값인 `false`로 채워진다. 그래서 요구사항 1("자동차는 처음에 멈춘 상태로 대기한다")을 코드로 따로 작성하지 않아도, Heap의 기본값 자체가 "꺼져 있고 멈춰 있는 상태"를 만들어준다.
+파일 맨 위 주석에 "객체 생성 → 기본 생성자 호출(Heap 영역에 메모리 올림) → 그래서 false 타입으로 꺼짐(초깃값)"이라고 적혀 있었는데, 이건 [JVM 메모리 구조 글]({{ site.baseurl }}/java-jvm-memory-stack-heap.html)에서 정리했던 내용과 그대로 이어진다.  
+`new Car()`로 인스턴스를 만들면 Heap에 올라간 `isOn` 필드는 값을 넣어주기 전까지 `boolean`의 기본값인 `false`로 채워진다.  
+그래서 요구사항 1("자동차는 처음에 멈춘 상태로 대기한다")을 코드로 따로 작성하지 않아도, Heap의 기본값 자체가 "꺼져 있고 멈춰 있는 상태"를 만들어준다.
 
 ## 3. CarRacer: Car를 감싸서 캡슐화하기
 
@@ -119,11 +124,15 @@ public class CarRacer {
 }
 ```
 
-`CarRacer`는 `Car`를 `private` 필드로 가지고 있다. `Application`은 `Car`를 직접 다루지 않고, 항상 `CarRacer`가 가진 네 개의 메서드(시동·전진·정지·시동끄기)를 통해서만 자동차를 조작한다. 앞선 Monster 예제에서 본 "필드를 `private`으로 막으면, 메서드를 거치지 않고는 값을 바꿀 방법이 없어진다"는 원칙이 여기서는 클래스 단위로 한 번 더 적용된 셈이다 — `Application`은 `car.speed`나 `car.isOn`에는 아예 접근할 수 없고, `CarRacer`가 공개한 메서드만 쓸 수 있다.
+`CarRacer`는 `Car`를 `private` 필드로 가지고 있다.  
+`Application`은 `Car`를 직접 다루지 않고, 항상 `CarRacer`가 가진 네 개의 메서드(시동·전진·정지·시동끄기)를 통해서만 자동차를 조작한다.  
+앞선 Monster 예제에서 본 "필드를 `private`으로 막으면, 메서드를 거치지 않고는 값을 바꿀 방법이 없어진다"는 원칙이 여기서는 클래스 단위로 한 번 더 적용된 셈이다 — `Application`은 `car.speed`나 `car.isOn`에는 아예 접근할 수 없고, `CarRacer`가 공개한 메서드만 쓸 수 있다.
 
 ### 메서드 이름 오타(`stratUp`)가 남긴 혼란
 
-`Car`의 메서드는 `startUp()`인데, `CarRacer`가 그걸 감싸는 메서드 이름은 `stratUp()`으로 `t`와 `r` 순서가 바뀌어 있다. 둘이 같은 이름일 필요는 없어서 컴파일되고 정상 동작은 하지만, 같은 기능을 감싼 메서드끼리 이름이 다르면 나중에 코드를 읽을 때 헷갈리기 쉽다. 실제로 이 오타 때문에 처음엔 `startUp()`과 `stratUp()`이 서로 다른 메서드인 줄 알고 잠깐 헷갈렸다.
+`Car`의 메서드는 `startUp()`인데, `CarRacer`가 그걸 감싸는 메서드 이름은 `stratUp()`으로 `t`와 `r` 순서가 바뀌어 있다.  
+둘이 같은 이름일 필요는 없어서 컴파일되고 정상 동작은 하지만, 같은 기능을 감싼 메서드끼리 이름이 다르면 나중에 코드를 읽을 때 헷갈리기 쉽다.  
+실제로 이 오타 때문에 처음엔 `startUp()`과 `stratUp()`이 서로 다른 메서드인 줄 알고 잠깐 헷갈렸다.
 
 ## 4. Application: Scanner와 반복문으로 메뉴 만들기
 
@@ -174,7 +183,10 @@ while (true) {
 
 ### `switch` 안의 `break`와 `while`을 빠져나가는 `break`는 다르다
 
-`case 9: break;`는 `switch` 블록만 빠져나갈 뿐, 그 안에서는 아무 메서드도 호출하지 않고 그냥 `switch`를 끝낸다. 실제로 프로그램을 종료시키는 건 `switch` 바깥에 따로 있는 `if (no == 9) { ... break; }`다. 이 `break`는 `switch`가 아니라 `while`을 감싸고 있어서, 이 줄이 실행되면 무한 반복문 자체를 탈출한다. 똑같이 생긴 `break` 키워드라도 **자신을 감싸고 있는 가장 가까운 반복문이나 switch** 하나만 빠져나간다는 걸 이 코드로 확인했다 — 그래서 `case 9`의 `break`만으로는 `while`까지 끝낼 수 없어서, `switch` 밖에 조건문을 하나 더 둬야 했던 것이다.
+`case 9: break;`는 `switch` 블록만 빠져나갈 뿐, 그 안에서는 아무 메서드도 호출하지 않고 그냥 `switch`를 끝낸다.  
+실제로 프로그램을 종료시키는 건 `switch` 바깥에 따로 있는 `if (no == 9) { ... break; }`다.  
+이 `break`는 `switch`가 아니라 `while`을 감싸고 있어서, 이 줄이 실행되면 무한 반복문 자체를 탈출한다.  
+똑같이 생긴 `break` 키워드라도 **자신을 감싸고 있는 가장 가까운 반복문이나 switch** 하나만 빠져나간다는 걸 이 코드로 확인했다 — 그래서 `case 9`의 `break`만으로는 `while`까지 끝낼 수 없어서, `switch` 밖에 조건문을 하나 더 둬야 했던 것이다.
 
 ## 정리: 핵심 3가지와 다음에 볼 것
 

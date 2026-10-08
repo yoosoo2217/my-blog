@@ -56,7 +56,7 @@ button,
 input,
 textarea,
 select {
-	font-family: Tahoma, "MS Sans Serif", Geneva, Verdana, sans-serif;
+	font-family: "Pretendard", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 	font-size: 12px;
 }
 

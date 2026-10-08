@@ -5,7 +5,9 @@ tags:
   - Java
 ---
 
-인스턴스를 새로 만들면 필드가 다시 0으로 시작하는데, `static` 필드는 왜 값이 그대로 남아 있을까? `Application`과 `StaticFieldTest` 두 클래스를 만들어서, 인스턴스 필드와 `static` 필드가 객체를 새로 만들 때 각각 어떻게 동작하는지 값을 출력하며 확인했다. 앞선 주제는 [이전 글]({{ site.baseurl }}/java-method-overloading.html)에 정리해뒀다.
+인스턴스를 새로 만들면 필드가 다시 0으로 시작하는데, `static` 필드는 왜 값이 그대로 남아 있을까?  
+`Application`과 `StaticFieldTest` 두 클래스를 만들어서, 인스턴스 필드와 `static` 필드가 객체를 새로 만들 때 각각 어떻게 동작하는지 값을 출력하며 확인했다.  
+앞선 주제는 [이전 글]({{ site.baseurl }}/java-method-overloading.html)에 정리해뒀다.
 
 > **TL;DR**
 > - `static` 멤버는 인스턴스가 아니라 클래스에 속해서, 모든 인스턴스가 하나의 값을 공유한다.
@@ -14,7 +16,9 @@ tags:
 
 ## 1. static은 클래스에 묶인 생명주기를 가진다
 
-`static`이 붙은 변수나 메소드는 객체(인스턴스)가 생성되는 시점이 아니라, **애플리케이션이 시작되는 시점**에 초기화된다. `static`은 "정적"이라는 뜻 그대로, 일반적인 객체의 생명주기(생성 → 사용 → 소멸)와는 다른, 클래스 자체에 묶인 생명주기를 가진다. 그래서 인스턴스를 몇 개를 만들든 `static` 멤버는 단 하나만 존재하고, 모든 인스턴스가 이 값을 공유한다.
+`static`이 붙은 변수나 메소드는 객체(인스턴스)가 생성되는 시점이 아니라, **애플리케이션이 시작되는 시점**에 초기화된다.  
+`static`은 "정적"이라는 뜻 그대로, 일반적인 객체의 생명주기(생성 → 사용 → 소멸)와는 다른, 클래스 자체에 묶인 생명주기를 가진다.  
+그래서 인스턴스를 몇 개를 만들든 `static` 멤버는 단 하나만 존재하고, 모든 인스턴스가 이 값을 공유한다.
 
 ## 2. StaticFieldTest와 Application 코드
 
@@ -96,7 +100,8 @@ public class Application {
 }
 ```
 
-`increaseNonstatic()`은 `this.nonStaticInt++`처럼 `this`로 접근하는 반면, `increasestatic()`은 `this` 없이 `StaticFieldTest.staticInt++`로 클래스 이름을 통해 접근한다. `static` 멤버는 특정 인스턴스에 속한 값이 아니라 클래스 자체에 속한 값이기 때문에, 인스턴스를 가리키는 `this`로 접근할 수 없다.
+`increaseNonstatic()`은 `this.nonStaticInt++`처럼 `this`로 접근하는 반면, `increasestatic()`은 `this` 없이 `StaticFieldTest.staticInt++`로 클래스 이름을 통해 접근한다.  
+`static` 멤버는 특정 인스턴스에 속한 값이 아니라 클래스 자체에 속한 값이기 때문에, 인스턴스를 가리키는 `this`로 접근할 수 없다.
 
 ## 3. 인스턴스를 새로 만들어도 staticInt는 유지된다
 
@@ -108,7 +113,9 @@ public class Application {
 | `st1.increaseNonstatic()`, `st1.increasestatic()` 호출 후 | 1 | - | 1 |
 | `st2` 생성 직후 | 1 (유지) | 0 | 1 (유지) |
 
-`st1`의 `increaseNonstatic()`을 호출하면 `st1`이 가진 `nonStaticInt`만 1이 되고, `increasestatic()`을 호출하면 `StaticFieldTest` 클래스 전체가 공유하는 `staticInt`가 1이 된다. 이후 `st2`를 새로 생성하면, 인스턴스 필드인 `nonStaticInt`는 `st2`만의 새 값(기본값 0)으로 다시 시작하지만, `static` 필드인 `staticInt`는 `st2`를 새로 만든 것과 무관하게 이미 증가했던 값(1)을 그대로 유지한다. `static` 필드는 인스턴스가 아니라 클래스에 속해 있어서, 인스턴스를 아무리 새로 만들어도 리셋되지 않고 프로그램이 끝날 때까지 하나의 값을 공유한다는 걸 이 흐름으로 확인했다.
+`st1`의 `increaseNonstatic()`을 호출하면 `st1`이 가진 `nonStaticInt`만 1이 되고, `increasestatic()`을 호출하면 `StaticFieldTest` 클래스 전체가 공유하는 `staticInt`가 1이 된다.  
+이후 `st2`를 새로 생성하면, 인스턴스 필드인 `nonStaticInt`는 `st2`만의 새 값(기본값 0)으로 다시 시작하지만, `static` 필드인 `staticInt`는 `st2`를 새로 만든 것과 무관하게 이미 증가했던 값(1)을 그대로 유지한다.  
+`static` 필드는 인스턴스가 아니라 클래스에 속해 있어서, 인스턴스를 아무리 새로 만들어도 리셋되지 않고 프로그램이 끝날 때까지 하나의 값을 공유한다는 걸 이 흐름으로 확인했다.
 
 ## 4. main 메소드에 public이 빠져 있다 (확인 필요)
 

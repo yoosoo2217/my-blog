@@ -16,7 +16,7 @@
 	border-color: #fbfaf7 #000000 #000000 #fbfaf7;
 	border-bottom: none;
 	padding: 2px 6px;
-	font-family: Tahoma, "MS Sans Serif", Geneva, Verdana, sans-serif;
+	font-family: "Pretendard", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
 .code-runner-label {
@@ -29,7 +29,7 @@
 	background: #c0bec0;
 	border: 2px solid;
 	border-color: #fbfaf7 #000000 #000000 #fbfaf7;
-	font-family: Tahoma, "MS Sans Serif", Geneva, Verdana, sans-serif;
+	font-family: "Pretendard", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 	font-size: 11px;
 	padding: 1px 8px;
 	cursor: pointer;
@@ -59,7 +59,7 @@
 .code-runner-console-title {
 	background: #000080;
 	color: #fbfaf7;
-	font-family: Tahoma, "MS Sans Serif", Geneva, Verdana, sans-serif;
+	font-family: "Pretendard", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 	font-size: 11px;
 	font-weight: bold;
 	padding: 2px 6px;
@@ -72,7 +72,7 @@
 	background: #c0bec0;
 	border: 2px solid;
 	border-color: #fbfaf7 #000000 #000000 #fbfaf7;
-	font-family: Tahoma, "MS Sans Serif", Geneva, Verdana, sans-serif;
+	font-family: "Pretendard", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 	font-size: 10px;
 	padding: 0 4px;
 	cursor: pointer;
