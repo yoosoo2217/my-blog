@@ -1421,26 +1421,10 @@ html.win95-no-window-anim {
 	content: "▾ 접기";
 }
 
-// --- Guestbook window (giscus comments live inside it) ----------------------
-.gb-window {
+// --- Guestbook comments (giscus) — sits directly in the page window ---------
+.gb-comments {
 	margin: 14px 0;
-	padding: 2px;
-	background: #bfb8bf;
-	@include win95-raised();
-}
-.gb-titlebar {
-	padding: 3px 6px;
-	background: #00007f;
-	color: #bfb8bf;
-	font-size: 12px;
-	font-weight: bold;
-}
-.gb-body {
-	margin: 4px;
-	padding: 8px;
 	min-height: 120px;
-	background: #fff8ff;
-	@include win95-etched();
 
 	.giscus,
 	.giscus-frame {
