@@ -34,6 +34,23 @@ button, input, select, textarea {
 }
 
 // --- Taskbar / Start menu / clock ---------------------------------------
+// Every item on the bar is the same 22px tall. Buttons use the two-level
+// Windows 95 bevel (white/dark outer edge + light/gray inner edge); the active
+// window is pressed and filled with the classic 1px checkerboard dither.
+$win95-light: #e8e4e8;
+$win95-dither: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='2' height='2'%3E%3Crect width='2' height='2' fill='%23bfb8bf'/%3E%3Crect width='1' height='1' fill='%23fff8ff'/%3E%3Crect x='1' y='1' width='1' height='1' fill='%23fff8ff'/%3E%3C/svg%3E");
+
+@mixin win95-tb-raised() {
+	border: 1px solid;
+	border-color: $win95-highlight $win95-darkshadow $win95-darkshadow $win95-highlight;
+	box-shadow: inset -1px -1px 0 $win95-shadow, inset 1px 1px 0 $win95-light;
+}
+@mixin win95-tb-pressed() {
+	border: 1px solid;
+	border-color: $win95-darkshadow $win95-highlight $win95-highlight $win95-darkshadow;
+	box-shadow: inset 1px 1px 0 $win95-shadow;
+}
+
 .win95-taskbar {
 	position: fixed;
 	left: 0;
@@ -42,79 +59,111 @@ button, input, select, textarea {
 	height: 30px;
 	display: flex;
 	align-items: center;
-	gap: 6px;
-	padding: 2px 4px;
+	gap: 4px;
+	padding: 0 3px;
 	background: #bfb8bf;
-	border-top: 2px solid #fff8ff;
-	box-shadow: 0 -1px 0 #7f787f inset;
+	border-top: 1px solid $win95-light;
+	box-shadow: inset 0 1px 0 $win95-highlight;
 	z-index: 1000;
 	box-sizing: border-box;
 	font-family: Tahoma, "MS Sans Serif", Geneva, Verdana, sans-serif;
 	font-size: 12px;
 }
+.win95-start-btn,
+.win95-home-btn,
+.win95-taskbar-window,
+.win95-clock {
+	height: 22px;
+	box-sizing: border-box;
+	color: #000000;
+}
 .win95-start-btn {
-	@include win95-raised();
+	@include win95-tb-raised();
 	display: flex;
 	align-items: center;
 	gap: 4px;
 	background: #bfb8bf;
 	font-weight: bold;
-	font-size: 13px;
-	padding: 3px 10px;
+	font-size: 12px;
+	padding: 0 8px 0 5px;
 	cursor: pointer;
 	font-family: inherit;
 	flex-shrink: 0;
 }
 .win95-start-btn:active, .win95-start-btn-pressed {
-	@include win95-raised-pressed();
+	@include win95-tb-pressed();
+	padding: 1px 7px 0 6px;
 }
 .win95-start-icon {
 	font-size: 14px;
 }
+// Quick-launch style home button, followed by an etched vertical divider.
 .win95-home-btn {
-	@include win95-raised();
+	@include win95-tb-raised();
+	position: relative;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	width: 28px;
-	height: 100%;
-	box-sizing: border-box;
+	width: 24px;
+	margin-right: 6px;
 	background: #bfb8bf;
-	font-size: 14px;
+	font-size: 13px;
 	text-decoration: none;
 	cursor: pointer;
 	flex-shrink: 0;
 }
-.win95-home-btn:active {
-	@include win95-raised-pressed();
+.win95-home-btn::after {
+	content: "";
+	position: absolute;
+	top: -1px;
+	bottom: -1px;
+	right: -6px;
+	width: 2px;
+	border-left: 1px solid $win95-shadow;
+	border-right: 1px solid $win95-highlight;
 }
+.win95-home-btn:active {
+	@include win95-tb-pressed();
+}
+// Open-window buttons: fixed width like a real taskbar, text clipped with …;
+// the active window is pressed, dithered and bold.
 .win95-taskbar-window {
-	@include win95-raised-pressed(1px);
-	flex: 1 1 auto;
+	@include win95-tb-pressed();
+	flex: 0 1 170px;
 	min-width: 0;
-	background: #bfb8bf;
-	padding: 3px 8px;
+	background: $win95-dither;
+	padding: 0 8px;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	display: flex;
 	align-items: center;
-	gap: 4px;
+	gap: 5px;
+	font-weight: bold;
 }
 // A background window next to the active one (e.g. the home window while a
-// tag folder is open): raised like an unpressed taskbar button, capped width
-// so the active window keeps the remaining space.
+// tag folder is open): raised, plain gray, normal weight.
 .win95-taskbar-window.win95-taskbar-window-inactive {
-	@include win95-raised(1px);
-	flex: 0 1 190px;
-}
-.win95-clock {
-	@include win95-raised-pressed(1px);
-	flex-shrink: 0;
+	@include win95-tb-raised();
 	background: #bfb8bf;
-	padding: 3px 10px;
-	min-width: 46px;
-	text-align: center;
+	font-weight: normal;
+}
+.win95-taskbar-window-icon {
+	flex-shrink: 0;
+	font-size: 13px;
+}
+// System tray: sunken field pushed to the right edge, holding the clock.
+.win95-clock {
+	margin-left: auto;
+	flex-shrink: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0 12px;
+	min-width: 56px;
+	background: #bfb8bf;
+	border: 1px solid;
+	border-color: $win95-shadow $win95-highlight $win95-highlight $win95-shadow;
 }
 .win95-start-menu {
 	position: fixed;
