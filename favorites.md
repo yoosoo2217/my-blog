@@ -5,7 +5,7 @@ permalink: /favorites/
 show_profile: true
 ---
 
-<p id="fav-hint" style="color:#555; font-size:0.85rem;">글 페이지의 "☆ 즐겨찾기" 버튼을 눌러두면 여기 모아서 볼 수 있어요. 이 브라우저에만 저장돼요.</p>
+<p id="fav-hint" style="color:#555; font-size:0.85rem;">글 페이지의 "☆ Favorite" 버튼을 눌러두면 여기 모아서 볼 수 있어요. 이 브라우저에만 저장돼요.</p>
 <p id="fav-empty" style="color:#555; display:none;">아직 즐겨찾기한 글이 없습니당..</p>
 
 <ul id="fav-results" style="list-style:none; padding:0; margin:0;"></ul>

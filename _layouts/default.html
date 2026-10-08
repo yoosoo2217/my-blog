@@ -172,15 +172,15 @@
 				<div class="btn btn_max"><span class="fa fa-window-maximize"></span></div>
 				<div class="btn"><span class="fa fa-window-minimize"></span></div>
 			</div>
-			<ul class="topbar">
+			<ul class="topbar win95-postbar">
 				<li>{{ page.date | date: '%B %-d, %Y' }}</li>
 				{% if page.date %}
 				<li>
-					<button type="button" class="win95-fav-toggle" id="win95-fav-toggle" data-url="{{ site.baseurl }}{{ page.url }}" data-title="{{ page.title | escape }}" aria-pressed="false">☆ 즐겨찾기</button>
+					<button type="button" class="win95-fav-toggle" id="win95-fav-toggle" data-url="{{ site.baseurl }}{{ page.url }}" data-title="{{ page.title | escape }}" aria-pressed="false" title="즐겨찾기에 추가">☆ Favorite</button>
 				</li>
 				{% endif %}
 				<li class="win95-toc-wrap" id="win95-toc-wrap" hidden>
-					<button type="button" class="win95-toc-toggle" id="win95-toc-toggle" aria-expanded="false" aria-haspopup="true">▤ 목차</button>
+					<button type="button" class="win95-toc-toggle" id="win95-toc-toggle" aria-expanded="false" aria-haspopup="true" title="목차 열기">☷ Contents</button>
 					<ul class="win95-toc-list" id="win95-toc-list" hidden></ul>
 				</li>
 			</ul>
@@ -340,7 +340,7 @@
 				})(codeBlocks[i]);
 			}
 
-			// --- Table of contents — collapsed by default behind a "▤ 목차"
+			// --- Table of contents — collapsed by default behind a "☷ Contents"
 			// toggle (like the Start Menu button), so long posts with many
 			// headings don't dump a wall of text into the topbar row.
 			var postContent = document.querySelector('.post_content');
@@ -398,7 +398,8 @@
 				};
 				var url = favBtn.getAttribute('data-url');
 				var setState = function (isFav) {
-					favBtn.textContent = isFav ? '★ 즐겨찾기 해제' : '☆ 즐겨찾기';
+					favBtn.textContent = isFav ? '★ Favorite' : '☆ Favorite';
+					favBtn.title = isFav ? '즐겨찾기 해제' : '즐겨찾기에 추가';
 					favBtn.setAttribute('aria-pressed', String(isFav));
 				};
 				setState(readFavs().indexOf(url) !== -1);

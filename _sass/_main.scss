@@ -1336,22 +1336,56 @@ html.win95-doc-maximized {
 }
 
 // --- Favorite (즐겨찾기) toggle on each post -------------------------------
-.win95-fav-toggle {
-	@include win95-raised(1px);
-	background: #cfcfcf;
+// Post toolbar: date on the left, "☆ Favorite │ ☷ Contents" on the right,
+// separated by thin etched 1px lines. The two buttons are flat text buttons
+// that only show a bevel on hover and look pressed while clicked/open.
+ul.win95-postbar {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	padding: 2px 10px;
+
+	li {
+		display: flex;
+		align-items: center;
+		margin: 0;
+	}
+	li[hidden] {
+		display: none;
+	}
+	li:first-child {
+		margin-right: auto;
+	}
+	li + li {
+		margin-left: 10px;
+		padding-left: 10px;
+		border-left: 1px solid $win95-shadow;
+		box-shadow: -1px 0 0 $win95-highlight;
+	}
+}
+.win95-fav-toggle,
+.win95-toc-toggle {
+	background: transparent;
 	color: #000000;
-	font-family: inherit;
+	border: 1px solid transparent;
+	border-radius: 0;
+	font-family: Tahoma, "MS Sans Serif", Geneva, Verdana, sans-serif;
 	font-size: 11px;
 	line-height: 1.2;
 	padding: 2px 6px;
 	cursor: pointer;
 }
-.win95-fav-toggle:active {
-	@include win95-raised-pressed(1px);
+.win95-fav-toggle:hover,
+.win95-toc-toggle:hover {
+	background: #e4e0e4;
+	border-color: $win95-highlight $win95-shadow $win95-shadow $win95-highlight;
 }
-.win95-fav-toggle[aria-pressed="true"] {
-	background: #ffe9a8;
-	box-shadow: inset 1px 1px 0 #fff7df, inset -1px -1px 0 #b99a3f;
+.win95-fav-toggle:active,
+.win95-toc-toggle:active,
+.win95-toc-toggle[aria-expanded="true"] {
+	background: #d8d4d8;
+	border-color: $win95-shadow $win95-highlight $win95-highlight $win95-shadow;
+	padding: 3px 5px 1px 7px;
 }
 
 // --- Code block copy button -------------------------------------------------
@@ -1377,29 +1411,18 @@ html.win95-doc-maximized {
 }
 
 // --- Post table of contents -------------------------------------------------
-// Collapsed behind a "▤ 목차" toggle in the date/즐겨찾기 topbar row, so a
+// Collapsed behind a "☷ Contents" toggle in the date/Favorite topbar row, so a
 // post with many headings doesn't dump a long flat line of text — the list
 // only appears as a dropdown (same look as the Start Menu) when opened.
+// (Toggle button styling is shared with the Favorite button above.)
 .win95-toc-wrap {
 	position: relative;
-}
-.win95-toc-toggle {
-	@include win95-raised(1px);
-	background: #cfcfcf;
-	padding: 2px 8px;
-	font-family: Tahoma, "MS Sans Serif", Geneva, Verdana, sans-serif;
-	font-size: 11px;
-	line-height: 1.2;
-	cursor: pointer;
-}
-.win95-toc-toggle:active,
-.win95-toc-toggle[aria-expanded="true"] {
-	@include win95-raised-pressed(1px);
 }
 .win95-toc-list {
 	position: absolute;
 	top: 100%;
-	left: 0;
+	// The toggle sits at the right edge of the toolbar, so open leftwards.
+	right: 0;
 	margin-top: 2px;
 	@include win95-raised();
 	background: #bfb8bf;
