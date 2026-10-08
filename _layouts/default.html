@@ -138,12 +138,13 @@
 				</li>
 			</ul>
 		</div>
-		<div class="post_list" id="post_list">
+		<div class="post_list{% if page.tag %} post_list-details{% endif %}" id="post_list">
 			{% if page.tag %}
-				<ul>
-					{% assign tag_posts = site.tags[page.tag] | sort: "date" | reverse %}
+				{% assign tag_posts = site.tags[page.tag] | sort: "date" | reverse %}
+				<div class="tag-results-cols"><span>Name</span><span>Modified</span></div>
+				<ul class="tag-results-list">
 					{% for post in tag_posts %}
-					<li><a href="{{ site.baseurl }}{{ post.url }}" title="{{ post.title }}"><img src="{{ site.baseurl }}/assets/img/file.ico" title="{{ post.title }}" />{{ post.title }}</a></li>
+					<li><a href="{{ site.baseurl }}{{ post.url }}" title="{{ post.title }}"><span class="tag-results-name"><img src="{{ site.baseurl }}/assets/img/file.ico" alt="" /><span class="tag-results-title">{{ post.title }}</span></span><span class="tag-results-date">{{ post.date | date: "%Y-%m-%d" }}</span></a></li>
 					{% endfor %}
 				</ul>
 			{% else %}
@@ -163,7 +164,7 @@
 			<div class="right">&nbsp;</div>
 		</div>
 	</div>
-	{% if page.title %}
+	{% if page.title and page.layout != 'tag' %}
         <div class="content">
 			<div class="post_title">
 				<img src="{{ site.baseurl }}/assets/img/file.png" />
