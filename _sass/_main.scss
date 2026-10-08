@@ -1951,32 +1951,8 @@ ul.win95-postbar > li + li {
 	}
 }
 
-// --- Small floating windows (TODAY IS / Cruise FM / Hit Counter) ----------
-// Same look, but compact: 1px bevel, shorter title bars, and the tiniest
-// text bumped up to stay readable.
-.top-row .cy-sidebar {
-	.cy-window,
-	.cy-music-window,
-	.cy-visitors-window {
-		border-width: 1px;
-		box-shadow: inset 1px 1px 0 $win95-light, inset -1px -1px 0 $win95-shadow;
-	}
-	.cy-titlebar {
-		padding: 1px 4px;
-		min-height: 18px;
-		font-size: 11px;
-		color: #ffffff;
-	}
-	.cy-panel {
-		border-width: 1px;
-		border-style: solid;
-		box-shadow: inset 1px 1px 0 $win95-darkshadow;
-	}
-	.cy-mp-menubar,
-	.cy-mp-field-box {
-		font-size: 11px;
-	}
-}
+// The small floating windows (TODAY IS / Cruise FM / Hit Counter) are styled
+// in _includes/cyworld-widget.html, together with their markup.
 
 // --- Taskbar: clearer hierarchy -------------------------------------------
 .win95-taskbar-window {
@@ -2086,14 +2062,14 @@ ul.win95-postbar > li + li {
 .win95-cal-hint,
 .win95-cal-empty {
 	display: block;
-	padding: 3px 8px;
+	padding: 1px 2px;
 	color: #7f7d7f;
 }
 .win95-cal-selhead {
 	display: flex;
 	justify-content: flex-start;
 	gap: 10px;
-	padding: 1px 8px;
+	padding: 0 2px;
 	background: #c0bec0;
 	border-bottom: 1px solid #7f7d7f;
 	font-family: "Courier New", Courier, monospace;
@@ -2110,11 +2086,11 @@ ul.win95-postbar > li + li {
 .win95-cal-files a {
 	display: flex;
 	align-items: center;
-	gap: 6px;
-	padding: 1px 8px;
-	line-height: 1.2;
+	gap: 4px;
+	padding: 0 2px;
+	line-height: 1;
 	color: #000;
 	text-decoration: none;
 }
-.win95-cal-files a img { width: 16px; height: 16px; flex-shrink: 0; image-rendering: pixelated; }
+.win95-cal-files a img { display: block; margin: 0; width: 16px; height: 16px; flex-shrink: 0; image-rendering: pixelated; }
 .win95-cal-files a:hover { background: #0a246a; color: #fff; }

@@ -3,17 +3,18 @@
 	<div class="cy-window">
 		<div class="cy-titlebar">
 			<span class="cy-title-text">TODAY IS... 박유수</span>
-			<span class="cy-title-btn">▢</span>
+			<span class="cy-winbtns" aria-hidden="true">
+				<span class="cy-title-btn">_</span><span class="cy-title-btn">▢</span><span class="cy-title-btn">X</span>
+			</span>
 		</div>
 
-		<div class="cy-panel">
-			<div class="cy-photo-frame">
-				<img class="cy-avatar" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAYCAYAAAD6S912AAAA30lEQVR4nGNgGOyAEZeEjYbcf3waj9x4hFUvEzmG4VODYSAxhuFTy4JN4eHNU4ky0NY3G0MMq5dhQNM5jUHTOQ0nHxvA6kIYuL53Fl4+NoDbhbvfniRHDreBrsLmMObJ+uUMJ+uXY5VDB1jTko2G3H9CEWPrm401LeJ0IbYYJEaO6jkFp4EMDAwM////x2ooIyMjTn04vYzLMEJyWG16EBBKVPZT2LCacKQQaxgutVi9/OTNG4Ynb95gNQRZjqALHwSE/kc2CJ2NyxJkgGIDKd5FBsguxVvakAOobuDgBwCSDV53RJ3wFwAAAABJRU5ErkJggg==" alt="미니미" />
+		<div class="cy-body cy-today-body">
+			<img class="cy-avatar" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAYCAYAAAD6S912AAAA30lEQVR4nGNgGOyAEZeEjYbcf3waj9x4hFUvEzmG4VODYSAxhuFTy4JN4eHNU4ky0NY3G0MMq5dhQNM5jUHTOQ0nHxvA6kIYuL53Fl4+NoDbhbvfniRHDreBrsLmMObJ+uUMJ+uXY5VDB1jTko2G3H9CEWPrm401LeJ0IbYYJEaO6jkFp4EMDAwM////x2ooIyMjTn04vYzLMEJyWG16EBBKVPZT2LCacKQQaxgutVi9/OTNG4Ynb95gNQRZjqALHwSE/kc2CJ2NyxJkgGIDKd5FBsguxVvakAOobuDgBwCSDV53RJ3wFwAAAABJRU5ErkJggg==" alt="미니미" />
+
+			<div class="cy-caption">
+				<span class="cy-caption-title">오늘의 TMI</span>
+				<p class="cy-caption-text">{{ site.data.tmi.text }}</p>
 			</div>
-
-			<div class="cy-caption"><b>오늘의 TMI</b><br>{{ site.data.tmi.text }}</div>
-
-			<div class="cy-divider"></div>
 
 			<div class="cy-subrow">
 				<span class="cy-sublink">EDIT</span>
@@ -22,101 +23,64 @@
 				<span class="cy-expand">▾</span>
 			</div>
 		</div>
-
-		<div class="cy-statusbar">Document: Done</div>
 	</div>
 
 	<div class="cy-music-window">
 		<div class="cy-titlebar">
 			<span class="cy-title-text">Cruise FM</span>
-			<span class="cy-mp-winbtns">
-				<span class="cy-title-btn">_</span>
-				<span class="cy-title-btn">▢</span>
-				<span class="cy-title-btn">X</span>
+			<span class="cy-winbtns" aria-hidden="true">
+				<span class="cy-title-btn">_</span><span class="cy-title-btn">▢</span><span class="cy-title-btn">X</span>
 			</span>
 		</div>
 
-		<div class="cy-mp-menubar">
-			<span class="cy-mp-menu-item"><u>F</u>ile</span>
-			<span class="cy-mp-menu-item"><u>V</u>iew</span>
-			<span class="cy-mp-menu-item"><u>P</u>layback</span>
-			<span class="cy-mp-menu-item"><u>H</u>elp</span>
-		</div>
-
-		<div class="cy-panel cy-mp-panel">
+		<div class="cy-body cy-mp-body">
 			<audio id="cy-bgm" src="{{ site.baseurl }}/assets/audio/bgm.mp3" preload="none"></audio>
 
 			<div class="cy-mp-top">
 				<div class="cy-mp-art">💿</div>
-				<div class="cy-mp-display">
-					<span class="cy-mp-display-track">[01]</span>
-					<span class="cy-mp-display-time" id="cy-mp-current">00:00</span>
+				<div class="cy-mp-meta">
+					<span class="cy-mp-title">Roasted</span>
+					<span class="cy-mp-artist">Aves · Track 01</span>
 				</div>
-			</div>
-
-			<div class="cy-mp-transport-row">
-				<button type="button" id="cy-play-btn" class="cy-mp-btn cy-mp-btn-transport" aria-label="재생">▶</button>
-				<button type="button" id="cy-pause-btn" class="cy-mp-btn cy-mp-btn-transport" aria-label="일시정지">❚❚</button>
-				<button type="button" id="cy-stop-btn" class="cy-mp-btn cy-mp-btn-transport" aria-label="정지">■</button>
-			</div>
-
-			<div class="cy-mp-transport-row">
-				<button type="button" id="cy-restart-btn" class="cy-mp-btn cy-mp-btn-transport" title="처음으로" aria-label="처음으로">|◀</button>
-				<button type="button" id="cy-rewind-btn" class="cy-mp-btn cy-mp-btn-transport" title="10초 뒤로" aria-label="10초 뒤로">◀◀</button>
-				<button type="button" id="cy-forward-btn" class="cy-mp-btn cy-mp-btn-transport" title="10초 앞으로" aria-label="10초 앞으로">▶▶</button>
-				<button type="button" id="cy-end-btn" class="cy-mp-btn cy-mp-btn-transport" title="트랙 끝으로 이동" aria-label="트랙 끝으로 이동">▶|</button>
-			</div>
-
-			<div class="cy-mp-utility-row">
-				<button type="button" id="cy-repeat-btn" class="cy-mp-btn cy-mp-btn-icon cy-mp-btn-toggle-on" aria-pressed="true" title="반복 재생 켜짐" aria-label="반복 재생">🔁</button>
-				<button type="button" id="cy-heart-btn" class="cy-mp-btn cy-mp-btn-icon" title="즐겨찾기 추가" aria-pressed="false" aria-label="즐겨찾기">♡</button>
-			</div>
-
-			<div class="cy-mp-info-row">
-				<div class="cy-mp-fields">
-					<div class="cy-mp-field-row">
-						<span class="cy-mp-field-label">Artist</span>
-						<span class="cy-mp-field-box">Aves</span>
-					</div>
-					<div class="cy-mp-field-row">
-						<span class="cy-mp-field-label">Title</span>
-						<span class="cy-mp-field-box">Roasted</span>
-					</div>
-					<div class="cy-mp-field-row">
-						<span class="cy-mp-field-label">Track</span>
-						<span class="cy-mp-field-box">Track 1</span>
-					</div>
-				</div>
-
-				<div class="cy-mp-vol-block">
-					<span class="cy-mp-vol-label">VOL</span>
-					<div class="cy-mp-vol">
-						<div class="cy-mp-vol-buttons">
-							<button type="button" id="cy-vol-up" class="cy-mp-btn cy-mp-vol-btn" title="볼륨 크게" aria-label="볼륨 크게">+</button>
-							<button type="button" id="cy-vol-down" class="cy-mp-btn cy-mp-vol-btn" title="볼륨 작게" aria-label="볼륨 작게">−</button>
-						</div>
-						<div class="cy-mp-vol-meter"><div class="cy-mp-vol-fill" id="cy-vol-fill"></div></div>
-					</div>
+				<div class="cy-mp-utils">
+					<button type="button" id="cy-repeat-btn" class="cy-mp-btn cy-mp-btn-icon cy-mp-btn-toggle-on" aria-pressed="true" title="반복 재생 켜짐" aria-label="반복 재생">🔁</button>
+					<button type="button" id="cy-heart-btn" class="cy-mp-btn cy-mp-btn-icon" title="즐겨찾기 추가" aria-pressed="false" aria-label="즐겨찾기">♡</button>
 				</div>
 			</div>
 
 			<div class="cy-mp-seek-row">
+				<span class="cy-mp-time" id="cy-mp-current">00:00</span>
 				<input type="range" id="cy-mp-seek" class="cy-mp-seek" min="0" max="1000" value="0" step="1" aria-label="재생 위치">
+				<span class="cy-mp-time" id="cy-mp-duration">00:00</span>
 			</div>
-		</div>
 
-		<div class="cy-mp-status">
-			<span class="cy-mp-status-item">Track: 01</span>
-			<span class="cy-mp-status-item">Time: <span id="cy-mp-duration">00:00</span></span>
+			<div class="cy-mp-transport">
+				<button type="button" id="cy-restart-btn" class="cy-mp-btn cy-mp-btn-skip" title="처음으로" aria-label="처음으로">|◀</button>
+				<button type="button" id="cy-rewind-btn" class="cy-mp-btn cy-mp-btn-skip" title="10초 뒤로" aria-label="10초 뒤로">◀◀</button>
+				<button type="button" id="cy-play-btn" class="cy-mp-btn cy-mp-btn-main" aria-label="재생">▶</button>
+				<button type="button" id="cy-pause-btn" class="cy-mp-btn cy-mp-btn-main" aria-label="일시정지">❚❚</button>
+				<button type="button" id="cy-stop-btn" class="cy-mp-btn cy-mp-btn-main" aria-label="정지">■</button>
+				<button type="button" id="cy-forward-btn" class="cy-mp-btn cy-mp-btn-skip" title="10초 앞으로" aria-label="10초 앞으로">▶▶</button>
+				<button type="button" id="cy-end-btn" class="cy-mp-btn cy-mp-btn-skip" title="트랙 끝으로 이동" aria-label="트랙 끝으로 이동">▶|</button>
+			</div>
+
+			<div class="cy-mp-vol-row">
+				<span class="cy-mp-vol-label">VOL</span>
+				<button type="button" id="cy-vol-down" class="cy-mp-btn cy-mp-btn-skip cy-mp-vol-btn" title="볼륨 작게" aria-label="볼륨 작게">−</button>
+				<div class="cy-mp-vol-meter"><div class="cy-mp-vol-fill" id="cy-vol-fill"></div></div>
+				<button type="button" id="cy-vol-up" class="cy-mp-btn cy-mp-btn-skip cy-mp-vol-btn" title="볼륨 크게" aria-label="볼륨 크게">+</button>
+			</div>
 		</div>
 	</div>
 
 	<div class="cy-visitors-window">
 		<div class="cy-titlebar">
-			<span class="cy-title-text">💾 Hit Counter</span>
-			<span class="cy-title-btn">▢</span>
+			<span class="cy-title-text">Hit Counter</span>
+			<span class="cy-winbtns" aria-hidden="true">
+				<span class="cy-title-btn">_</span><span class="cy-title-btn">▢</span><span class="cy-title-btn">X</span>
+			</span>
 		</div>
-		<div class="cy-visitors-body">
+		<div class="cy-body cy-visitors-body">
 			<img
 				src="https://api.visitorbadge.io/api/visitors?path=yoosoo2217%2Fmy-blog&label=VISITORS"
 				alt="방문자 수"
@@ -168,7 +132,7 @@
 		if (!seek) { return; }
 		percent = Math.max(0, Math.min(100, percent));
 		seek.style.background =
-			'linear-gradient(to right, #1a9c4b 0%, #1a9c4b ' + percent + '%, #ffffff ' + percent + '%, #ffffff 100%)';
+			'linear-gradient(to right, #0a246a 0%, #0a246a ' + percent + '%, #ffffff ' + percent + '%, #ffffff 100%)';
 	}
 
 	// Refreshes the seek bar/time display from audio.currentTime directly,
@@ -277,7 +241,7 @@
 	}
 
 	function updateVolumeUI() {
-		if (volFill) { volFill.style.height = Math.round(audio.volume * 100) + '%'; }
+		if (volFill) { volFill.style.width = Math.round(audio.volume * 100) + '%'; }
 	}
 	audio.volume = 0.7;
 	updateVolumeUI();
@@ -414,10 +378,16 @@
 </script>
 
 <style>
+/* Left sidebar: one small design system. Only the outer window frame and the
+   title bar are Win95; everything inside is flat (no nested bevels). Colors:
+   navy #0a246a (title bars, active state), gray #c0bec0 (window), off-white
+   #fbfaf7 (content), black text, #7f7d7f for muted text and dividers. */
 .cy-sidebar {
 	flex: 0 0 220px;
 	width: 220px;
 	font-family: Tahoma, "MS Sans Serif", Geneva, Verdana, sans-serif;
+	font-size: 12px;
+	color: #000000;
 }
 /* The blocks follow the page while scrolling. The wrapper sticks inside
    .cy-sidebar, which is stretched to the full height of the row. No inner
@@ -434,399 +404,189 @@
 	top: 0;
 	will-change: transform;
 }
-/* Visitor counter drawn as a small Win95 window: gray raised frame, blue
-   title bar, and a black sunken "LCD" well that holds the badge image. */
+
+/* --- Windows: the only place with a bevel ------------------------------ */
+.cy-window,
+.cy-music-window,
 .cy-visitors-window {
 	width: 220px;
-	margin-top: 10px;
+	box-sizing: border-box;
 	background: #c0bec0;
-	border: 2px solid;
+	border: 1px solid;
 	border-color: #fbfaf7 #000000 #000000 #fbfaf7;
-	box-sizing: border-box;
-	font-family: Tahoma, "MS Sans Serif", Geneva, Verdana, sans-serif;
-	font-size: 12px;
-	color: #000000;
+	box-shadow: inset -1px -1px 0 #7f7d7f;
+	padding: 2px;
 }
-.cy-visitors-body {
-	margin: 4px;
-	padding: 6px;
-	background: #000000;
-	border-width: 2px;
-	border-style: ridge groove groove ridge;
-	border-color: #7f7d7f #fbfaf7 #fbfaf7 #7f7d7f;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-}
-.cy-visitors-body img {
-	display: block;
-	max-width: 100%;
-	image-rendering: pixelated;
-}
-.cy-window {
-	width: 220px;
-	margin: 0;
-	background: #c0bec0;
-	border: 2px solid;
-	border-color: #fbfaf7 #000000 #000000 #fbfaf7;
-	font-family: Tahoma, "MS Sans Serif", Geneva, Verdana, sans-serif;
-	font-size: 12px;
-	color: #000000;
-	box-sizing: border-box;
-}
-.cy-guestbook-btn {
-	box-sizing: border-box;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	gap: 6px;
-	width: 220px;
-	margin-top: 10px;
-	padding: 9px 10px;
-	background: #cccccc;
-	border: 2px solid;
-	border-color: #fbfaf7 #000000 #000000 #fbfaf7;
-	color: #000000;
-	font-family: Tahoma, "MS Sans Serif", Geneva, Verdana, sans-serif;
-	font-size: 13px;
-	font-weight: bold;
-	text-decoration: none;
-	text-align: center;
-	cursor: pointer;
-}
-.cy-guestbook-btn:hover {
-	background: #d8d8d8;
-}
-.cy-guestbook-btn:active {
-	border-color: #000000 #fbfaf7 #fbfaf7 #000000;
-}
-.cy-gb-icon {
-	font-size: 14px;
-}
-.cy-gb-badge {
-	background: #d0011b;
-	color: #ffffff;
-	font-size: 9px;
-	font-weight: bold;
-	padding: 1px 4px;
-	border-radius: 2px;
-	animation: cy-blink 1.1s steps(1) infinite;
-}
-@keyframes cy-blink {
-	50% { opacity: 0; }
+.cy-music-window,
+.cy-visitors-window {
+	margin-top: 14px;
 }
 .cy-titlebar {
-	background: #0a246a;
-	color: #c0bec0;
-	font-weight: bold;
-	font-size: 12px;
-	padding: 3px 4px;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
+	min-height: 18px;
+	padding: 1px 3px 1px 5px;
+	background: #0a246a;
+	color: #ffffff;
+	font-size: 11px;
+	font-weight: bold;
+}
+.cy-title-text {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.cy-winbtns {
+	display: flex;
+	gap: 2px;
+	flex-shrink: 0;
 }
 .cy-title-btn {
-	background: #cccccc;
-	color: #000000;
-	border: 2px solid;
-	border-color: #fbfaf7 #000000 #000000 #fbfaf7;
-	font-size: 9px;
-	width: 13px;
-	height: 11px;
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
+	width: 14px;
+	height: 12px;
+	box-sizing: border-box;
+	background: #c0bec0;
+	color: #000000;
+	border: 1px solid;
+	border-color: #fbfaf7 #000000 #000000 #fbfaf7;
+	font-size: 8px;
+	font-weight: bold;
 	line-height: 1;
 }
-.cy-panel {
-	margin: 6px;
-	padding: 8px 6px;
+/* Window content: flat, roomy, no inner borders. */
+.cy-body {
+	margin-top: 2px;
+	padding: 12px;
 	background: #fbfaf7;
-	border-width: 2px;
-	border-style: ridge groove groove ridge;
-	border-color: #7f7d7f #fbfaf7 #fbfaf7 #7f7d7f;
+	box-sizing: border-box;
 }
-.cy-photo-frame {
-	margin: 0 auto 6px;
-	width: 96px;
-	height: 112px;
-	background: #fbfaf7;
-	border-width: 2px;
-	border-style: ridge groove groove ridge;
-	border-color: #7f7d7f #fbfaf7 #fbfaf7 #7f7d7f;
-	display: flex;
-	align-items: center;
-	justify-content: center;
+
+/* --- TODAY IS ---------------------------------------------------------- */
+.cy-today-body {
+	text-align: center;
 }
 .cy-avatar {
-	width: 80px;
-	height: 96px;
+	display: block;
+	width: 100px;
+	height: 120px;
+	margin: 0 auto 12px;
 	image-rendering: pixelated;
 	image-rendering: crisp-edges;
 }
 .cy-caption {
-	text-align: center;
+	padding: 0 4px;
+}
+.cy-caption-title {
+	display: block;
+	margin-bottom: 4px;
+	font-size: 10px;
+	font-weight: bold;
+	letter-spacing: 0.08em;
+	color: #7f7d7f;
+}
+.cy-caption-text {
+	margin: 0;
 	font-size: 12px;
-	line-height: 1.5;
-	color: #000000;
-	padding: 0 4px 8px;
+	line-height: 1.7;
+	word-break: keep-all;
+	overflow-wrap: break-word;
 }
-.cy-music-window {
-	width: 220px;
-	margin-top: 10px;
-	background: #c0bec0;
-	border: 2px solid;
-	border-color: #fbfaf7 #000000 #000000 #fbfaf7;
-	font-family: Tahoma, "MS Sans Serif", Geneva, Verdana, sans-serif;
-	font-size: 12px;
-	color: #000000;
-	box-sizing: border-box;
-}
-.cy-mp-winbtns {
+.cy-subrow {
 	display: flex;
-	gap: 2px;
+	align-items: center;
+	justify-content: center;
+	gap: 6px;
+	margin-top: 12px;
+	padding-top: 8px;
+	border-top: 1px solid #dcdad6;
+	font-size: 10px;
+	letter-spacing: 0.06em;
+	color: #7f7d7f;
 }
-.cy-mp-menubar {
-	display: flex;
-	gap: 10px;
-	padding: 3px 7px;
-	background: #c0bec0;
-	border-bottom: 1px solid;
-	border-color: #7f7d7f #fbfaf7 #fbfaf7 #7f7d7f;
-	font-size: 11px;
-	color: #000000;
+.cy-sublink {
+	cursor: pointer;
 }
-.cy-mp-panel {
+.cy-sublink:hover {
+	color: #0a246a;
+}
+.cy-expand {
+	font-size: 8px;
+}
+
+/* --- Cruise FM --------------------------------------------------------- */
+.cy-mp-body {
 	display: flex;
 	flex-direction: column;
-	gap: 6px;
+	gap: 10px;
 }
 .cy-mp-top {
 	display: flex;
-	align-items: stretch;
-	gap: 6px;
+	align-items: center;
+	gap: 8px;
 }
 .cy-mp-art {
-	width: 42px;
-	height: 42px;
-	flex-shrink: 0;
-	background: #ffffff;
-	border-width: 2px;
-	border-style: ridge groove groove ridge;
-	border-color: #7f7d7f #fbfaf7 #fbfaf7 #7f7d7f;
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	font-size: 22px;
-	box-sizing: border-box;
-}
-/* The old CD player's LCD-style readout: black background, amber/green
-   monospace digits, matching the "[01] 00:00" reference display. */
-.cy-mp-display {
-	flex: 1 1 auto;
-	min-width: 0;
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	gap: 4px;
-	padding: 0 6px;
-	background: #000000;
-	border-width: 2px;
-	border-style: ridge groove groove ridge;
-	border-color: #7f7d7f #fbfaf7 #fbfaf7 #7f7d7f;
-	font-family: "Courier New", Courier, monospace;
-	color: #b8c400;
-	box-sizing: border-box;
-}
-.cy-mp-display-track {
-	font-size: 10px;
-	opacity: 0.85;
-}
-.cy-mp-display-time {
-	font-size: 13px;
-	font-weight: bold;
-	letter-spacing: 1px;
-}
-.cy-mp-transport-row {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	gap: 4px;
-}
-.cy-mp-utility-row {
-	display: flex;
-	justify-content: flex-end;
-	gap: 4px;
-}
-.cy-mp-info-row {
-	display: flex;
-	align-items: flex-end;
-	gap: 8px;
-	padding-top: 2px;
-}
-.cy-mp-fields {
-	flex: 1 1 auto;
-	min-width: 0;
-	display: flex;
-	flex-direction: column;
-	gap: 3px;
-}
-.cy-mp-field-row {
-	display: flex;
-	align-items: center;
-	gap: 5px;
-}
-.cy-mp-field-label {
 	flex-shrink: 0;
-	width: 30px;
-	font-size: 9px;
-	letter-spacing: 0.5px;
-	color: #555555;
+	width: 32px;
+	height: 32px;
+	background: #c0bec0;
+	font-size: 18px;
 }
-.cy-mp-field-box {
+.cy-mp-meta {
 	flex: 1 1 auto;
 	min-width: 0;
-	background: #ffffff;
-	border-width: 2px;
-	border-style: ridge groove groove ridge;
-	border-color: #7f7d7f #fbfaf7 #fbfaf7 #7f7d7f;
-	padding: 1px 5px;
-	font-size: 11px;
-	font-weight: bold;
-	color: #000000;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	box-sizing: border-box;
-}
-.cy-mp-vol-block {
-	flex-shrink: 0;
 	display: flex;
 	flex-direction: column;
-	align-items: center;
-	gap: 2px;
+	gap: 1px;
 }
-.cy-mp-vol-label {
-	font-size: 9px;
-	letter-spacing: 0.5px;
-	color: #555555;
-}
-.cy-mp-vol {
-	display: flex;
-	align-items: stretch;
-	gap: 3px;
-}
-.cy-mp-vol-buttons {
-	display: flex;
-	flex-direction: column;
-	gap: 2px;
-}
-.cy-mp-vol-btn {
-	width: 22px;
-	height: 15px;
-	padding: 0;
+.cy-mp-title {
 	font-size: 12px;
 	font-weight: bold;
-	line-height: 1;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-}
-.cy-mp-vol-meter {
-	width: 10px;
-	background: #ffffff;
-	border-width: 2px;
-	border-style: ridge groove groove ridge;
-	border-color: #7f7d7f #fbfaf7 #fbfaf7 #7f7d7f;
-	display: flex;
-	align-items: flex-end;
-	overflow: hidden;
-	box-sizing: border-box;
-}
-.cy-mp-vol-fill {
-	width: 100%;
-	height: 70%;
-	background: #1a9c4b;
-}
-/* Shared, deliberately understated bevel: a crisp 1px black outline plus a
-   subtle inset highlight/shadow, instead of the thick alternating 2px
-   border used elsewhere — that read as "puffed up" once several of these
-   sat next to each other in the same small panel. */
-.cy-mp-btn {
-	background: #cfcfcf;
-	color: #000000;
-	border: 1px solid #000000;
-	box-shadow: inset 1px 1px 0 #fdfdfd, inset -1px -1px 0 #8a8a8a;
-	font-family: inherit;
-	font-size: 11px;
-	padding: 3px 7px;
-	cursor: pointer;
-	transition: transform 0.05s linear, background-color 0.1s linear;
-}
-.cy-mp-btn:hover {
-	background: #dadada;
-}
-.cy-mp-btn:active {
-	transform: translate(1px, 1px);
-	box-shadow: inset -1px -1px 0 #fdfdfd, inset 1px 1px 0 #8a8a8a;
-}
-.cy-mp-btn-transport {
-	flex: 1 1 0;
-	font-size: 12px;
-	padding: 4px 0;
-	text-align: center;
-}
-.cy-mp-btn-icon {
-	width: 22px;
-	height: 20px;
-	padding: 0;
-	font-size: 11px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-}
-.cy-mp-btn-toggle-on {
-	background: #cfe8d6;
-	box-shadow: inset 1px 1px 0 #eaf6ec, inset -1px -1px 0 #6fa17d;
-}
-.cy-mp-btn-toggle-on:hover {
-	background: #d8ecdd;
-}
-.cy-mp-status {
-	display: flex;
-	border-top: 1px solid;
-	border-color: #7f7d7f #fbfaf7 #fbfaf7 #7f7d7f;
-}
-.cy-mp-status-item {
-	flex: 1 1 50%;
-	padding: 2px 6px;
-	font-size: 10px;
-	color: #000000;
-	border-right: 1px solid #7f7d7f;
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
 }
-.cy-mp-status-item:last-child {
-	border-right: none;
+.cy-mp-artist {
+	font-size: 10px;
+	color: #7f7d7f;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.cy-mp-utils {
+	display: flex;
+	gap: 2px;
+	flex-shrink: 0;
 }
 .cy-mp-seek-row {
 	display: flex;
 	align-items: center;
 	gap: 6px;
-	padding-top: 2px;
+}
+.cy-mp-time {
+	flex-shrink: 0;
+	font-family: "Courier New", Courier, monospace;
+	font-size: 10px;
+	color: #444444;
 }
 .cy-mp-seek {
 	flex: 1 1 auto;
+	min-width: 0;
 	-webkit-appearance: none;
 	appearance: none;
-	height: 8px;
+	height: 6px;
 	margin: 0;
-	border: 1px solid #000000;
+	border: 1px solid #7f7d7f;
 	background: #ffffff;
 }
 .cy-mp-seek::-moz-range-track {
-	height: 8px;
+	height: 6px;
 	background: transparent;
 	border: none;
 }
@@ -834,73 +594,164 @@
 	-webkit-appearance: none;
 	width: 8px;
 	height: 12px;
-	margin-top: -2px;
-	background: #cfcfcf;
+	margin-top: -3px;
+	background: #c0bec0;
 	border: 1px solid #000000;
-	box-shadow: inset 1px 1px 0 #fdfdfd, inset -1px -1px 0 #8a8a8a;
 	cursor: pointer;
 }
 .cy-mp-seek::-moz-range-thumb {
-	width: 8px;
-	height: 12px;
-	background: #cfcfcf;
+	width: 6px;
+	height: 10px;
+	background: #c0bec0;
 	border: 1px solid #000000;
-	box-shadow: inset 1px 1px 0 #fdfdfd, inset -1px -1px 0 #8a8a8a;
 	border-radius: 0;
 	cursor: pointer;
 }
-.cy-divider {
-	height: 1px;
-	background: #7f7d7f;
-	margin: 0 2px 6px;
-}
-.cy-subrow {
+.cy-mp-transport {
 	display: flex;
 	align-items: center;
-	justify-content: flex-end;
-	gap: 4px;
-	font-size: 10px;
-	color: #000000;
+	justify-content: space-between;
 }
-.cy-sublink { cursor: pointer; }
-.cy-sublink:hover { text-decoration: underline; }
-.cy-sep { color: #7f7d7f; }
-.cy-expand { margin-left: 2px; font-size: 8px; }
-.cy-statusbar {
-	border-top: 1px solid;
-	border-color: #7f7d7f #fbfaf7 #fbfaf7 #7f7d7f;
-	padding: 2px 6px;
+/* Buttons: flat by default. Only play/pause keep a small bevel. */
+.cy-mp-btn {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 0;
+	background: transparent;
+	color: #333333;
+	border: 1px solid transparent;
+	font-family: inherit;
 	font-size: 10px;
+	line-height: 1;
+	cursor: pointer;
+}
+.cy-mp-btn:hover {
+	background: #e6e4e0;
+	border-color: #c0bec0;
+}
+.cy-mp-btn:active {
+	background: #dcdad6;
+}
+.cy-mp-btn-skip {
+	width: 22px;
+	height: 22px;
+}
+.cy-mp-btn-main {
+	width: 30px;
+	height: 26px;
+	font-size: 12px;
+	background: #c0bec0;
 	color: #000000;
+	border: 1px solid;
+	border-color: #fbfaf7 #7f7d7f #7f7d7f #fbfaf7;
+}
+.cy-mp-btn-main:hover {
+	background: #d2d0d2;
+	border-color: #fbfaf7 #7f7d7f #7f7d7f #fbfaf7;
+}
+.cy-mp-btn-main:active {
+	border-color: #7f7d7f #fbfaf7 #fbfaf7 #7f7d7f;
+}
+.cy-mp-btn-icon {
+	width: 20px;
+	height: 20px;
+	font-size: 11px;
+}
+.cy-mp-btn-toggle-on,
+.cy-mp-btn-toggle-on:hover {
+	background: #0a246a;
+	color: #ffffff;
+	border-color: #0a246a;
+}
+.cy-mp-vol-row {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+}
+.cy-mp-vol-label {
+	flex-shrink: 0;
+	margin-right: 2px;
+	font-size: 9px;
+	letter-spacing: 0.08em;
+	color: #7f7d7f;
+}
+.cy-mp-vol-btn {
+	width: 18px;
+	height: 18px;
+	font-size: 12px;
+	font-weight: bold;
+}
+.cy-mp-vol-meter {
+	flex: 1 1 auto;
+	height: 6px;
+	background: #ffffff;
+	border: 1px solid #7f7d7f;
+	overflow: hidden;
+	box-sizing: border-box;
+}
+.cy-mp-vol-fill {
+	width: 70%;
+	height: 100%;
+	background: #0a246a;
 }
 
-/* Compact layout: every block (TODAY IS, Cruise FM, guestbook, visitors)
-   has to fit on one screen at the same time, so spacing and sizes are
-   trimmed here instead of editing each rule above. */
-.cy-sidebar .cy-panel { margin: 5px; padding: 7px 6px; }
-.cy-sidebar .cy-titlebar { padding: 2px 4px; }
-.cy-sidebar .cy-caption { font-size: 12px; line-height: 1.4; padding: 0 2px 6px; }
-.cy-sidebar .cy-divider { margin: 0 2px 5px; }
-.cy-sidebar .cy-statusbar { padding: 1px 6px; }
-.cy-sidebar .cy-music-window { margin-top: 6px; }
-.cy-sidebar .cy-mp-menubar { padding: 1px 7px; font-size: 10px; }
-.cy-sidebar .cy-mp-panel { gap: 3px; }
-.cy-sidebar .cy-mp-art { width: 30px; height: 30px; font-size: 16px; }
-.cy-sidebar .cy-mp-display-time { font-size: 12px; }
-.cy-sidebar .cy-mp-btn-transport { font-size: 11px; padding: 2px 0; }
-.cy-sidebar .cy-mp-btn-icon { width: 20px; height: 17px; }
-.cy-sidebar .cy-mp-info-row { padding-top: 0; gap: 6px; }
-.cy-sidebar .cy-mp-fields { gap: 1px; }
-.cy-sidebar .cy-mp-field-box { padding: 0 4px; font-size: 10px; }
-.cy-sidebar .cy-mp-vol-btn { width: 20px; height: 12px; font-size: 11px; }
-.cy-sidebar .cy-mp-seek-row { padding-top: 0; }
-.cy-sidebar .cy-mp-status-item { padding: 1px 6px; }
-.cy-sidebar .cy-guestbook-btn { margin-top: 6px; padding: 6px 10px; font-size: 12px; }
-.cy-sidebar .cy-visitors-window { margin-top: 6px; }
+/* --- Hit Counter ------------------------------------------------------- */
+.cy-visitors-body {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 8px;
+}
+.cy-visitors-body img {
+	display: block;
+	max-width: 100%;
+	image-rendering: pixelated;
+}
+
+/* --- Guestbook: flat until hovered ------------------------------------- */
+.cy-guestbook-btn {
+	box-sizing: border-box;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 6px;
+	width: 220px;
+	margin-top: 14px;
+	padding: 9px 10px;
+	background: #c0bec0;
+	border: 1px solid #7f7d7f;
+	color: #000000;
+	font-family: inherit;
+	font-size: 12px;
+	font-weight: bold;
+	text-decoration: none;
+	cursor: pointer;
+}
+.cy-guestbook-btn:hover {
+	background: #cfcdcf;
+	border-color: #fbfaf7 #000000 #000000 #fbfaf7;
+}
+.cy-guestbook-btn:active {
+	border-color: #000000 #fbfaf7 #fbfaf7 #000000;
+}
+.cy-gb-icon {
+	font-size: 12px;
+	opacity: 0.75;
+}
+.cy-gb-badge {
+	background: #d0011b;
+	color: #ffffff;
+	font-size: 9px;
+	font-weight: bold;
+	padding: 1px 4px;
+	animation: cy-blink 1.1s steps(1) infinite;
+}
+@keyframes cy-blink {
+	50% { opacity: 0; }
+}
 
 @media (max-width: 640px) {
-	.cy-window, .cy-guestbook-btn, .cy-music-window, .cy-visitors-window { width: auto; }
-	.cy-photo-frame { width: 96px; height: 112px; }
-	.cy-avatar { width: 80px; height: 96px; }
+	.cy-window, .cy-music-window, .cy-visitors-window, .cy-guestbook-btn { width: auto; }
 }
 </style>
