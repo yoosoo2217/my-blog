@@ -1390,6 +1390,11 @@ ul.win95-postbar {
 		line-height: 1.2;
 		cursor: pointer;
 	}
+	// Same size and font as the post toolbar's "☆ Favorite" button.
+	li.win95-menu-fav {
+		font-family: Tahoma, "MS Sans Serif", Geneva, Verdana, sans-serif;
+		font-size: 11px;
+	}
 	a:hover li {
 		background: #e4e0e4;
 		border-color: $win95-highlight $win95-shadow $win95-shadow $win95-highlight;
