@@ -91,6 +91,106 @@ Unchecked 예외는 컴파일러가 처리를 강제하지 않지만, 실행 중
 | `ClassCastException` | 맞지 않는 타입으로 형변환할 때 | `Object`(`String`)를 `Integer`로 변환 |
 | `NegativeArraySizeException` | 배열 크기를 음수로 지정할 때 | `new int[-1]` |
 
+### 계층과 Checked/Unchecked를 코드로 확인하기
+
+위 표를 코드에 그대로 적용해 본다.  
+(예시 코드이고, 결과는 코드를 따라가 적은 것이라 직접 실행해 확인하지는 않았다.)
+
+먼저 예외 객체에서 부모를 따라 올라가면 계층이 그대로 나온다.
+
+```java
+// 예시 코드 (직접 실행해 확인하지 않음)
+try {
+    int[] arr = new int[5];
+    arr[8] = 1;
+} catch (ArrayIndexOutOfBoundsException e) {
+    Class<?> type = e.getClass();
+    while (type != null) {
+        System.out.println(type.getSimpleName());
+        type = type.getSuperclass();
+    }
+}
+// ArrayIndexOutOfBoundsException
+// IndexOutOfBoundsException
+// RuntimeException
+// Exception
+// Throwable
+// Object
+```
+
+`RuntimeException`이 중간에 있으니 이 예외는 Unchecked다.  
+다음은 `RuntimeException` 표의 다섯 예외를 한 번에 일으키는 코드다.  
+`RuntimeException`으로 한꺼번에 잡아서 어떤 예외가 났는지 이름만 출력한다.
+
+```java
+// 예시 코드 (직접 실행해 확인하지 않음)
+static void check(String label, Runnable action) {
+    try {
+        action.run();
+    } catch (RuntimeException e) {
+        System.out.println(label + " -> " + e.getClass().getSimpleName());
+    }
+}
+
+public static void main(String[] args) {
+    int zero = 0;
+    int[] arr = new int[5];
+    String str = null;
+    Object obj = "문자열";
+    int size = -1;
+
+    check("0으로 나누기", () -> System.out.println(3 / zero));
+    check("배열 범위 초과", () -> System.out.println(arr[8]));
+    check("null 참조", () -> System.out.println(str.length()));
+    check("잘못된 형변환", () -> System.out.println((Integer) obj));
+    check("음수 배열 크기", () -> System.out.println(new int[size]));
+}
+// 0으로 나누기 -> ArithmeticException
+// 배열 범위 초과 -> ArrayIndexOutOfBoundsException
+// null 참조 -> NullPointerException
+// 잘못된 형변환 -> ClassCastException
+// 음수 배열 크기 -> NegativeArraySizeException
+```
+
+Checked와 Unchecked의 차이는 `throws`를 쓰지 않았을 때 컴파일이 되는지로 드러난다.
+
+```java
+// 예시 코드 (직접 실행해 확인하지 않음)
+static void uncheckedCase() {
+    throw new IllegalArgumentException("잘못된 값");   // throws 없이도 컴파일된다
+}
+
+static void checkedCase() throws IOException {
+    throw new IOException("파일 문제");   // throws를 빼면 컴파일 오류
+}
+
+public static void main(String[] args) {
+    uncheckedCase();   // 처리하지 않아도 컴파일된다 (실행하면 프로그램이 종료된다)
+
+    try {
+        checkedCase();   // 처리하지 않으면 컴파일 오류라서 try - catch가 필요하다
+    } catch (IOException e) {
+        System.out.println(e.getMessage());
+    }
+}
+```
+
+오류(Error)는 `Exception`의 자식이 아니라서 `catch (Exception e)`로 잡히지 않는다.
+
+```java
+// 예시 코드 (직접 실행해 확인하지 않음)
+static void recurse() {
+    recurse();   // 끝없이 자기 자신을 부른다
+}
+
+try {
+    recurse();
+} catch (Exception e) {
+    System.out.println("실행되지 않는다");
+}
+// StackOverflowError는 Error 계열이라 위 catch를 지나쳐 프로그램이 종료된다
+```
+
 ## 4. try - catch - finally: 어떤 예외를 어디서 잡을까
 
 ```java
@@ -161,6 +261,26 @@ public class Application {
 이때 **구체적인(하위) 예외를 먼저, 넓은(상위) 예외를 나중에** 적어야 한다.  
 상위 타입을 먼저 적으면 그 아래 `catch`에는 도달할 수 없어서 컴파일 오류가 난다.
 
+```java
+// 예시 코드 (직접 실행해 확인하지 않음)
+try {
+    int[] arr = new int[5];
+    arr[8] = 1;
+} catch (ArrayIndexOutOfBoundsException e) {   // 구체적인 예외를 먼저
+    System.out.println("배열 범위를 넘었다");
+} catch (RuntimeException e) {                  // 그다음 넓은 예외
+    System.out.println("그 밖의 실행 중 예외");
+}
+// 배열 범위를 넘었다
+
+// 순서를 바꾸면 컴파일 오류가 난다
+// catch (RuntimeException e) { ... }
+// catch (ArrayIndexOutOfBoundsException e) { ... }   // 이미 앞에서 처리되어 도달할 수 없다
+```
+
+앞의 `catch`에서 잡히면 뒤의 `catch`는 건너뛴다.  
+그래서 위 코드는 첫 번째 메시지만 출력한다.
+
 ### finally는 언제 쓸까
 
 `finally`는 예외 여부와 상관없이 꼭 실행해야 하는 코드를 둔다.  
@@ -195,6 +315,37 @@ Checked 예외를 던지는 메소드는 반드시 `throws`를 적거나 안에�
 | `throws Exception` | 컴파일 오류 | `IOException`보다 넓다 |
 
 부모 타입으로 호출하는 쪽은 부모가 선언한 예외만 대비하기 때문이다.
+
+```java
+// 예시 코드 (직접 실행해 확인하지 않음)
+class Parent {
+    void read() throws IOException { }
+}
+
+class Child1 extends Parent {
+    @Override
+    void read() { }                                 // 가능: 던지지 않는다
+}
+
+class Child2 extends Parent {
+    @Override
+    void read() throws FileNotFoundException { }    // 가능: IOException의 자식
+}
+
+class Child3 extends Parent {
+    @Override
+    void read() throws Exception { }                // 컴파일 오류: IOException보다 넓다
+}
+
+Parent p = new Child2();
+try {
+    p.read();            // 호출하는 쪽은 Parent가 선언한 IOException만 대비하면 된다
+} catch (IOException e) {
+    System.out.println(e.getMessage());
+}
+```
+
+`Child3`가 허용된다면 위의 호출부는 `Exception`을 대비하지 않았는데 `Exception`이 날 수 있어서 `catch`가 모자라게 된다.
 
 ## 6. 사용자 정의 예외: 상황에 맞는 이름의 예외 만들기
 

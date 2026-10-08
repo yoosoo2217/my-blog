@@ -153,6 +153,56 @@ try (BufferedReader in = new BufferedReader(new FileReader("test.dat"))) {
 괄호 안에 쓸 수 있는 것은 `AutoCloseable` 인터페이스를 구현한 클래스다.  
 `FileReader`, `FileWriter`, `BufferedReader` 같은 입출력 클래스가 여기에 해당한다.
 
+이 조건이 실제로 어떻게 동작하는지는 직접 `AutoCloseable`을 구현한 클래스로 확인할 수 있다.  
+(예시 코드이고, 결과는 코드를 따라가 적은 것이라 직접 실행해 확인하지는 않았다.)
+
+```java
+// 예시 코드 (직접 실행해 확인하지 않음)
+class Res implements AutoCloseable {
+    private final String name;
+
+    Res(String name) {
+        this.name = name;
+        System.out.println(name + " 열림");
+    }
+
+    void use() {
+        System.out.println(name + " 사용");
+    }
+
+    @Override
+    public void close() {
+        System.out.println(name + " 닫힘");
+    }
+}
+
+try (Res a = new Res("A"); Res b = new Res("B")) {
+    a.use();
+    b.use();
+    throw new IllegalStateException("본문에서 예외");
+} catch (IllegalStateException e) {
+    System.out.println("catch: " + e.getMessage());
+} finally {
+    System.out.println("finally");
+}
+// A 열림
+// B 열림
+// A 사용
+// B 사용
+// B 닫힘
+// A 닫힘
+// catch: 본문에서 예외
+// finally
+```
+
+출력에서 세 가지를 읽을 수 있다.
+
+| 확인할 점 | 출력에서 보이는 모습 |
+|---|---|
+| 본문에서 예외가 나도 닫힌다 | `catch`보다 먼저 `닫힘`이 출력된다 |
+| 닫는 순서 | 나중에 연 `B`가 먼저 닫히고 `A`가 닫힌다 |
+| `finally`와의 순서 | 자원 닫기가 `catch`와 `finally`보다 앞선다 |
+
 이 글의 첫 번째 코드를 고치면 아래처럼 된다. (예시 코드이고 직접 실행해 확인하지는 않았다.)
 
 ```java
@@ -173,6 +223,21 @@ try (FileWriter writer = new FileWriter("output.txt")) {
 `flush()`는 버퍼의 데이터를 내보내기만 한다.  
 `close()`는 내보낸 뒤 통로를 닫는다.  
 `flush()`를 했다고 자원이 반납되는 것은 아니다.
+
+```java
+// 예시 코드 (직접 실행해 확인하지 않음)
+FileWriter writer = new FileWriter("output.txt");
+
+writer.write("first");
+writer.flush();          // 데이터는 내보냈지만 통로는 열려 있다
+writer.write("second");  // 그래서 이어서 쓸 수 있다
+
+writer.close();          // 남은 데이터를 내보내고 통로를 닫는다
+writer.write("third");   // 이미 닫혔으므로 IOException이 난다
+```
+
+`flush()` 뒤의 `write`는 되지만 `close()` 뒤의 `write`는 실패한다.  
+이 차이가 두 메소드의 역할을 그대로 보여 준다.
 
 ### 상대 경로의 파일은 실행 위치에 만들어진다
 

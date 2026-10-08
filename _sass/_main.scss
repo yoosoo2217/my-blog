@@ -2100,20 +2100,23 @@ ul.win95-postbar > li + li {
 	font-weight: 700;
 }
 .win95-cal-selhead span:last-child { font-weight: 400; color: #4a4a4a; }
-.win95-cal-files {
+// Prefixed with .win95-cal-selected so these beat the .post_content ul/li/a
+// rules (indent, 5px li padding, 15px link margin) that the home page inherits.
+.win95-cal-selected .win95-cal-files {
 	list-style: none;
 	margin: 0;
-	padding: 0;
+	padding: 3px 0 0;
 }
-.win95-cal-files li { margin: 0; padding: 0; list-style: none; }
-.win95-cal-files a {
+.win95-cal-selected .win95-cal-files li { margin: 0; padding: 0; list-style: none; line-height: 1; }
+.win95-cal-selected .win95-cal-files a {
 	display: flex;
 	align-items: center;
 	gap: 4px;
+	margin: 0;
 	padding: 0 2px;
 	line-height: 1;
 	color: #000;
 	text-decoration: none;
 }
-.win95-cal-files a img { display: block; margin: 0; width: 16px; height: 16px; flex-shrink: 0; image-rendering: pixelated; }
-.win95-cal-files a:hover { background: #0a246a; color: #fff; }
+.win95-cal-selected .win95-cal-files a img { display: block; margin: 0; width: 16px; height: 16px; flex-shrink: 0; image-rendering: pixelated; }
+.win95-cal-selected .win95-cal-files a:hover { background: #0a246a; color: #fff; }

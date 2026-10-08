@@ -27,6 +27,31 @@ tags:
 | `Set` | 값 자체(들어 있는가) | 허용하지 않음 | 출석한 학생 |
 | `Map` | 키(어떤 이름표인가) | 키는 허용하지 않음, 값은 허용 | 이름으로 조회하는 점수 |
 
+같은 데이터에서 "민지의 점수"를 찾는 코드로 비교하면 차이가 분명하다.  
+(예시 코드이고, 결과는 코드를 따라가 적은 것이라 직접 실행해 확인하지는 않았다.)
+
+```java
+// 예시 코드 (직접 실행해 확인하지 않음)
+
+// List: 이름 목록과 점수 목록의 위치를 맞춰서 찾는다
+List<String> names = List.of("민지", "수현");
+List<Integer> scoreList = List.of(95, 88);
+
+int idx = names.indexOf("민지");          // 처음부터 하나씩 훑어서 0을 찾는다
+System.out.println(scoreList.get(idx));   // 95
+
+// Set: 들어 있는지만 알 수 있고, 점수를 붙일 곳이 없다
+Set<String> nameSet = Set.of("민지", "수현");
+System.out.println(nameSet.contains("민지"));   // true
+
+// Map: 이름표(키)로 값을 바로 꺼낸다
+Map<String, Integer> scores = Map.of("민지", 95, "수현", 88);
+System.out.println(scores.get("민지"));   // 95
+```
+
+`List`는 이름과 점수가 서로 다른 목록에 있어서 위치가 어긋나면 엉뚱한 점수가 나온다.  
+`Map`은 이름과 점수가 한 쌍으로 묶여 있어서 그럴 일이 없다.
+
 `Map`의 특징은 코드 주석에 두 가지로 적혀 있다.
 
 1. **Key-Value** : 키-값 한 쌍으로 데이터를 저장한다.
@@ -35,6 +60,70 @@ tags:
 두 번째 특징 때문에 "같은 키를 다시 넣으면 어떻게 될까?"가 이 글의 핵심 질문이 된다.
 
 ### Map은 Collection이 아니다
+
+컬렉션 프레임워크 전체에서 `Map`이 어디에 서 있는지는 코드 주석으로 정리하는 편이 가장 빨리 읽힌다.  
+(예시 코드이고, 결과는 코드를 따라가 적은 것이라 직접 실행해 확인하지는 않았다.)
+
+```java
+// 예시 코드 (직접 실행해 확인하지 않음)
+
+// [배열의 한계 → 컬렉션이 보완하는 것]
+//  - 배열은 크기가 고정이라 늘리려면 새로 만들어 복사해야 한다   → 컬렉션은 크기가 자동으로 조절된다
+//  - Object[]에 타입을 섞으면 꺼낼 때 ClassCastException이 난다   → 제네릭으로 컴파일 단계에서 막는다
+//  - 추가/삭제/탐색을 직접 만들어야 한다                          → add, remove, contains 등을 제공한다
+//
+// [컬렉션 프레임워크 (JDK 1.2): 많은 데이터를 효과적으로 처리하는 클래스들을 일관된 구조로 모은 것]
+//
+//  Collection            단일 값들의 집합을 표현하는 최상위 인터페이스
+//   ├─ List              순서 O, 중복 O      ArrayList, LinkedList, Vector
+//   ├─ Set               순서 X, 중복 X      HashSet, TreeSet
+//   └─ Queue             FIFO              LinkedList, PriorityQueue, ArrayDeque
+//        └─ Deque        양쪽 끝에서 넣고 꺼낸다   ArrayDeque, LinkedList
+//
+//  Map                   키-값 쌍, 키 중복 X   HashMap, TreeMap, LinkedHashMap
+//                        └ 요소가 값 하나가 아니라 한 쌍이라서 Collection을 상속하지 않는다
+//
+// [일관된 구조로 묶은 이유]
+//  - 일관된 API  : 규격화된 메소드라 사용법이 쉽고 유지보수가 편하다
+//  - 개발 비용 감소 : 만들어진 자료구조를 써서 밑바닥 알고리즘을 고민하지 않아도 된다
+//  - 품질 향상   : 검증된 자료구조를 쓴다
+
+List<Collection<String>> all = List.of(
+        new ArrayList<>(), new HashSet<>(), new ArrayDeque<>());
+
+for (Collection<String> c : all) {   // List, Set, Queue는 모두 Collection이라 한 타입으로 다룬다
+    c.add("A");
+    c.add("A");                      // 같은 값을 한 번 더 넣는다
+    System.out.println(c.getClass().getSimpleName() + " : " + c.size());
+}
+// ArrayList : 2     (List는 중복을 허용한다)
+// HashSet : 1       (Set은 중복을 허용하지 않는다)
+// ArrayDeque : 2    (Queue/Deque는 중복을 허용한다)
+
+Map<String, Integer> map = new HashMap<>();
+// Collection<String> c = map;                 // 컴파일 오류: Map은 Collection이 아니다
+Set<String> keys = map.keySet();               // Map → Set
+Collection<Integer> values = map.values();     // Map → Collection
+
+// [무엇을 고를까]
+List<String> students = new ArrayList<>();     // 입력한 순서대로, 같은 이름도 허용한다 → List
+Set<String> attendance = new HashSet<>();      // 학생당 한 번만 기록한다, 순서는 상관없다 → Set
+Map<String, Integer> score = new HashMap<>();  // 이름으로 점수를 바로 조회한다 → Map
+
+// [컬렉션끼리 변환]
+Set<String> unique = new HashSet<>(List.of("A", "B", "A"));   // List → Set : 중복 제거
+List<String> sorted = new ArrayList<>(unique);                // Set → List : 정렬하려면 List로 옮긴다
+Collections.sort(sorted);
+
+// [주의]
+//  - 컬렉션이 크기를 자동으로 늘려 주는 것이지, 배열보다 빨라지는 것은 아니다
+//  - HashSet/HashMap의 키는 equals()와 hashCode()로 같은 요소인지 판단한다
+//    직접 만든 클래스는 두 메소드를 재정의하지 않으면 같은 값이어도 다른 객체라 중복이 제거되지 않는다
+//  - ArrayList는 여러 스레드가 동시에 바꾸도록 설계되지 않았다
+```
+
+`add()`와 `size()`를 똑같이 불렀는데 `HashSet`만 1이 나오는 것이 `Set`의 중복 불허를 보여 준다.  
+그리고 `Collection` 변수에 `map`을 담으려는 줄이 컴파일되지 않는 것이 `Map`이 별도 계열이라는 뜻이다.
 
 `List`, `Set`, `Queue`는 모두 `Collection` 인터페이스를 상속받아 `add`, `remove`, `size` 같은 공통 메소드를 쓴다.  
 `Map`은 `Collection`을 상속하지 않고 별도 계열로 존재한다.  
@@ -138,6 +227,32 @@ Java API 문서에 따르면 `put`은 그 키에 연결되어 있던 이전 값�
 | `values()` | 모든 값을 `Collection`으로 반환한다 |
 | `entrySet()` | 모든 키-값 쌍을 `Map.Entry`의 `Set`으로 반환한다 |
 
+표의 메소드를 한 코드에서 차례로 써 보면 아래와 같다.  
+(예시 코드이고, 결과는 코드를 따라가 적은 것이라 직접 실행해 확인하지는 않았다.)
+
+```java
+// 예시 코드 (직접 실행해 확인하지 않음)
+Map<String, Integer> map = new HashMap<>();
+
+System.out.println(map.put("Alice", 90));   // null (이전 값이 없었다)
+System.out.println(map.put("Alice", 95));   // 90 (덮어쓰면서 이전 값을 돌려준다)
+map.put("Bob", 85);
+
+System.out.println(map.get("Alice"));         // 95
+System.out.println(map.get("Carol"));         // null (없는 키)
+System.out.println(map.containsKey("Bob"));   // true
+System.out.println(map.containsValue(100));   // false
+
+Set<String> keys = map.keySet();              // Alice, Bob (순서는 보장되지 않는다)
+Collection<Integer> values = map.values();    // 95, 85 (순서는 보장되지 않는다)
+
+map.remove("Bob");
+System.out.println(map.size());   // 1
+```
+
+`put`의 반환값이 위 설명(이전 값을 반환하고, 없었다면 `null`)을 그대로 보여 준다.  
+`get`이 `null`을 돌려주는 경우는 "키가 없다"일 수도 있고 "값으로 `null`을 넣었다"일 수도 있어서, 키가 있는지가 중요하면 `containsKey`로 확인한다.
+
 `Map` 전체를 반복문으로 돌 때는 `entrySet()`을 쓴다.  
 아래는 위 메소드를 보이기 위한 예시 코드이고, 직접 실행해 확인하지는 않았다.
 
@@ -195,6 +310,17 @@ Java API 문서는 `Properties`가 `Hashtable`을 상속해서 `put`도 쓸 수�
 | `password` | `wanted` | 접속 비밀번호 |
 
 이 코드는 파일을 읽지 않고 `setProperty`로 값을 직접 넣은 뒤 출력만 한다.  
+넣은 값은 `getProperty`로 꺼내는데, 키가 없을 때 쓸 기본값을 함께 줄 수 있다.  
+(예시 코드이고, 결과는 코드를 따라가 적은 것이라 직접 실행해 확인하지는 않았다.)
+
+```java
+// 예시 코드 (직접 실행해 확인하지 않음)
+System.out.println(prop.getProperty("username"));       // wanted
+System.out.println(prop.getProperty("port"));           // null (없는 키)
+System.out.println(prop.getProperty("port", "3306"));   // 3306 (없으면 기본값)
+```
+
+
 출력되는 키 순서는 정해져 있지 않아서 적지 않았다.
 
 ## 5. 헷갈리기 쉬운 점
