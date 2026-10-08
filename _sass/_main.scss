@@ -2074,9 +2074,7 @@ ul.win95-postbar > li + li {
 }
 .win95-cal-cell.is-selected::after { background: #fff; }
 .win95-cal-selected {
-	width: fit-content;
-	min-width: 220px;
-	max-width: 100%;
+	width: 100%;
 	box-sizing: border-box;
 	text-align: left;
 	margin-top: 3px;
@@ -2088,14 +2086,14 @@ ul.win95-postbar > li + li {
 .win95-cal-hint,
 .win95-cal-empty {
 	display: block;
-	padding: 6px 8px;
+	padding: 3px 8px;
 	color: #7f7d7f;
 }
 .win95-cal-selhead {
 	display: flex;
 	justify-content: flex-start;
 	gap: 10px;
-	padding: 2px 8px;
+	padding: 1px 8px;
 	background: #c0bec0;
 	border-bottom: 1px solid #7f7d7f;
 	font-family: "Courier New", Courier, monospace;
@@ -2106,16 +2104,17 @@ ul.win95-postbar > li + li {
 .win95-cal-files {
 	list-style: none;
 	margin: 0;
-	padding: 1px 0;
+	padding: 0;
 }
 .win95-cal-files li { margin: 0; padding: 0; list-style: none; }
 .win95-cal-files a {
 	display: flex;
 	align-items: center;
 	gap: 6px;
-	padding: 2px 8px;
+	padding: 1px 8px;
+	line-height: 1.2;
 	color: #000;
 	text-decoration: none;
 }
-.win95-cal-files a img { width: 14px; height: 14px; image-rendering: pixelated; }
+.win95-cal-files a img { width: 16px; height: 16px; flex-shrink: 0; image-rendering: pixelated; }
 .win95-cal-files a:hover { background: #0a246a; color: #fff; }
