@@ -935,6 +935,76 @@ ul.topbar {
 	overflow: hidden;
 	text-overflow: ellipsis;
 }
+// Tag page: post list drawn like a small file-list / search-result pane —
+// a gray header strip (TAG name + count) over a sunken white list with
+// one compact row per post.
+.tag-results {
+	margin: 0;
+	font-family: Tahoma, "MS Sans Serif", Geneva, Verdana, sans-serif;
+}
+.tag-results-head {
+	display: flex;
+	align-items: baseline;
+	justify-content: space-between;
+	padding: 3px 8px;
+	background: #bfb8bf;
+	border: 1px solid;
+	border-color: $win95-highlight $win95-shadow $win95-shadow $win95-highlight;
+	font-size: 12px;
+	font-weight: 700;
+	letter-spacing: 0.5px;
+}
+.tag-results-count {
+	font-size: 11px;
+	font-weight: 400;
+	color: #444444;
+}
+.post_content .tag-results-list {
+	list-style: none;
+	margin: 2px 0 0;
+	padding: 2px;
+	background: #ffffff;
+	border: 1px solid;
+	border-color: $win95-shadow $win95-highlight $win95-highlight $win95-shadow;
+	box-shadow: inset 1px 1px 0 $win95-darkshadow;
+
+	li {
+		margin: 0;
+		padding: 0;
+	}
+	a {
+		display: flex;
+		align-items: baseline;
+		gap: 6px;
+		margin: 0;
+		padding: 2px 6px;
+		color: #000000;
+		text-decoration: none;
+		font-size: 13px;
+		line-height: 1.4;
+	}
+	a:hover,
+	a:focus {
+		background: #eeeef8;
+	}
+}
+.tag-results-mark {
+	flex-shrink: 0;
+	color: #00007f;
+}
+.tag-results-title {
+	flex: 1 1 auto;
+	min-width: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.tag-results-date {
+	flex-shrink: 0;
+	font-size: 11px;
+	color: #666666;
+}
+
 // Related posts (same tags), under the prev/next buttons.
 .post_related {
 	width: 98.5%;

@@ -1,10 +1,15 @@
 ---
 layout: default
 ---
-<p>'{{ page.tag }}' 태그가 달린 글 {{ site.tags[page.tag] | size }}개</p>
-<ul>
-	{% assign tag_posts = site.tags[page.tag] | sort: "date" | reverse %}
-	{% for post in tag_posts %}
-		<li><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a> ({{ post.date | date: "%Y-%m-%d" }})</li>
-	{% endfor %}
-</ul>
+{% assign tag_posts = site.tags[page.tag] | sort: "date" | reverse %}
+<div class="tag-results">
+	<div class="tag-results-head">
+		<span class="tag-results-name">TAG: {{ page.tag }}</span>
+		<span class="tag-results-count">{{ tag_posts | size }} POSTS</span>
+	</div>
+	<ul class="tag-results-list">
+		{% for post in tag_posts %}
+		<li><a href="{{ site.baseurl }}{{ post.url }}"><span class="tag-results-mark">▸</span><span class="tag-results-title">{{ post.title }}</span><span class="tag-results-date">{{ post.date | date: "%Y-%m-%d" }}</span></a></li>
+		{% endfor %}
+	</ul>
+</div>
