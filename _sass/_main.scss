@@ -454,7 +454,7 @@ $win95-dither: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'
 	margin: 20px auto;
 	background: #c0bec0;
 	border: 0.8px solid;
-	border-color: #fbfaf7 #000000 #404040 #fbfaf7;
+	border-color: #fbfaf7 #404040 #404040 #fbfaf7;
 	padding: 2px 0;
 	box-sizing: border-box;
 }
@@ -532,7 +532,7 @@ $win95-dither: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'
 		height: 11px;
 		float: right;
 		border: 0.8px solid;
-		border-color: #fbfaf7 #000000 #404040 #fbfaf7;
+		border-color: #fbfaf7 #404040 #404040 #fbfaf7;
 
 		span {
 			font-size: 11px;
@@ -1332,14 +1332,14 @@ ul.topbar {
 	background-color: #cccccc;
 	border-width: 1px;
 	border-style: solid;
-	border-color: #fbfaf7 #000000 #404040 #fbfaf7;
+	border-color: #fbfaf7 #404040 #404040 #fbfaf7;
 } /* this will style the thumb, ignoring the track */
  
 ::-webkit-scrollbar-button {
 	background-color: #cccccc;
 	border-width: 1px;
 	border-style: solid;
-	border-color: #fbfaf7 #000000 #404040 #fbfaf7;
+	border-color: #fbfaf7 #404040 #404040 #fbfaf7;
 	background-position: center center;
 	background-repeat: no-repeat;
 
