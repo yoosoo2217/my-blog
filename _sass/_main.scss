@@ -471,7 +471,7 @@ $win95-dither: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'
 	position: relative;
 	width: min(94%, 1340px);
 	margin: 20px auto 0;
-	padding-left: 330px;
+	padding-left: 310px;
 	box-sizing: border-box;
 
 	.wrapper, .content {
@@ -485,7 +485,7 @@ $win95-dither: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'
 		top: 0;
 		bottom: 0;
 		left: 0;
-		width: 300px;
+		width: 280px;
 	}
 }
 @media only screen and (max-width: 900px) {
@@ -495,7 +495,7 @@ $win95-dither: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'
 
 		.cy-sidebar {
 			position: static;
-			width: 300px;
+			width: 280px;
 			margin: 20px auto 0;
 		}
 	}
