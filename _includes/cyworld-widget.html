@@ -45,9 +45,12 @@
 				<form class="cy-mg-form" id="cy-mg-form" novalidate>
 					<label class="cy-sr" for="cy-mg-input">방명록 한 줄 메시지</label>
 					<input class="cy-mg-input" id="cy-mg-input" type="text" maxlength="140" autocomplete="off" placeholder="한 줄 메시지 남기기..." />
-					<button class="cy-mg-submit" id="cy-mg-submit" type="submit" title="방명록 페이지에서 GitHub 로그인 후 등록됩니다">남기기</button>
+					<button class="cy-mg-submit" id="cy-mg-submit" type="submit" title="방명록 페이지에서 GitHub 로그인 후 등록됩니다">등록</button>
 				</form>
-				<p class="cy-mg-status" id="cy-mg-status" role="status" aria-live="polite">0 / 140</p>
+				<div class="cy-mg-foot">
+					<p class="cy-mg-status" id="cy-mg-status" role="status" aria-live="polite"></p>
+					<span class="cy-mg-chars" id="cy-mg-chars">0 / 140</span>
+				</div>
 
 				{% if gb.recent and gb.recent.size > 0 %}
 				<ul class="cy-mg-list">
@@ -135,11 +138,6 @@
 		</div>
 	</div>
 
-	<a class="cy-guestbook-btn" href="{{ site.baseurl }}/guestbook/">
-		<span class="cy-gb-icon">📖</span>
-		<span class="cy-gb-text">방명록 남기기</span>
-		<span class="cy-gb-badge">NEW</span>
-	</a>
 </div>
 </div>
 
@@ -355,6 +353,7 @@
 	var input = document.getElementById('cy-mg-input');
 	var btn = document.getElementById('cy-mg-submit');
 	var status = document.getElementById('cy-mg-status');
+	var chars = document.getElementById('cy-mg-chars');
 	if (!form || !input || !btn || !status) { return; }
 
 	var MAX = 140;
@@ -367,7 +366,7 @@
 		status.textContent = msg;
 		status.className = 'cy-mg-status' + (kind ? ' is-' + kind : '');
 	}
-	function counter() { show(input.value.length + ' / ' + MAX); }
+	function counter() { if (chars) { chars.textContent = input.value.length + ' / ' + MAX; } }
 	function onGuestbookPage() { return trimSlash(location.pathname) === trimSlash(GB_URL); }
 
 	function copy(text) {
@@ -377,7 +376,10 @@
 		return Promise.reject(new Error('clipboard unavailable'));
 	}
 
-	input.addEventListener('input', function () { if (!busy) { counter(); } });
+	input.addEventListener('input', function () {
+		counter();
+		if (!busy && status.classList.contains('is-error')) { show(''); }
+	});
 
 	form.addEventListener('submit', function (e) {
 		e.preventDefault();
@@ -426,7 +428,7 @@
 </script>
 
 <script>
-// Keep every sidebar block (TODAY IS, Cruise FM, guestbook, visitors) on one
+// Keep every sidebar block (TODAY IS, Cruise FM, visitors) on one
 // screen without a scrollbar: measure the natural height and, only if it is
 // taller than the room under the sticky offset and above the taskbar, shrink
 // it with CSS zoom. Re-measured on resize and when the visitor badge loads.
@@ -717,15 +719,17 @@
 	white-space: nowrap;
 }
 .cy-mg {
-	margin-top: 14px;
+	margin-top: 12px;
+	padding-top: 12px;
+	border-top: 1px solid #dcdad6;
 	text-align: left;
 }
-/* Gray strip like a small toolbar/group header. */
+/* Slim gray strip: bold title, quiet count, text link on the right. */
 .cy-mg-head {
 	display: flex;
 	align-items: baseline;
 	gap: 6px;
-	padding: 3px 6px;
+	padding: 2px 6px;
 	background: #c0bec0;
 	border: 0.8px solid;
 	border-color: #fbfaf7 #7f7d7f #7f7d7f #fbfaf7;
@@ -736,8 +740,8 @@
 	color: #000000;
 }
 .cy-mg-count {
-	font-size: 11px;
-	color: #404040;
+	font-size: 10px;
+	color: #5a585a;
 }
 .cy-mg-all {
 	margin-left: auto;
@@ -748,42 +752,44 @@
 .cy-mg-all:hover {
 	text-decoration: underline;
 }
+/* One row: field + small button, same height. */
 .cy-mg-form {
 	display: flex;
-	flex-direction: column;
-	gap: 6px;
+	align-items: stretch;
+	gap: 4px;
 	margin-top: 8px;
 }
-/* Sunken text field, raised gray button: the classic pair. */
 .cy-mg-input {
-	width: 100%;
+	flex: 1 1 0;
 	min-width: 0;
 	box-sizing: border-box;
 	height: 24px;
 	padding: 2px 6px;
 	background: #ffffff;
 	color: #000000;
-	border: 0.8px solid;
-	border-color: #7f7d7f #fbfaf7 #fbfaf7 #7f7d7f;
-	box-shadow: inset 1px 1px 0 #404040;
+	border: 1px solid #7f7d7f;
 	font-family: inherit;
 	font-size: 12px;
 }
 .cy-mg-input:focus {
-	outline: 1px dotted #0a246a;
-	outline-offset: -4px;
+	outline: none;
+	border-color: #0a246a;
+	box-shadow: 0 0 0 1px #0a246a;
 }
 .cy-mg-submit {
-	width: 100%;
+	flex: 0 0 auto;
+	box-sizing: border-box;
 	height: 24px;
+	padding: 0 10px;
 	background: #c0bec0;
 	color: #000000;
 	border: 0.8px solid;
 	border-color: #fbfaf7 #404040 #404040 #fbfaf7;
 	box-shadow: inset -1px -1px 0 #7f7d7f;
 	font-family: inherit;
-	font-size: 12px;
+	font-size: 11px;
 	font-weight: bold;
+	white-space: nowrap;
 	cursor: pointer;
 }
 .cy-mg-submit:hover {
@@ -798,9 +804,18 @@
 	cursor: default;
 	color: #7f7d7f;
 }
-.cy-mg-status {
-	margin: 4px 0 0;
+/* Messages on the left, character counter on the right. */
+.cy-mg-foot {
+	display: flex;
+	align-items: flex-start;
+	gap: 8px;
+	margin-top: 3px;
 	min-height: 14px;
+}
+.cy-mg-status {
+	flex: 1 1 auto;
+	min-width: 0;
+	margin: 0;
 	font-size: 10px;
 	line-height: 1.4;
 	color: #7f7d7f;
@@ -809,14 +824,18 @@
 }
 .cy-mg-status.is-ok { color: #0a246a; }
 .cy-mg-status.is-error { color: #d0011b; }
+.cy-mg-chars {
+	flex: 0 0 auto;
+	margin-left: auto;
+	font-size: 10px;
+	line-height: 1.4;
+	color: #9a989a;
+}
+/* Recent messages: no box, only thin dividers between rows. */
 .cy-mg-list {
-	margin: 8px 0 0;
-	padding: 4px 8px;
+	margin: 6px 0 0;
+	padding: 0;
 	list-style: none;
-	background: #ffffff;
-	border: 0.8px solid;
-	border-color: #7f7d7f #fbfaf7 #fbfaf7 #7f7d7f;
-	box-shadow: inset 1px 1px 0 #404040;
 }
 .cy-mg-item {
 	display: flex;
@@ -825,13 +844,10 @@
 	padding: 8px 0;
 	border-top: 1px solid #dcdad6;
 }
-.cy-mg-item:first-child {
-	border-top: 0;
-}
 .cy-mg-avatar {
 	flex-shrink: 0;
-	width: 28px;
-	height: 28px;
+	width: 24px;
+	height: 24px;
 	object-fit: cover;
 	background: #c0bec0;
 }
@@ -855,7 +871,7 @@
 	text-overflow: ellipsis;
 	white-space: nowrap;
 	font-size: 12px;
-	font-weight: bold;
+	font-weight: 600;
 }
 .cy-mg-date {
 	flex-shrink: 0;
@@ -1072,51 +1088,7 @@
 }
 
 /* --- Guestbook: flat until hovered ------------------------------------- */
-.cy-guestbook-btn {
-	box-sizing: border-box;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	gap: 6px;
-	width: 300px;
-	margin-top: 14px;
-	padding: 9px 10px;
-	background: #c0bec0;
-	border: 0.8px solid;
-	border-color: #fbfaf7 #404040 #404040 #fbfaf7;
-	box-shadow: inset -1px -1px 0 #7f7d7f, inset 1px 1px 0 #e8e4e8;
-	color: #000000;
-	font-family: inherit;
-	font-size: 12px;
-	font-weight: bold;
-	text-decoration: none;
-	cursor: pointer;
-}
-.cy-guestbook-btn:hover {
-	background: #cfcdcf;
-}
-.cy-guestbook-btn:active {
-	border-color: #404040 #fbfaf7 #fbfaf7 #404040;
-	box-shadow: inset 1px 1px 0 #7f7d7f;
-	padding: 10px 9px 8px 11px;
-}
-.cy-gb-icon {
-	font-size: 12px;
-	opacity: 0.75;
-}
-.cy-gb-badge {
-	background: #d0011b;
-	color: #ffffff;
-	font-size: 9px;
-	font-weight: bold;
-	padding: 1px 4px;
-	animation: cy-blink 1.1s steps(1) infinite;
-}
-@keyframes cy-blink {
-	50% { opacity: 0; }
-}
-
 @media (max-width: 640px) {
-	.cy-window, .cy-music-window, .cy-visitors-window, .cy-guestbook-btn { width: auto; }
+	.cy-window, .cy-music-window, .cy-visitors-window { width: auto; }
 }
 </style>
