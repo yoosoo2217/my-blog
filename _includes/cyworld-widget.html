@@ -9,7 +9,13 @@
 		</div>
 
 		<div class="cy-body cy-today-body">
-			<img class="cy-avatar" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAYCAYAAAD6S912AAAA30lEQVR4nGNgGOyAEZeEjYbcf3waj9x4hFUvEzmG4VODYSAxhuFTy4JN4eHNU4ky0NY3G0MMq5dhQNM5jUHTOQ0nHxvA6kIYuL53Fl4+NoDbhbvfniRHDreBrsLmMObJ+uUMJ+uXY5VDB1jTko2G3H9CEWPrm401LeJ0IbYYJEaO6jkFp4EMDAwM////x2ooIyMjTn04vYzLMEJyWG16EBBKVPZT2LCacKQQaxgutVi9/OTNG4Ynb95gNQRZjqALHwSE/kc2CJ2NyxJkgGIDKd5FBsguxVvakAOobuDgBwCSDV53RJ3wFwAAAABJRU5ErkJggg==" alt="미니미" />
+			<div class="cy-profile">
+				<img class="cy-avatar" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAYCAYAAAD6S912AAAA30lEQVR4nGNgGOyAEZeEjYbcf3waj9x4hFUvEzmG4VODYSAxhuFTy4JN4eHNU4ky0NY3G0MMq5dhQNM5jUHTOQ0nHxvA6kIYuL53Fl4+NoDbhbvfniRHDreBrsLmMObJ+uUMJ+uXY5VDB1jTko2G3H9CEWPrm401LeJ0IbYYJEaO6jkFp4EMDAwM////x2ooIyMjTn04vYzLMEJyWG16EBBKVPZT2LCacKQQaxgutVi9/OTNG4Ynb95gNQRZjqALHwSE/kc2CJ2NyxJkgGIDKd5FBsguxVvakAOobuDgBwCSDV53RJ3wFwAAAABJRU5ErkJggg==" width="60" height="72" alt="박유수 픽셀 아바타" />
+				<div class="cy-profile-info">
+					<span class="cy-profile-name">박유수</span>
+					<span class="cy-profile-status">{{ site.data.tmi.status }}</span>
+				</div>
+			</div>
 
 			<div class="cy-caption">
 				<span class="cy-caption-title">오늘의 TMI</span>
@@ -26,6 +32,41 @@
 				<span class="cy-sep">·</span>
 				<span class="cy-sublink">HISTORY</span>
 			</div>
+
+			{% assign gb = site.data.guestbook %}
+			<section class="cy-mg" aria-label="방명록">
+				<div class="cy-mg-head">
+					<span class="cy-mg-title">GUESTBOOK</span>
+					<span class="cy-mg-count">{{ gb.count | default: 0 }}</span>
+					<a class="cy-mg-all" href="{{ site.baseurl }}/guestbook/">ALL ↗</a>
+				</div>
+
+				<form class="cy-mg-form" id="cy-mg-form" novalidate>
+					<label class="cy-sr" for="cy-mg-input">방명록 한 줄 메시지</label>
+					<input class="cy-mg-input" id="cy-mg-input" type="text" maxlength="140" autocomplete="off" placeholder="한 줄 메시지 남기기..." />
+					<button class="cy-mg-submit" id="cy-mg-submit" type="submit" title="방명록 페이지에서 GitHub 로그인 후 등록됩니다">WRITE</button>
+				</form>
+				<p class="cy-mg-status" id="cy-mg-status" role="status" aria-live="polite">0 / 140</p>
+
+				{% if gb.recent and gb.recent.size > 0 %}
+				<ul class="cy-mg-list">
+					{% for m in gb.recent limit: 2 %}
+					<li class="cy-mg-item">
+						<img class="cy-mg-avatar" src="{{ m.avatar | escape }}" width="20" height="20" alt="" loading="lazy" referrerpolicy="no-referrer" />
+						<div class="cy-mg-main">
+							<div class="cy-mg-meta">
+								<span class="cy-mg-name">{{ m.author | escape }}</span>
+								<span class="cy-mg-date">{{ m.date | replace: "-", "." }}</span>
+							</div>
+							<p class="cy-mg-body">{{ m.body | escape }}</p>
+						</div>
+					</li>
+					{% endfor %}
+				</ul>
+				{% else %}
+				<p class="cy-mg-empty">첫 번째 방명록을 남겨보세요.</p>
+				{% endif %}
+			</section>
 		</div>
 	</div>
 
@@ -303,6 +344,86 @@
 </script>
 
 <script>
+// Mini guestbook. The real guestbook is giscus (GitHub Discussions) on
+// /guestbook/ and needs a GitHub login, so this box cannot post by itself:
+// it validates the line, copies it to the clipboard and opens the guestbook
+// page, where the visitor pastes it into the giscus box and signs in.
+(function () {
+	var form = document.getElementById('cy-mg-form');
+	var input = document.getElementById('cy-mg-input');
+	var btn = document.getElementById('cy-mg-submit');
+	var status = document.getElementById('cy-mg-status');
+	if (!form || !input || !btn || !status) { return; }
+
+	var MAX = 140;
+	var NOTICE_KEY = 'cy-mg-notice';
+	var GB_URL = '{{ site.baseurl }}/guestbook/';
+	var busy = false;
+
+	function trimSlash(p) { return p.replace(/\/+$/, ''); }
+	function show(msg, kind) {
+		status.textContent = msg;
+		status.className = 'cy-mg-status' + (kind ? ' is-' + kind : '');
+	}
+	function counter() { show(input.value.length + ' / ' + MAX); }
+	function onGuestbookPage() { return trimSlash(location.pathname) === trimSlash(GB_URL); }
+
+	function copy(text) {
+		if (navigator.clipboard && navigator.clipboard.writeText) {
+			return navigator.clipboard.writeText(text);
+		}
+		return Promise.reject(new Error('clipboard unavailable'));
+	}
+
+	input.addEventListener('input', function () { if (!busy) { counter(); } });
+
+	form.addEventListener('submit', function (e) {
+		e.preventDefault();
+		if (busy) { return; }
+		var text = input.value.trim();
+		if (!text) {
+			show('메시지를 입력해 주세요.', 'error');
+			input.focus();
+			return;
+		}
+		if (text.length > MAX) {
+			show(MAX + '자 이내로 입력해 주세요.', 'error');
+			return;
+		}
+		busy = true;
+		btn.disabled = true;
+		copy(text).then(function () {
+			var note = '복사했어요. 아래 입력창에 붙여넣고 GitHub 로그인 후 등록하면 완료돼요.';
+			if (onGuestbookPage()) {
+				show(note, 'ok');
+				var box = document.querySelector('.gb-comments');
+				if (box && box.scrollIntoView) { box.scrollIntoView({ block: 'center' }); }
+				busy = false;
+				btn.disabled = false;
+				return;
+			}
+			try { sessionStorage.setItem(NOTICE_KEY, note); } catch (err) { /* private mode etc. */ }
+			show('방명록 페이지로 이동합니다…', 'ok');
+			location.href = GB_URL;
+		}).catch(function () {
+			// Nothing was copied or sent: keep the text so it is not lost.
+			show('아직 등록되지 않았어요. 복사에 실패했으니 방명록 페이지에서 직접 입력해 주세요.', 'error');
+			busy = false;
+			btn.disabled = false;
+		});
+	});
+
+	try {
+		var pending = sessionStorage.getItem(NOTICE_KEY);
+		if (pending && onGuestbookPage()) {
+			show(pending, 'ok');
+			sessionStorage.removeItem(NOTICE_KEY);
+		}
+	} catch (err) { /* private mode etc. */ }
+})();
+</script>
+
+<script>
 // Keep every sidebar block (TODAY IS, Cruise FM, guestbook, visitors) on one
 // screen without a scrollbar: measure the natural height and, only if it is
 // taller than the room under the sticky offset and above the taskbar, shrink
@@ -482,19 +603,47 @@
 }
 
 /* --- TODAY IS ----------------------------------------------------------
-   Reading order: avatar -> TMI (body text) -> date (emphasized) -> EDIT /
-   HISTORY (quiet helper links). Hierarchy comes from size, weight and color
-   only; no divider lines. */
+   Compact profile (avatar + name/status), then TMI, date, EDIT/HISTORY, then
+   the mini guestbook after one thin divider. Hierarchy comes from size,
+   weight and color only. */
 .cy-today-body {
 	text-align: center;
 }
+.cy-profile {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	margin-bottom: 12px;
+	text-align: left;
+}
 .cy-avatar {
 	display: block;
-	width: 100px;
-	height: 120px;
-	margin: 0 auto 12px;
+	flex-shrink: 0;
+	width: 60px;
+	height: 72px;
 	image-rendering: pixelated;
 	image-rendering: crisp-edges;
+}
+.cy-profile-info {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+	min-width: 0;
+}
+.cy-profile-name {
+	font-size: 14px;
+	font-weight: bold;
+	color: #000000;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.cy-profile-status {
+	font-size: 10px;
+	color: #7f7d7f;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 .cy-caption {
 	margin: 0 auto;
@@ -502,7 +651,7 @@
 }
 .cy-caption-title {
 	display: block;
-	margin-bottom: 6px;
+	margin-bottom: 4px;
 	font-size: 10px;
 	font-weight: bold;
 	letter-spacing: 0.1em;
@@ -510,8 +659,13 @@
 }
 .cy-caption-text {
 	margin: 0;
+	display: -webkit-box;
+	-webkit-line-clamp: 3;
+	line-clamp: 3;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
 	font-size: 12px;
-	line-height: 1.75;
+	line-height: 1.7;
 	word-break: keep-all;
 	overflow-wrap: break-word;
 }
@@ -520,7 +674,7 @@
 	flex-direction: column;
 	align-items: center;
 	gap: 2px;
-	margin-top: 16px;
+	margin-top: 12px;
 }
 .cy-meta-label {
 	font-size: 9px;
@@ -540,7 +694,7 @@
 	align-items: center;
 	justify-content: center;
 	gap: 6px;
-	margin-top: 12px;
+	margin-top: 10px;
 	font-size: 10px;
 	letter-spacing: 0.06em;
 	color: #9a989a;
@@ -550,6 +704,167 @@
 }
 .cy-sublink:hover {
 	color: #0a246a;
+}
+
+/* --- Mini guestbook (inside TODAY IS) ----------------------------------- */
+.cy-sr {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+	clip: rect(0 0 0 0);
+	white-space: nowrap;
+}
+.cy-mg {
+	margin-top: 14px;
+	padding-top: 12px;
+	border-top: 1px solid #dcdad6;
+	text-align: left;
+}
+.cy-mg-head {
+	display: flex;
+	align-items: baseline;
+	gap: 6px;
+	min-height: 16px;
+}
+.cy-mg-title {
+	font-size: 10px;
+	font-weight: bold;
+	letter-spacing: 0.1em;
+	color: #0a246a;
+}
+.cy-mg-count {
+	font-size: 10px;
+	color: #7f7d7f;
+}
+.cy-mg-all {
+	margin-left: auto;
+	font-size: 10px;
+	letter-spacing: 0.04em;
+	color: #0a246a;
+	text-decoration: none;
+}
+.cy-mg-all:hover {
+	text-decoration: underline;
+}
+.cy-mg-form {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 4px;
+	margin-top: 8px;
+}
+.cy-mg-input {
+	flex: 1 1 100px;
+	min-width: 0;
+	box-sizing: border-box;
+	height: 22px;
+	padding: 2px 6px;
+	background: #ffffff;
+	color: #000000;
+	border: 1px solid #7f7d7f;
+	font-family: inherit;
+	font-size: 11px;
+}
+.cy-mg-input:focus {
+	outline: none;
+	border-color: #0a246a;
+}
+.cy-mg-submit {
+	flex: 0 0 auto;
+	height: 22px;
+	padding: 0 8px;
+	background: #0a246a;
+	color: #ffffff;
+	border: 0.8px solid;
+	border-color: #fbfaf7 #404040 #404040 #fbfaf7;
+	font-family: inherit;
+	font-size: 10px;
+	font-weight: bold;
+	letter-spacing: 0.06em;
+	cursor: pointer;
+}
+.cy-mg-submit:hover {
+	background: #1a3a8a;
+}
+.cy-mg-submit:active,
+.cy-mg-submit[disabled] {
+	border-color: #404040 #fbfaf7 #fbfaf7 #404040;
+}
+.cy-mg-submit[disabled] {
+	cursor: default;
+	opacity: 0.7;
+}
+.cy-mg-status {
+	margin: 4px 0 0;
+	min-height: 14px;
+	font-size: 10px;
+	line-height: 1.4;
+	color: #7f7d7f;
+	word-break: keep-all;
+	overflow-wrap: break-word;
+}
+.cy-mg-status.is-ok { color: #0a246a; }
+.cy-mg-status.is-error { color: #d0011b; }
+.cy-mg-list {
+	margin: 8px 0 0;
+	padding: 0;
+	list-style: none;
+}
+.cy-mg-item {
+	display: flex;
+	gap: 8px;
+	margin: 0;
+	padding: 8px 0;
+	border-top: 1px solid #ebe9e5;
+}
+.cy-mg-item:first-child {
+	border-top: 0;
+	padding-top: 0;
+}
+.cy-mg-avatar {
+	flex-shrink: 0;
+	width: 20px;
+	height: 20px;
+	background: #c0bec0;
+}
+.cy-mg-main {
+	flex: 1 1 auto;
+	min-width: 0;
+}
+.cy-mg-meta {
+	display: flex;
+	align-items: baseline;
+	gap: 6px;
+}
+.cy-mg-name {
+	min-width: 0;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	font-size: 11px;
+	font-weight: bold;
+}
+.cy-mg-date {
+	flex-shrink: 0;
+	margin-left: auto;
+	font-size: 9px;
+	color: #9a989a;
+}
+.cy-mg-body {
+	margin: 2px 0 0;
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	font-size: 11px;
+	line-height: 1.5;
+	word-break: break-word;
+}
+.cy-mg-empty {
+	margin: 8px 0 0;
+	font-size: 11px;
+	color: #7f7d7f;
 }
 
 /* --- Cruise FM --------------------------------------------------------- */
