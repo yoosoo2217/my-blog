@@ -25,7 +25,6 @@
 				<span class="cy-sublink">EDIT</span>
 				<span class="cy-sep">·</span>
 				<span class="cy-sublink">HISTORY</span>
-				<span class="cy-expand">▾</span>
 			</div>
 		</div>
 	</div>
@@ -477,40 +476,42 @@
 /* Window content: flat, roomy, no inner borders. */
 .cy-body {
 	margin-top: 2px;
-	padding: 12px;
+	padding: 14px 12px;
 	background: #fbfaf7;
 	box-sizing: border-box;
 }
 
-/* --- TODAY IS ---------------------------------------------------------- */
+/* --- TODAY IS ----------------------------------------------------------
+   Reading order: avatar -> TMI (body text) -> date (emphasized) -> EDIT /
+   HISTORY (quiet helper links). Hierarchy comes from size, weight and color
+   only; no divider lines. */
 .cy-today-body {
-	padding: 10px 12px 8px;
 	text-align: center;
 }
 .cy-avatar {
 	display: block;
 	width: 100px;
 	height: 120px;
-	margin: 0 auto 6px;
+	margin: 0 auto 12px;
 	image-rendering: pixelated;
 	image-rendering: crisp-edges;
 }
 .cy-caption {
-	max-width: 172px;
 	margin: 0 auto;
+	padding: 0 4px;
 }
 .cy-caption-title {
 	display: block;
-	margin-bottom: 3px;
+	margin-bottom: 6px;
 	font-size: 10px;
 	font-weight: bold;
 	letter-spacing: 0.1em;
-	color: #5a5e72;
+	color: #7f7d7f;
 }
 .cy-caption-text {
 	margin: 0;
 	font-size: 12px;
-	line-height: 1.55;
+	line-height: 1.75;
 	word-break: keep-all;
 	overflow-wrap: break-word;
 }
@@ -518,8 +519,8 @@
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	gap: 1px;
-	margin-top: 10px;
+	gap: 2px;
+	margin-top: 16px;
 }
 .cy-meta-label {
 	font-size: 9px;
@@ -528,9 +529,10 @@
 	color: #7f7d7f;
 }
 .cy-meta-value {
-	font-size: 12px;
+	font-size: 16px;
 	font-weight: bold;
-	letter-spacing: 0.04em;
+	line-height: 1.2;
+	letter-spacing: 0.02em;
 	color: #0a246a;
 }
 .cy-subrow {
@@ -538,21 +540,16 @@
 	align-items: center;
 	justify-content: center;
 	gap: 6px;
-	margin: 10px 24px 0;
-	padding-top: 6px;
-	border-top: 1px solid #dcdad6;
+	margin-top: 12px;
 	font-size: 10px;
 	letter-spacing: 0.06em;
-	color: #7f7d7f;
+	color: #9a989a;
 }
 .cy-sublink {
 	cursor: pointer;
 }
 .cy-sublink:hover {
 	color: #0a246a;
-}
-.cy-expand {
-	font-size: 8px;
 }
 
 /* --- Cruise FM --------------------------------------------------------- */
@@ -739,7 +736,6 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	padding: 8px;
 }
 .cy-visitors-body img {
 	display: block;
