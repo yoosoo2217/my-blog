@@ -362,6 +362,7 @@
 
 	function trimSlash(p) { return p.replace(/\/+$/, ''); }
 	function show(msg, kind) {
+		form.classList.toggle('is-error', kind === 'error');
 		status.textContent = msg;
 		status.className = 'cy-mg-status' + (kind ? ' is-' + kind : '');
 	}
@@ -722,23 +723,23 @@
 	display: flex;
 	align-items: baseline;
 	gap: 8px;
-	padding: 3px 8px;
+	padding: 5px 10px;
 	background: #c0bec0;
 	color: #000000;
-	border: 0.8px solid;
+	border: 1px solid;
 	border-color: #fbfaf7 #7f7d7f #7f7d7f #fbfaf7;
 }
 .cy-mg-title {
-	font-size: 12px;
+	font-size: 15px;
 	font-weight: bold;
 }
 .cy-mg-count {
-	font-size: 11px;
+	font-size: 14px;
 	color: #404040;
 }
 .cy-mg-all {
 	margin-left: auto;
-	font-size: 11px;
+	font-size: 12px;
 	color: #0a246a;
 	text-decoration: none;
 }
@@ -756,15 +757,16 @@
 	flex: 1 1 0;
 	min-width: 0;
 	box-sizing: border-box;
-	height: 26px;
-	padding: 2px 8px;
+	height: 34px;
+	padding: 2px 10px;
 	background: #ffffff;
 	color: #000000;
-	border: 0.8px solid;
-	border-color: #7f7d7f #d4d2d4 #d4d2d4 #7f7d7f;
-	box-shadow: inset 1px 1px 0 #404040;
+	border: 1px solid #c8c6c8;
 	font-family: inherit;
-	font-size: 12px;
+	font-size: 13px;
+}
+.cy-mg-form.is-error .cy-mg-input {
+	border-color: #e0475b;
 }
 .cy-mg-input:focus {
 	outline: 1px dotted #0a246a;
@@ -773,15 +775,15 @@
 .cy-mg-submit {
 	flex: 0 0 auto;
 	box-sizing: border-box;
-	height: 26px;
-	padding: 0 14px;
+	height: 34px;
+	padding: 0 18px;
 	background: #c0bec0;
 	color: #000000;
 	border: 0.8px solid;
 	border-color: #fbfaf7 #404040 #404040 #fbfaf7;
 	box-shadow: inset -1px -1px 0 #7f7d7f;
 	font-family: inherit;
-	font-size: 12px;
+	font-size: 14px;
 	font-weight: bold;
 	white-space: nowrap;
 	cursor: pointer;
@@ -804,12 +806,12 @@
 	flex-wrap: wrap;
 	align-items: baseline;
 	gap: 2px 10px;
-	margin: 6px 0 8px;
+	margin: 8px 0 12px;
 	min-height: 16px;
 }
 .cy-mg-chars {
 	flex: 0 0 auto;
-	font-size: 12px;
+	font-size: 13px;
 	line-height: 1.4;
 	color: #5a585a;
 }
@@ -817,23 +819,21 @@
 	flex: 1 1 100px;
 	min-width: 0;
 	margin: 0;
-	font-size: 11px;
+	font-size: 12px;
 	line-height: 1.4;
 	color: #7f7d7f;
 	word-break: keep-all;
 	overflow-wrap: break-word;
 }
 .cy-mg-status.is-ok { color: #0a246a; }
-.cy-mg-status.is-error { color: #d0011b; }
+.cy-mg-status.is-error { color: #e0475b; }
 /* Recent messages: no box, only thin dividers between rows. */
 .cy-mg-list {
 	margin: 0;
-	padding: 2px 10px;
+	padding: 0 10px;
 	list-style: none;
 	background: #ffffff;
-	border: 0.8px solid;
-	border-color: #7f7d7f #d4d2d4 #d4d2d4 #7f7d7f;
-	box-shadow: inset 1px 1px 0 #404040;
+	border: 1px solid #c8c6c8;
 }
 .cy-mg-item {
 	display: flex;
@@ -848,8 +848,8 @@
 .cy-mg-avatar {
 	flex-shrink: 0;
 	box-sizing: border-box;
-	width: 36px;
-	height: 36px;
+	width: 40px;
+	height: 40px;
 	padding: 1px;
 	object-fit: cover;
 	background: #f4f2f4;
@@ -874,7 +874,7 @@
 	overflow: hidden;
 	text-overflow: ellipsis;
 	white-space: nowrap;
-	font-size: 14px;
+	font-size: 15px;
 	font-weight: 700;
 }
 .cy-mg-date {
