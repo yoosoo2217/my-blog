@@ -11,11 +11,11 @@
 
 		<div class="cy-body cy-today-body">
 			<div class="cy-profile">
-				<img class="cy-avatar" src="{{ cy_avatar }}" width="60" height="72" alt="박유수 픽셀 아바타" />
 				<div class="cy-profile-info">
 					<span class="cy-profile-name">박유수</span>
 					<span class="cy-profile-status">{{ site.data.tmi.status }}</span>
 				</div>
+				<img class="cy-avatar" src="{{ cy_avatar }}" width="80" height="96" alt="박유수 픽셀 아바타" />
 			</div>
 
 			<div class="cy-meta">
@@ -616,15 +616,16 @@
 .cy-profile {
 	display: flex;
 	align-items: center;
-	gap: 10px;
+	justify-content: space-between;
+	gap: 12px;
 	margin-bottom: 12px;
 	text-align: left;
 }
 .cy-avatar {
 	display: block;
 	flex-shrink: 0;
-	width: 60px;
-	height: 72px;
+	width: 80px;
+	height: 96px;
 	image-rendering: pixelated;
 	image-rendering: crisp-edges;
 }
@@ -632,6 +633,7 @@
 	display: flex;
 	flex-direction: column;
 	gap: 2px;
+	flex: 1 1 auto;
 	min-width: 0;
 }
 .cy-profile-name {
