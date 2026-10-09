@@ -429,7 +429,7 @@
 	box-sizing: border-box;
 	background: #c0bec0;
 	border: 1px solid;
-	border-color: #fbfaf7 #000000 #000000 #fbfaf7;
+	border-color: #fbfaf7 #000000 #404040 #fbfaf7;
 	box-shadow: inset -1px -1px 0 #7f7d7f;
 	padding: 2px;
 }
@@ -468,7 +468,7 @@
 	background: #c0bec0;
 	color: #000000;
 	border: 1px solid;
-	border-color: #fbfaf7 #000000 #000000 #fbfaf7;
+	border-color: #fbfaf7 #000000 #404040 #fbfaf7;
 	font-size: 8px;
 	font-weight: bold;
 	line-height: 1;
@@ -754,7 +754,9 @@
 	margin-top: 14px;
 	padding: 9px 10px;
 	background: #c0bec0;
-	border: 1px solid #7f7d7f;
+	border: 0.8px solid;
+	border-color: #fbfaf7 #000000 #404040 #fbfaf7;
+	box-shadow: inset -1px -1px 0 #7f7d7f, inset 1px 1px 0 #e8e4e8;
 	color: #000000;
 	font-family: inherit;
 	font-size: 12px;
@@ -764,10 +766,11 @@
 }
 .cy-guestbook-btn:hover {
 	background: #cfcdcf;
-	border-color: #fbfaf7 #000000 #000000 #fbfaf7;
 }
 .cy-guestbook-btn:active {
-	border-color: #000000 #fbfaf7 #fbfaf7 #000000;
+	border-color: #000000 #fbfaf7 #fbfaf7 #404040;
+	box-shadow: inset 1px 1px 0 #7f7d7f;
+	padding: 10px 9px 8px 11px;
 }
 .cy-gb-icon {
 	font-size: 12px;

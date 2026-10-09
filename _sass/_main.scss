@@ -16,21 +16,21 @@ body {
 // (tabs, group boxes) can reuse them instead of re-deriving the colors.
 $win95-highlight: #fbfaf7;
 $win95-shadow: #7f7d7f;
-$win95-darkshadow: #000000;
+$win95-darkshadow: #404040;
 
-@mixin win95-raised($size: 2px) {
+@mixin win95-raised($size: 0.8px) {
 	border-style: solid;
 	border-width: $size;
 	border-color: $win95-highlight $win95-darkshadow $win95-darkshadow $win95-highlight;
 }
-@mixin win95-raised-pressed($size: 2px) {
+@mixin win95-raised-pressed($size: 0.8px) {
 	border-style: solid;
 	border-width: $size;
 	border-color: $win95-darkshadow $win95-highlight $win95-highlight $win95-darkshadow;
 }
 @mixin win95-etched() {
-	border-width: 2px;
-	border-style: ridge groove groove ridge;
+	border-width: 0.8px;
+	border-style: solid;
 	border-color: $win95-shadow $win95-highlight $win95-highlight $win95-shadow;
 }
 
@@ -453,8 +453,8 @@ $win95-dither: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'
 	width: min(94%, 1100px);
 	margin: 20px auto;
 	background: #c0bec0;
-	border: 2px solid;
-	border-color: #fbfaf7 #000000 #000000 #fbfaf7;
+	border: 0.8px solid;
+	border-color: #fbfaf7 #000000 #404040 #fbfaf7;
 	padding: 2px 0;
 	box-sizing: border-box;
 }
@@ -531,8 +531,8 @@ $win95-dither: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'
 		width: 13px;
 		height: 11px;
 		float: right;
-		border: 2px solid;
-		border-color: #fbfaf7 #000000 #000000 #fbfaf7;
+		border: 0.8px solid;
+		border-color: #fbfaf7 #000000 #404040 #fbfaf7;
 
 		span {
 			font-size: 11px;
@@ -577,8 +577,8 @@ ul.topbar {
 }
 .post_list, .tag_list, .post_content {
 	background: #fbfaf7;
-	border-width: 2px;
-	border-style: ridge groove groove ridge;
+	border-width: 1px;
+	border-style: solid;
 	border-color: #7f7d7f #fbfaf7 #fbfaf7 #7f7d7f;
 }
 .post_list {
@@ -867,7 +867,7 @@ ul.topbar {
 		.win95-codewin-body {
 			margin-top: 2px;
 			background: #ffffff;
-			border: 1px solid;
+			border: 0.8px solid;
 			border-color: #7f7d7f #fbfaf7 #fbfaf7 #7f7d7f;
 			box-shadow: inset 1px 1px 0 #000000, inset -1px -1px 0 #c0bec0;
 			overflow-x: auto;
@@ -890,7 +890,7 @@ ul.topbar {
 		// Windows 95 sunken edit field: white inside, dark top/left edge, light
 		// bottom/right edge, plus a second inner shade line.
 		background: #ffffff;
-		border: 1px solid;
+		border: 0.8px solid;
 		border-color: #7f7d7f #fbfaf7 #fbfaf7 #7f7d7f;
 		border-radius: 0;
 		box-shadow: inset 1px 1px 0 #000000, inset -1px -1px 0 #c0bec0;
@@ -1330,16 +1330,16 @@ ul.topbar {
  
 ::-webkit-scrollbar-thumb {
 	background-color: #cccccc;
-	border-width: 2px;
-	border-style: groove ridge ridge groove;
-	border-color: #fbfaf7 #000000 #000000 #fbfaf7;
+	border-width: 1px;
+	border-style: solid;
+	border-color: #fbfaf7 #000000 #404040 #fbfaf7;
 } /* this will style the thumb, ignoring the track */
  
 ::-webkit-scrollbar-button {
 	background-color: #cccccc;
-	border-width: 2px;
-	border-style: groove ridge ridge groove;
-	border-color: #fbfaf7 #000000 #000000 #fbfaf7;
+	border-width: 1px;
+	border-style: solid;
+	border-color: #fbfaf7 #000000 #404040 #fbfaf7;
 	background-position: center center;
 	background-repeat: no-repeat;
 
@@ -1451,7 +1451,7 @@ html.win95-no-window-anim {
 	width: min(440px, 90vw);
 	box-sizing: border-box;
 	padding: 26px 32px 28px;
-	border: 2px solid;
+	border: 0.8px solid;
 	border-color: #fbfaf7 #7f7d7f #7f7d7f #fbfaf7;
 	box-shadow: 0 0 0 1px #000000;
 	font-size: 14px;
@@ -1554,7 +1554,7 @@ html.win95-no-window-anim {
 .win95-explorer-collapsed.win95-explorer-expanded .tag_list {
 	min-height: 220px;
 	max-height: 220px;
-	border-width: 2px;
+	border-width: 1px;
 }
 .win95-explorer-collapsed.win95-explorer-expanded .post_total {
 	max-height: 40px;
@@ -1806,7 +1806,7 @@ ul.win95-postbar {
 	align-items: center;
 	gap: 6px;
 	background: #000000;
-	border: 2px solid;
+	border: 0.8px solid;
 	border-color: #7f7d7f #fbfaf7 #fbfaf7 #7f7d7f;
 	padding: 4px 8px;
 }
@@ -2006,7 +2006,7 @@ ul.win95-postbar > li + li {
 	font-family: "Courier New", Courier, monospace;
 	font-size: 14px;
 	letter-spacing: 0.08em;
-	color: $win95-darkshadow;
+	color: #000000;
 }
 .win95-cal-nav {
 	@include win95-raised();
@@ -2014,7 +2014,7 @@ ul.win95-postbar > li + li {
 	height: 20px;
 	padding: 0;
 	background: #c0bec0;
-	color: $win95-darkshadow;
+	color: #000000;
 	font-size: 9px;
 	line-height: 1;
 	cursor: pointer;
@@ -2026,7 +2026,7 @@ ul.win95-postbar > li + li {
 	display: grid;
 	grid-template-columns: repeat(7, 1fr);
 	background: #fbfaf7;
-	border: 2px solid;
+	border: 0.8px solid;
 	border-color: #7f7d7f #fbfaf7 #fbfaf7 #7f7d7f;
 	padding: 2px 4px 6px;
 	text-align: center;
@@ -2078,7 +2078,7 @@ ul.win95-postbar > li + li {
 	text-align: left;
 	margin-top: 3px;
 	background: #fbfaf7;
-	border: 2px solid;
+	border: 0.8px solid;
 	border-color: #7f7d7f #fbfaf7 #fbfaf7 #7f7d7f;
 	font-size: 12px;
 }
