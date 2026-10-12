@@ -260,17 +260,15 @@ having count(*) >= 2;
 
 두 번째 쿼리는 `where`로 `completed` 행만 먼저 남기고, 그 행들을 과정별로 묶어 센 뒤, `having`으로 2명 이상인 그룹만 남긴다.
 
-```mermaid
-flowchart LR
-    A[FROM 테이블] --> B[WHERE 행 거르기]
-    B --> C[GROUP BY 그룹 묶기]
-    C --> D[HAVING 그룹 거르기]
-    D --> E[SELECT 열 고르기]
-    E --> F[ORDER BY 정렬]
-    F --> G[LIMIT 개수 제한]
-```
+쿼리가 처리되는 논리적인 순서는 다음과 같다.
 
-이 흐름은 실행 순서를 설명하는 개념도이고, Mermaid가 이 블로그에서 렌더링되는지는 `확인 필요`다.
+1. `FROM` : 대상 테이블을 정한다
+2. `WHERE` : 행을 거른다
+3. `GROUP BY` : 그룹으로 묶는다
+4. `HAVING` : 그룹을 거른다
+5. `SELECT` : 열을 고른다
+6. `ORDER BY` : 정렬한다
+7. `LIMIT` : 개수를 제한한다
 
 ## 7. JOIN: 나뉜 테이블을 합친다
 
