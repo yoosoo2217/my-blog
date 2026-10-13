@@ -15,6 +15,8 @@ tags:
 > - 인터페이스 타입 변수에 구현체를 담는 것은 클래스 상속의 업캐스팅과 같은 원리다.
 > - 인터페이스가 강제하는 것은 메서드의 존재뿐이라, 몸체가 비어 있어도 컴파일된다.
 
+인터페이스는 "할 수 있는 일(Can-do)"을 정의한 타입으로, 이를 구현하는 클래스가 반드시 갖춰야 할 메소드를 강제한다.
+
 ## 1. 실습에 쓴 Animal 인터페이스와 Raccooon 코드
 
 이번엔 `Animal`이 클래스가 아니라 **인터페이스**다.
@@ -23,11 +25,6 @@ tags:
 package com.wanted.oop.d_polymorphism.a_interface;
 
 public interface Animal {
-    /*comment. interface
-        Can-do
-        해당 인터페이스를 상속받는 클래스들이 해야하는 메소드(Can - do)를 강제한다.
-    */
-
     // 인터페이스는 생성자를 사용하지 못 한다.
     // public Animal() {}
 

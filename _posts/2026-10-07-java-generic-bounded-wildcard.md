@@ -19,7 +19,7 @@ tags:
 ## 1. 실험에 쓴 클래스 계층
 
 `Animal` 인터페이스 아래에 포유류와 파충류가 있고, 포유류 아래에 토끼가 이어진다.  
-코드의 주석이 설명한 상속 관계는 다음과 같다.  
+상속 관계는 다음과 같다.  
 `Mammal` 클래스의 코드는 이번 글에 붙여 넣지 않았다.
 
 ```text
@@ -91,16 +91,7 @@ public class DrunkenBunny extends Bunny {
 ```java
 package com.wanted.a_generic.b_use;
 
-/* comment.
-*   해당 클래스는 토끼들의 농장이며
-*   Rabbit , Bunny , DrunkenBunny 어떤 토끼가
-*   들어올지 몰라 제네릭으로 생성
-*   T -> 타입변수에는 어떤 값이 들어올 지 모르는 상태이다.
-*   그래서 포유류, 파충류 , 뱀 등이 전부 들어올 수 있다.
-*   T extends Rabbit 을 지정하면
-*   Rabbit 또는 Rabbit 을 상속 받는 클래스만 T 에
-*   들어올 수 있게 된다.
-*  */
+// 토끼들의 농장
 public class RabbitFarm<T extends Rabbit> {
 
     private T animal;
@@ -138,17 +129,14 @@ public class Application01 {
 
     public static void main(String[] args) {
 
-        // Mammal 은 Rabbit 을 상속받지 않았기 때문에 T 에
-        // 들어갈 수 없어서 컴파일 에러가 발생한다.
+        // Mammal은 Rabbit의 자식이 아니라서 컴파일 에러
 //        RabbitFarm<Mammal> farm1 = new RabbitFarm();
 
         RabbitFarm<Rabbit> farm1 = new RabbitFarm<>();
         RabbitFarm<Bunny> farm2 = new RabbitFarm<>();
         RabbitFarm<DrunkenBunny> farm3 = new RabbitFarm<>();
 
-        // farm2 는 Bunny 를 위한 농장인데
-        // Rabbit 은 Bunny 의 부모이기 때문에
-        // 들어갈 수 없다.
+        // farm2는 Bunny 농장이라 부모인 Rabbit은 컴파일 에러
 //        Rabbit rabbit = new Rabbit();
 //        farm2.setAnimal(rabbit);
 
@@ -225,16 +213,6 @@ public class Application02 {
 
     public static void main(String[] args) {
 
-        /* comment.
-        *   와일드카드  ?
-        *   제네릭 클래스 타입의 객체를 메소드의
-        *   매개변수로 전달 받을 때, 그 객체의 타입 변수를
-        *   제한할 수 있다.
-        *   <?> : 제한 없다. 아무거나 들어와도 된다.
-        *   <? extends Type> : 와일드카드 상한 제한
-        *   <? super Type> : 와일드카드 하한 제한
-        *  */
-
         WildcardFarm wildcardFarm = new WildcardFarm();
 
         wildcardFarm.anyType(new RabbitFarm<Rabbit>(new Rabbit()));
@@ -242,7 +220,7 @@ public class Application02 {
         wildcardFarm.anyType(new RabbitFarm<DrunkenBunny>(new DrunkenBunny()));
 
         System.out.println("===================와일드 카드 상한제한====================");
-        // <? extends Bunny> : Bunny 이거나 Bunny 의 자식만 전달 받을 수 있다.
+        // <? extends Bunny> : Rabbit은 컴파일 에러
 //        wildcardFarm.extendsType(new RabbitFarm<Rabbit>(new Rabbit()));
         wildcardFarm.extendsType(new RabbitFarm<Bunny>(new Bunny()));
         wildcardFarm.extendsType(new RabbitFarm<DrunkenBunny>(new DrunkenBunny()));
@@ -251,7 +229,7 @@ public class Application02 {
         System.out.println("===================와일드 카드 하한제한====================");
         wildcardFarm.superType(new RabbitFarm<Rabbit>(new Rabbit()));
         wildcardFarm.superType(new RabbitFarm<Bunny>(new Bunny()));
-        // <? super Bunny> : Bunny 이거나, Bunny 의 부모만 전달 받을 수 있다.
+        // <? super Bunny> : DrunkenBunny는 컴파일 에러
 //        wildcardFarm.superType(new RabbitFarm<DrunkenBunny>(new DrunkenBunny()));
         System.out.println("===================와일드 카드 하한제한====================");
 

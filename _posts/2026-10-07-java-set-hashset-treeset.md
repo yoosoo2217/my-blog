@@ -17,7 +17,7 @@ tags:
 
 ## 1. Set의 두 가지 특징
 
-코드의 주석이 정리한 `Set` 자료구조의 특징은 두 가지다.
+`Set` 자료구조의 특징은 두 가지다.
 
 | 번호 | 특징 | 의미 |
 |---|---|---|
@@ -38,11 +38,6 @@ import java.util.Set;
 public class Application01 {
 
     public static void main(String[] args) {
-
-        /* comment. Set 자료구조 특징
-        *   1. 요소의 저장 순서를 유지하지 않는다.
-        *   2. 같은 요소의 중복 저장을 허용하지 않는다.
-        *  */
 
         // Set 인터페이스를 구현한 HashSet 을 가장 많이 쓴다.
         Set<String> hset = new HashSet<>();
@@ -85,16 +80,6 @@ import java.util.TreeSet;
 public class Application02 {
 
     public static void main(String[] args) {
-
-        /* comment. TreeSet
-        *   TreeSet 을 활용한 로또 추첨기
-        *   TreeSet 은 Set 처럼 중복을 허용하지 않는다.
-        *   다만 HashSet 과의 차이는 이진 검색 트리 구조로
-        *   데이터의 정렬을 보장한다.
-        *   이진 검색 트리 구조의 장점은 데이터를 순회하면서
-        *   조회 시 매우 빠르다 라는 장점이 있다.
-        *   EX) 트리
-        *  */
 
         Set<Integer> lotto = new TreeSet<>();
         
@@ -155,7 +140,7 @@ lotto = [3, 11, 19, 24, 30, 38, 42]
 
 ## 5. 헷갈리기 쉬운 점: 트리의 장점은 "조회가 빠름"이 아니라 "정렬 유지"다
 
-코드 주석에는 이진 검색 트리의 장점을 "데이터를 순회하면서 조회 시 매우 빠르다"고 적었다.  
+처음에는 이진 검색 트리의 장점이 "데이터를 순회하면서 조회 시 매우 빠르다"는 것이라고 정리했다.  
 이 로또 예제에서 실제로 확인한 것은 조회 속도가 아니라, 번호를 넣은 순서와 상관없이 **항상 정렬되어 출력된다**는 점이다.  
 속도는 이 코드로 측정하지 않았다.  
 공식 문서는 `TreeSet`의 `add`, `remove`, `contains`가 데이터 개수 n에 대해 log(n) 시간이 보장된다고 설명한다.  

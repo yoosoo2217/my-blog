@@ -22,7 +22,8 @@ tags:
 ## 2. 실험에 쓴 코드
 
 값을 하나 담는 `GenericTest` 클래스를 만들었다.  
-클래스 선언부 끝의 `<T>`가 제네릭을 설정하는 부분이다.
+클래스 선언부 끝의 `<T>`가 제네릭을 설정하는 부분이다.  
+`<>`는 다이아몬드 연산자이고, 그 안의 `T`는 타입 변수라고 부르며 관례상 `T`라고 쓴다.
 
 ```java
 package com.wanted.a_generic.a_basic;
@@ -31,35 +32,23 @@ public class GenericTest<T> {
 
     private T value;
 
-    /*comment. getter 와 setter 메서드
-    *  해당 메서드는 private으로 캡슐화가 된 필드를
-    *  외부에서 조회하거나 (getter) 값을 초기화 (setter) 할 때 사용할 수 있는 메서드*/
-
-
+    // getter : 필드 조회
     public T getValue() {
         return value;
     }
 
+    // setter : 전달받은 값으로 필드 초기화
     public void setValue(T value) {
-        this.value = value; // 전달받은 값으로 초기화하는 메소드
+        this.value = value;
     }
 
-    /*comment. toString()
-    *  클래스 자료형은 기본적으로 참조 자료형이기 대문에
-    *  변수 출력 시 주소값이 출력되게 한다.
-    *  toString 메서드는 변수 내부에 들어있는 값을 주소 값으로 출력해주는
-    *  것이 아닌 실제 값을 출력하는 역할을 한다.*/
-
+    // 주소값 대신 실제 값을 출력
     @Override
     public String toString() {
         return "GenericTest{" +
                 "value=" + value +
                 '}';
     }
-    /*comment.
-    *  제네릭을 설정하는 방법은 클래스 선언부 끝에
-    *  <> 다이아몬드 연산자를 사용
-    *  <T> T는 타입 변수를 불리우며 관례상 T라고 작성을 하게 된다.*/
 }
 ```
 
@@ -70,13 +59,6 @@ package com.wanted.a_generic.a_basic;
 
 public class Application {
     static void main(String[] args) {
-        /*comment. Generic이란?
-        *  제네릭은 데이터 타입을 일반화 한다는 의미이다.
-        *  클래스나 메소드에서 사용할 내부 데이터 타입을
-        *  컴파일 시점에 지정하는 방법을 의미한다.
-        *  컴파일 시점에 미리 타입에 대한 검사를 진행하며,
-        *  클래스나 메소드 내부에서 사용되는 객체의 타입 안정성을 높일 수 있다. */
-
         GenericTest gt = new GenericTest();
         gt.setValue(1);
         System.out.println("gt = " + gt.getValue());
@@ -92,17 +74,7 @@ public class Application {
         gt2.setValue("문자열열열");
         System.out.println("gt2 = " + gt2.getValue());
 //        gt2.setValue(1);
-//        GenericTest<int> gt3 = new GenericTest<int>();
-        /*comment.
-        *  <> 제네릭의 다이아몬드 연산자 내부에는 기본자료형 x
-        *  - Wrapper class
-        *  - 기존 자료형 (int, char, boolean) 을
-        *  인스턴스화(= 참조자료형 화) 한 객체라고 본다.
-        *  - int -> Integer
-        *  - byte -> Byte
-        *  - short -> Short
-        *  - boolean -> Boolean
-        *  - char -> Character */
+//        GenericTest<int> gt3 = new GenericTest<int>();   // 기본 자료형은 불가
 
         GenericTest<Integer> gt3 = new GenericTest<Integer>();
 //        gt3.setValue("문자열ㄴ");
@@ -175,7 +147,7 @@ Integer number = (Integer) gt.getValue(); // 컴파일은 되지만 실행하면
 | `char` | `Character` |
 
 `char`의 Wrapper는 `Character`이고, 이름이 `Char`가 아니라는 점을 주의한다.  
-원래 코드 주석에는 `character`(소문자 시작)로 적혀 있었는데, 실제 클래스 이름은 대문자로 시작하는 `Character`다.
+클래스 이름은 대문자로 시작하는 `Character`다.
 
 ## 6. getter, setter, toString은 제네릭과 어떻게 만날까
 
@@ -227,7 +199,7 @@ Integer number = (Integer) gt.getValue(); // 컴파일은 되지만 실행하면
 | `V` | Value (값) |
 | `N` | Number (숫자) |
 
-코드 주석에서 `T`를 관례라고 한 것처럼, `A`나 `Value`처럼 다른 이름을 써도 문법상 오류는 아니다.  
+`T`는 관례일 뿐이라 `A`나 `Value`처럼 다른 이름을 써도 문법상 오류는 아니다.  
 다만 다른 사람이 읽을 때 타입 변수임을 바로 알 수 있도록 관례를 따른다.
 
 ## 9. 컴파일이 끝나면 타입 정보는 어떻게 될까

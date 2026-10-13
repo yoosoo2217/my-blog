@@ -140,29 +140,26 @@ public final class Team {
 2. **모든 필드는 `private`**으로 캡슐화한다.
 3. **getter/setter 메서드**를 통해 접근한다 (`getX()`, `setX()` 형식).
 4. (선택) **직렬화 가능**하게 `implements java.util.Serializable`을 구현한다.
+5. 특정 패키지에 속해 있어야 한다 (default 패키지는 사용하지 않는다).
+
+기본 생성자는 직접 써 두는 편이 안전하다. 매개변수 있는 생성자를 나중에 추가하면 컴파일러가 기본 생성자를 자동으로 만들어 주지 않아 에러가 날 수 있기 때문이다.  
+모든 필드를 초기화하는 생성자는 선택 사항이지만 가장 많이 쓴다.  
+필드 값을 getter로 하나씩 확인하기 번거로우니, 모든 필드 값을 문자열로 반환하는 메서드를 확인용으로 많이 쓴다.
 
 ### 4-2. Java Bean 예시
 
 ```java
 public class UserDTO implements Serializable {
 
-    /* 자바빈 작성 규칙
-     * 1. 자바빈은 특정 패키지에 속해있어야 함 (default 패키지 사용 금지)
-     * 2. 멤버변수의 접근제어자는 private로 선언해야 함.
-     * 3. 기본생성자가 명시적으로 존재해야 한다. (매개변수 있는 생성자는 선택사항)
-     * 4. 모든 멤버변수에 접근 가능한 설정자(setter)와 접근자(getter)가 public으로 작성되어 있어야 함.
-     * 5. 직렬화(Serializable 구현)가 되어야 한다. (선택사항) */
-
     private String id;
     private String pwd;
     private String name;
     private java.util.Date enrollDate;
 
-    // 기본 생성자는 명시적으로 작성한다.
-    // (명시하지 않고 추후 매개변수 있는 생성자를 추가할 시 에러 발생 가능성이 있기 때문이다.)
+    // 기본 생성자는 명시적으로 작성한다
     public UserDTO() {}
 
-    // 매개변수 있는 생성자는 선택 사항이지만, 일반적으로 모든 필드를 초기화하는 생성자를 가장 많이 쓴다.
+    // 모든 필드를 초기화하는 생성자
     public UserDTO(String id, String pwd, String name, java.util.Date enrollDate) {
         this.id = id;
         this.pwd = pwd;
@@ -180,8 +177,7 @@ public class UserDTO implements Serializable {
     public String getName() { return name; }
     public java.util.Date getEnrollDate() { return enrollDate; }
 
-    // 접근자로 하나씩 필드값을 확인하기 번거로우니,
-    // 모든 필드의 값을 하나의 문자열로 반환하는 메서드를 필드값 확인용으로 많이 쓴다.
+    // 모든 필드 값을 하나의 문자열로 반환
     public String getInformation() {
         return "UserDTO [id=" + this.id + ", pwd=" + this.pwd + ", name=" + this.name + ", enrollDate=" + this.enrollDate + "]";
     }

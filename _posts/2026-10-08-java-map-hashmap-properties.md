@@ -52,75 +52,88 @@ System.out.println(scores.get("민지"));   // 95
 `List`는 이름과 점수가 서로 다른 목록에 있어서 위치가 어긋나면 엉뚱한 점수가 나온다.  
 `Map`은 이름과 점수가 한 쌍으로 묶여 있어서 그럴 일이 없다.
 
-`Map`의 특징은 코드 주석에 두 가지로 적혀 있다.
+`Map`의 특징은 두 가지다.
 
 1. **Key-Value** : 키-값 한 쌍으로 데이터를 저장한다.
 2. **Key는 내부적으로 `Set` 방식으로 구성되어 있다** : 키는 중복될 수 없다.
 
 두 번째 특징 때문에 "같은 키를 다시 넣으면 어떻게 될까?"가 이 글의 핵심 질문이 된다.
 
+### 배열의 한계와 컬렉션 프레임워크
+
+컬렉션 프레임워크(JDK 1.2)는 많은 데이터를 효과적으로 처리하는 클래스들을 일관된 구조로 모아 둔 것이다.  
+배열의 한계를 컬렉션이 어떻게 보완하는지부터 정리했다.
+
+| 배열의 한계 | 컬렉션의 보완 |
+|---|---|
+| 크기가 고정이라 늘리려면 새로 만들어 복사해야 한다 | 크기가 자동으로 조절된다 |
+| `Object[]`에 타입을 섞으면 꺼낼 때 `ClassCastException`이 난다 | 제네릭으로 컴파일 단계에서 막는다 |
+| 추가/삭제/탐색을 직접 만들어야 한다 | `add`, `remove`, `contains` 등을 제공한다 |
+
+일관된 구조로 묶은 이유는 세 가지다.
+
+* **일관된 API** : 규격화된 메소드라 사용법이 쉽고 유지보수가 편하다.
+* **개발 비용 감소** : 만들어진 자료구조를 써서 밑바닥 알고리즘을 고민하지 않아도 된다.
+* **품질 향상** : 검증된 자료구조를 쓴다.
+
+```text
+Collection            단일 값들의 집합을 표현하는 최상위 인터페이스
+ ├─ List              순서 O, 중복 O      ArrayList, LinkedList, Vector
+ ├─ Set               순서 X, 중복 X      HashSet, TreeSet
+ └─ Queue             FIFO              LinkedList, PriorityQueue, ArrayDeque
+      └─ Deque        양쪽 끝에서 넣고 꺼낸다   ArrayDeque, LinkedList
+
+Map                   키-값 쌍, 키 중복 X   HashMap, TreeMap, LinkedHashMap
+```
+
 ### Map은 Collection이 아니다
 
-컬렉션 프레임워크 전체에서 `Map`이 어디에 서 있는지는 코드 주석으로 정리하는 편이 가장 빨리 읽힌다.  
-(예시 코드이고, 결과는 코드를 따라가 적은 것이라 직접 실행해 확인하지는 않았다.)
+`Map`은 요소가 값 하나가 아니라 키-값 한 쌍이라서 `Collection`을 상속하지 않는다.  
+아래는 이를 확인하기 위한 예시 코드이고, 결과는 코드를 따라가 적은 것이라 직접 실행해 확인하지는 않았다.
 
 ```java
 // 예시 코드 (직접 실행해 확인하지 않음)
-
-// [배열의 한계 → 컬렉션이 보완하는 것]
-//  - 배열은 크기가 고정이라 늘리려면 새로 만들어 복사해야 한다   → 컬렉션은 크기가 자동으로 조절된다
-//  - Object[]에 타입을 섞으면 꺼낼 때 ClassCastException이 난다   → 제네릭으로 컴파일 단계에서 막는다
-//  - 추가/삭제/탐색을 직접 만들어야 한다                          → add, remove, contains 등을 제공한다
-//
-// [컬렉션 프레임워크 (JDK 1.2): 많은 데이터를 효과적으로 처리하는 클래스들을 일관된 구조로 모은 것]
-//
-//  Collection            단일 값들의 집합을 표현하는 최상위 인터페이스
-//   ├─ List              순서 O, 중복 O      ArrayList, LinkedList, Vector
-//   ├─ Set               순서 X, 중복 X      HashSet, TreeSet
-//   └─ Queue             FIFO              LinkedList, PriorityQueue, ArrayDeque
-//        └─ Deque        양쪽 끝에서 넣고 꺼낸다   ArrayDeque, LinkedList
-//
-//  Map                   키-값 쌍, 키 중복 X   HashMap, TreeMap, LinkedHashMap
-//                        └ 요소가 값 하나가 아니라 한 쌍이라서 Collection을 상속하지 않는다
-//
-// [일관된 구조로 묶은 이유]
-//  - 일관된 API  : 규격화된 메소드라 사용법이 쉽고 유지보수가 편하다
-//  - 개발 비용 감소 : 만들어진 자료구조를 써서 밑바닥 알고리즘을 고민하지 않아도 된다
-//  - 품질 향상   : 검증된 자료구조를 쓴다
-
 List<Collection<String>> all = List.of(
         new ArrayList<>(), new HashSet<>(), new ArrayDeque<>());
 
-for (Collection<String> c : all) {   // List, Set, Queue는 모두 Collection이라 한 타입으로 다룬다
+for (Collection<String> c : all) {   // 모두 Collection이라 한 타입으로 다룬다
     c.add("A");
     c.add("A");                      // 같은 값을 한 번 더 넣는다
     System.out.println(c.getClass().getSimpleName() + " : " + c.size());
 }
-// ArrayList : 2     (List는 중복을 허용한다)
-// HashSet : 1       (Set은 중복을 허용하지 않는다)
-// ArrayDeque : 2    (Queue/Deque는 중복을 허용한다)
+// ArrayList : 2
+// HashSet : 1
+// ArrayDeque : 2
 
 Map<String, Integer> map = new HashMap<>();
-// Collection<String> c = map;                 // 컴파일 오류: Map은 Collection이 아니다
-Set<String> keys = map.keySet();               // Map → Set
-Collection<Integer> values = map.values();     // Map → Collection
+// Collection<String> c = map;                 // 컴파일 오류
+Set<String> keys = map.keySet();               // Map -> Set
+Collection<Integer> values = map.values();     // Map -> Collection
 
-// [무엇을 고를까]
-List<String> students = new ArrayList<>();     // 입력한 순서대로, 같은 이름도 허용한다 → List
-Set<String> attendance = new HashSet<>();      // 학생당 한 번만 기록한다, 순서는 상관없다 → Set
-Map<String, Integer> score = new HashMap<>();  // 이름으로 점수를 바로 조회한다 → Map
+List<String> students = new ArrayList<>();     // 순서대로, 중복 허용
+Set<String> attendance = new HashSet<>();      // 중복 불허
+Map<String, Integer> score = new HashMap<>();  // 이름으로 점수를 바로 조회
 
-// [컬렉션끼리 변환]
-Set<String> unique = new HashSet<>(List.of("A", "B", "A"));   // List → Set : 중복 제거
-List<String> sorted = new ArrayList<>(unique);                // Set → List : 정렬하려면 List로 옮긴다
+Set<String> unique = new HashSet<>(List.of("A", "B", "A"));   // List -> Set
+List<String> sorted = new ArrayList<>(unique);                // Set -> List
 Collections.sort(sorted);
-
-// [주의]
-//  - 컬렉션이 크기를 자동으로 늘려 주는 것이지, 배열보다 빨라지는 것은 아니다
-//  - HashSet/HashMap의 키는 equals()와 hashCode()로 같은 요소인지 판단한다
-//    직접 만든 클래스는 두 메소드를 재정의하지 않으면 같은 값이어도 다른 객체라 중복이 제거되지 않는다
-//  - ArrayList는 여러 스레드가 동시에 바꾸도록 설계되지 않았다
 ```
+
+무엇을 고를지는 데이터의 성격으로 정한다.
+
+| 필요한 것 | 선택 |
+|---|---|
+| 입력한 순서대로, 같은 값도 허용 | `List` |
+| 한 번만 기록, 순서는 상관없음 | `Set` |
+| 이름으로 값을 바로 조회 | `Map` |
+
+`List`를 `Set`에 담으면 중복이 제거되고, 정렬하려면 `Set`을 다시 `List`로 옮긴다.
+
+주의할 점도 있다.
+
+* 컬렉션이 크기를 자동으로 늘려 주는 것이지, 배열보다 빨라지는 것은 아니다.
+* `HashSet`/`HashMap`의 키는 `equals()`와 `hashCode()`로 같은 요소인지 판단한다. 직접 만든 클래스는 두 메소드를 재정의하지 않으면 같은 값이어도 다른 객체라 중복이 제거되지 않는다.
+* `ArrayList`는 여러 스레드가 동시에 바꾸도록 설계되지 않았다.
 
 `add()`와 `size()`를 똑같이 불렀는데 `HashSet`만 1이 나오는 것이 `Set`의 중복 불허를 보여 준다.  
 그리고 `Collection` 변수에 `map`을 담으려는 줄이 컴파일되지 않는 것이 `Map`이 별도 계열이라는 뜻이다.

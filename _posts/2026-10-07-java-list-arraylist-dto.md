@@ -17,7 +17,7 @@ tags:
 
 ## 1. 컬렉션은 세 가지로 나뉜다
 
-코드의 주석은 컬렉션을 `List`, `Set`, `Map` 세 가지로 구분했다.
+컬렉션을 `List`, `Set`, `Map` 세 가지로 구분했다.
 
 | 종류 | 순서 | 중복 | 설명 |
 |---|---|---|---|
@@ -50,21 +50,7 @@ public class Application01 {
 
     public static void main(String[] args) {
 
-        /* comment. 컬렉션
-        *   1. List
-        *   - 순서가 있는 데이터의 집합. 중복을 허용한다.
-        *   2. Set
-        *   - 순서가 없는 데이터의 집합. 중복을 허용하지 않는다.
-        *   3. Map
-        *   - 키와 값 하나의 쌍으로 이루어지는 데이터 집합
-        *   - key 값은 Set 으로 구현되어 있어 중복을 허용하지 않는다.
-        *  */
-
-        // 인터페이스는 생성자를 작성할 수 없다.
-        // == 즉 인터페이스는 객체를 생성할 수 없다.
-        // List 를 상속받은 클래스를 통해 객체를 생성한다.
-        // ArrayList 는 List 를 상속받아 구현을 한 구현체이다.
-        // 가장 많이 사용이 되며, 내부적으로 배열의 특징을 갖는다.
+        // List는 인터페이스라서 구현체인 ArrayList로 객체를 만든다
         List list = new ArrayList();
 
         list.add("apple");
@@ -122,13 +108,13 @@ strings = [a, b, c, d]
 - `list.remove(2)`는 2번 자리의 값 `1`을 지우고 뒤의 값들을 한 칸씩 당긴다. `remove`에 `int`를 넘기면 값이 아니라 **위치(인덱스)** 로 지운다. `List<Integer>`에서는 이 차이가 헷갈릴 수 있다.
 - `List<String>`에 `a, c, b, d`를 넣고 `Collections.sort()`를 호출하면 `a, b, c, d` 순서로 정렬된다.
 
-주석에 "배열의 단점 : 고정크기, 기존 값 수정"이라고 적어 둔 것처럼, `List`는 크기가 자동으로 늘고 중간 삽입과 삭제를 메소드 한 줄로 처리한다.
+배열은 크기가 고정이고 기존 값을 수정하기 번거롭다는 단점이 있는데, `List`는 크기가 자동으로 늘고 중간 삽입과 삭제를 메소드 한 줄로 처리한다.
 
 ## 4. DTO는 데이터 운반만 하는 클래스다
 
 `BookDTO`는 책 번호, 제목, 저자, 가격을 담는 클래스다.  
 DTO(Data Transfer Object)는 행위(메소드)가 아니라 **데이터를 나르는 것**이 목적이라서, 필드와 그 필드를 다루는 기본 메소드로만 이루어진다.  
-코드의 주석이 정리한 구성 요소는 6가지다.
+DTO의 구성 요소는 6가지다.
 
 | 번호 | 구성 요소 | `BookDTO`에서의 모습 |
 |---|---|---|
@@ -143,14 +129,6 @@ DTO(Data Transfer Object)는 행위(메소드)가 아니라 **데이터를 나�
 package com.wanted.b_collection.a_list.dto;
 
 public class BookDTO {
-
-    // DTO (Data Transfer Object)
-    // 행위(==메서드) 에 집중하는 클래스가 아닌
-    // 단순 데이터 운반을 위한 클래스이다.
-    // 메서드가 아닌 필드들로만 이루어져 있으며
-    // DTO 에 포함되어 있는 값.
-    // 1. 필드 , 2. 기본생성자 , 3. 모든 필드를 초기화 하는 생성자
-    // 4. getter , 5. setter , 6. toString
 
     private int no; // 책 번호
     private String title; // 책 제목
@@ -227,12 +205,6 @@ public class Application02 {
 
     public static void main(String[] args) {
 
-        /* comment. ArrayList 활용!
-        *   - 책은 책번호, 제목, 저자, 가격이 있다.
-        *   - 5권의 책을 하나의 변수에 저장을 한다.
-        *   - 가격 오름차순으로 정렬을 해본다.
-        *  */
-
 //        BookDTO book1 = new BookDTO(1, "홍길동전", "허균", 50000);
 //        BookDTO book2 = new BookDTO(2, "목민심서", "정약용", 45000);
 //        BookDTO book3 = new BookDTO(3, "삼국지", "유비", 30000);
@@ -302,7 +274,7 @@ bookList = [BookDTO{no=1, title='홍길동전', author='허균', price=50000}, B
 
 ## 6. 헷갈리기 쉬운 점: 정렬은 아직 구현하지 않았다
 
-`Application02`의 주석에는 "가격 오름차순으로 정렬을 해본다"고 적혀 있지만, 이번 코드에는 정렬이 들어 있지 않다.  
+`Application02`는 책 5권을 가격 오름차순으로 정렬해 보려던 실습이었지만, 이번 코드에는 정렬이 들어 있지 않다.  
 출력도 가격이 아니라 넣은 순서(1번부터 5번)로 나온다.
 
 `Application01`에서는 `List<String>`을 `Collections.sort()`로 정렬했다.  

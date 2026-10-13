@@ -93,6 +93,9 @@ public class Cat extends Animal {
 }
 ```
 
+다형성은 하나의 인스턴스가 여러 가지 타입을 가질 수 있다는 뜻이다. 그래서 하나의 타입으로 여러 타입의 인스턴스를 처리할 수 있고, 하나의 메소드 호출로 객체별로 다르게 동작하게 할 수도 있다.  
+이때 기준이 되는 것이 **IS-A 관계**다. "너구리는 동물이다"는 성립하므로 `Animal animal = raccoon`은 되지만, "동물은 너구리다"는 성립하지 않으므로 `Raccoon raccoon = animal`은 안 된다.
+
 `Application01`에서 세 클래스를 각각 인스턴스로 만들어 호출하고, 마지막엔 `Animal` 타입 변수에 `Raccoon` 인스턴스를 담아서 다형성을 직접 확인했다.
 
 ```java
@@ -100,12 +103,6 @@ package com.wanted.oop.d_polymorphism.Gami;
 
 public class Application01 {
     static void main(String[] args) {
-        /*comment
-        *  다형성
-        *   하나의 인스턴스가 여러가지 타입을 가질 수 있는 것
-        *   그렇기 때문에 하나의 타입으로 여러 타입의 인스턴스를 처리할 수 있고
-        *   하나의 메소드 호출로 객체 별 다흔 방법으로 동작하게 할 수 있다.*/
-
         System.out.println("=======================Animal======================");
         Animal animal = new Animal();
         animal.eat();
@@ -134,29 +131,17 @@ public class Application01 {
         System.out.println("                                                     ");
 
 
-        /*comment.
-        *  - IS-A 관계
-        *   너구리는 동물이다 (o)
-        *   animal = raccoon (o)
-        *   raccoon = animal (x)
-        *   동물은 너구리다 (x) */
-
         Animal a1 = new Raccoon();
-
-        /* comment. 동적 바인딩
-            컴파일 시점에는 Animal 타입의 메소드와 연결이 되어 있다가,
-            런타임 시점에 실제 인스턴스 (Raccoon) 가 가진 오버라이딩된 메서드로 변경되어 동작하는 것. */
 
         a1.bark();
         // 컴파일 시점에 a1 은 animal 타입이기 때문에 Raccoon의 고유 기능은 사용 불가능 하다.
 
-        // 클래스 형 변환
-        // 부모 자식 관계에서 사용 가능하다...
+        // 다운캐스팅
         ((Raccoon)a1).bite();
 
 
 
-        // animal 값은 raccoon 공간에 들어갈 수 없다.
+        // 컴파일 에러 (부모를 자식 타입에 담을 수 없다)
         // Raccoon r1 = new Animal();
 
     }

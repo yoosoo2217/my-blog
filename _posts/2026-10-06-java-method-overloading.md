@@ -26,14 +26,6 @@ package com.wanted.oop.b_oop.e_overloading;
 
 public class OverloadingTest {
 
-    /*comment. 메소드의 오버로딩
-        메소드 시그니처란?
-        - 메소드를 식별할 수 있는 고유한 값
-          메소드명([매개변수])
-          이 부분이 메소드의 시그니처라고 불리운다.
-        - 매소드 시그니처에 따라서 같은 이름을 가진 것에 대해 여러가지 메소드를 만들 수 잇다.
-       */
-
     // 오버로딩을 이용한 테스트 기준 메서드
     public void test() {
     }

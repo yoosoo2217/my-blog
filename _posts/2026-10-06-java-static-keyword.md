@@ -66,15 +66,6 @@ package com.wanted.oop.b_oop.f_keyword.a_static;
 
 public class Application {
     static void main(String[] args) {
-        /*comment. static 키워드
-             ** 메인 메소드 : 프로그램 돌릴 때 가장 먼저 작동하는 것
-            static이 붙은 변수/메소드는
-            객체 생성 시점에 초기화 되는 것이 아닌
-            어플리케이션 시작 시점에 초기화가 된다
-            static은 정적이라는 의미를 가지고 있으며
-            일반적인 객체의 생명주기와는 다른 생명주기를 가지고 있게 된다.
-            -> 나중엔 환경 세팅할 때 씀 (데이터베이스 하나 만든 것처럼)
-            */
         // 객체 (인스턴스 ) 생성 구문
         StaticFieldTest st1 = new StaticFieldTest();
         // 기본생성자 : 클래스가 가지고 있는 값 초기화 -> 기본 값나오게 함 = 0

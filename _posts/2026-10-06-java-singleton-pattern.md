@@ -73,30 +73,14 @@ package com.wanted.oop.b_oop.f_keyword.b_singleton;
 
 public class Application {
     static void main(String[] args) {
-        /*comment. static 키워드를 활용한 singleton 패턴
-            - 싱글톤 : 단일 인스턴스 (하나의 객체)
-              어플리케이션이 실행될 때 어떤 클래스가 최초 한 번만 메모리에 할당되고,
-              그 메모리에 인스턴스를 만들어서 하나의 인스턴스를 공유해 사용하여
-              메모리 낭비를 방지할 수 있게 하는 디자인 패턴을 의미함.
-            - 리모컨 : 1개 (재활용)
-
-          comment. 싱글톤 패턴의 2가지 방법
-                1. 이른 초기화 (eager)
-                2. 게으른 초기화 (lazy)
-          */
-
-        // private 로 제한 (new: 리모컨 더 만들어서 배포와 같음)
-        // 인스턴스를 생성하는 기본 생성자를 private로 막았기 때문에 외부 클래스에서 new로 객체 생성을
-        // 막을 수 없게 만들어 두었다
+        // private 생성자라서 new로 만들 수 없다 (컴파일 에러)
         // EagerSingleton eager1 = new EagerSingleton();
 
         EagerSingleton eager1 = EagerSingleton.getInstance(); //getInstance : 싱글톤 타입
         EagerSingleton eager2 = EagerSingleton.getInstance();
-        // eager1 = eager2 값이 같음
         System.out.println("eager1 의 hashcode() : "+ eager1.hashCode());
         System.out.println("eager2 의 hashcode() : "+ eager2.hashCode());
-        // hashcode = 주민번호 (주소코드 알아볼 수 없어서 십진법으로 나오게 함)
-        // 같은 값 나옴 : 같은 객체를 바라보고 있음
+        // 같은 값이 나온다 : 같은 객체를 가리킨다
 
         LazySingleton lazy1 = LazySingleton.getInstance();
         LazySingleton lazy2 = LazySingleton.getInstance();

@@ -111,13 +111,14 @@ System.out.println("회원명 : " + member.getName());
 
 ```java
 abstract class AbstractClass {
-    // 메서드의 바디가 없는 추상 메서드. 헤더(접근제어자, 예약어, 반환형, 메서드명, 매개변수)만 존재하고,
-    // 반드시 끝에 세미콜론을 붙여야 한다.
-    public abstract void method();
+    public abstract void method();   // 추상 메서드
 
-    public void method2() {} // 추상 클래스에는 추상 메서드가 아닌 완전한 메서드가 있어도 된다.
+    public void method2() {}         // 완전한 메서드
 }
 ```
+
+추상 메서드는 바디 없이 헤더(접근제어자, 예약어, 반환형, 메서드명, 매개변수)만 존재하고, 반드시 끝에 세미콜론을 붙인다.  
+추상 클래스에는 추상 메서드가 아닌 완전한 메서드가 있어도 된다.
 
 ### 2-2. 인터페이스란
 
