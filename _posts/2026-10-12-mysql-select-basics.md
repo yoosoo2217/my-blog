@@ -5,19 +5,20 @@ tags:
   - SQL
 ---
 
-`SELECT`는 SQL의 90% 이상을 차지한다고 할 만큼 자주 쓰는 문법이다.  
-핵심은 두 가지다. 어떤 **열**을 가져올 것인가(정보의 종류), 어떤 **행**을 가져올 것인가(정보의 범위).  
-실습한 쿼리를 이 두 질문에 맞춰 `SELECT`부터 `JOIN`까지 정리했다.  
-DB가 왜 필요한지는 [이전 글]({{ site.baseurl }}/database-why-needed.html)에서 정리했다.
+`select * from users`만 알아도 데이터는 꺼낼 수 있다. 그런데 "신고를 가장 많이 당한 사람"이나 "과정을 만든 교육자 이름" 같은 질문은 이 쿼리 하나로 답이 나오지 않는다.  
+SQL의 조회 문법은 결국 두 질문으로 나뉜다. 어떤 **열**을 가져올 것인가(정보의 종류), 어떤 **행**을 가져올 것인가(정보의 범위)다.  
+이 글은 실습한 쿼리를 그 두 질문에 맞춰 `SELECT`부터 `JOIN`까지 따라가며 정리한다. DB가 왜 필요한지는 [이전 글]({{ site.baseurl }}/database-why-needed.html)에서 다뤘다.
 
 > **TL;DR**
 > - 열은 `SELECT`로, 행은 `WHERE`로 고른다. 결과를 다듬는 것은 `ORDER BY`, `DISTINCT`, `LIMIT`이다.
-> - 집계 함수는 `GROUP BY`로 묶어서 쓰고, 그룹을 거른 뒤의 조건은 `HAVING`에 쓴다.
-> - 여러 테이블에 나뉜 데이터는 `JOIN`으로 합친다.
+> - 집계 함수는 `GROUP BY`로 묶어서 쓰고, 묶은 뒤의 조건은 `WHERE`가 아니라 `HAVING`에 쓴다.
+> - 여러 테이블에 나뉜 데이터는 `JOIN`으로 합친다. 짝이 없는 행을 남길지가 `JOIN`의 종류를 가른다.
 
-환경: MySQL (버전 `확인 필요`). 실습 테이블은 `tbl_menu`, `tbl_category`, `users`, `courses`, `grades`, `enrollments`, `user_auth_providers`이고, 각 쿼리의 결과는 이 글에 옮기지 않았다.
+환경은 MySQL이다(버전 `확인 필요`). 실습 테이블은 `tbl_menu`, `tbl_category`, `users`, `courses`, `grades`, `enrollments`, `user_auth_providers`이고, 각 쿼리의 실행 결과는 이 글에 옮기지 않았다.
 
 ## 1. SELECT와 FROM: 어떤 열을 가져올까
+
+`select`는 "무엇을"(열), `from`은 "어디에서"(테이블)를 정한다. 이 두 절만 있어도 쿼리가 완성된다.
 
 ```sql
 -- 메뉴 테이블에서 메뉴 이름을 조회
@@ -34,7 +35,7 @@ from tbl_menu;
 select * from tbl_menu;
 ```
 
-`as`로 결과 컬럼에 별칭(Alias)을 붙일 수 있다.
+`as`로 결과 컬럼에 별칭(Alias)을 붙일 수 있다. 컬럼 이름이 영문 약어일 때 결과를 읽기 쉽게 바꾸는 용도다.
 
 ```sql
 select
@@ -43,16 +44,16 @@ select
 from tbl_menu;
 ```
 
-테이블 없이 MySQL의 기본 함수를 바로 호출할 수도 있다.
+`from` 없이 MySQL의 기본 함수를 바로 호출할 수도 있다.
 
 ```sql
 select now();                 -- 현재 날짜와 시간
 select concat('조', '평훈');   -- 문자열 합치기
 ```
 
-## 2. ORDER BY: 결과를 정렬한다
+## 2. ORDER BY: 결과의 순서를 정한다
 
-`asc`는 오름차순(기본값), `desc`는 내림차순이다.
+`select`만으로는 행이 나오는 순서를 믿을 수 없어서, 순서가 필요하면 `order by`로 직접 지정한다. `asc`는 오름차순(기본값), `desc`는 내림차순이다.
 
 ```sql
 select menu_code, menu_name, menu_price
@@ -73,8 +74,7 @@ order by `연산결과` desc;
 
 ### NULL이 있는 컬럼은 어떻게 정렬될까
 
-`tbl_category`의 `ref_category_code`에는 NULL이 있다.  
-MySQL에서 NULL은 가장 작은 값으로 취급되어 `asc`에서는 맨 위에 온다. NULL을 맨 아래로 보내려면 `is null` 결과로 먼저 정렬한다.
+`tbl_category`의 `ref_category_code`에는 NULL이 있다. MySQL은 NULL을 가장 작은 값으로 취급하므로 `asc`에서는 NULL 행이 맨 위에 온다. NULL을 맨 아래로 보내려면 `is null`의 결과로 먼저 정렬한다.
 
 ```sql
 select *
@@ -82,10 +82,12 @@ from tbl_category
 order by ref_category_code is null asc, ref_category_code asc;
 ```
 
-`ref_category_code is null`은 NULL이면 1, 아니면 0이라서, `asc`로 정렬하면 NULL이 아닌 행(0)이 먼저 오고 NULL 행(1)이 뒤로 간다.  
-강의 코드에는 두 번째 정렬 기준이 없었는데, NULL이 아닌 행끼리도 오름차순으로 맞추려고 `ref_category_code asc`를 덧붙였다.
+`ref_category_code is null`은 NULL이면 1, 아니면 0이다. 이 값을 `asc`로 정렬하면 NULL이 아닌 행(0)이 먼저 나오고 NULL 행(1)이 뒤로 간다.  
+강의 코드에는 두 번째 정렬 기준이 없었다. NULL이 아닌 행끼리도 오름차순으로 맞추려고 `ref_category_code asc`를 덧붙였다.
 
 ## 3. WHERE: 어떤 행을 가져올까
+
+`where`는 조건에 맞는 행만 남긴다. 아래 쿼리는 판매 가능한 메뉴만 가져온다.
 
 ```sql
 select menu_name, menu_price, orderable_status
@@ -106,9 +108,9 @@ where orderable_status = 'Y';
 | `BETWEEN` | 두 값 사이의 범위에 있다 |
 | `NOT` | 부정 |
 
-### AND와 OR
+### AND와 OR: 조건을 합치는 두 방법
 
-`and`는 조건을 모두 만족해야 하고, `or`는 하나라도 만족하면 된다.
+`and`는 조건을 모두 만족해야 하고, `or`는 하나라도 만족하면 된다. 같은 두 조건이라도 연결어에 따라 결과 행 수가 크게 달라진다.
 
 ```sql
 -- 판매 상태가 Y이거나 카테고리 코드가 10인 메뉴
@@ -121,7 +123,7 @@ select * from tbl_menu
 where orderable_status = 'Y' and category_code = 10;
 ```
 
-### BETWEEN, LIKE, IN, NULL
+### BETWEEN, LIKE, IN, NULL 조건
 
 ```sql
 -- 10000 이상 20000 이하 (양 끝값 포함)
@@ -145,6 +147,8 @@ select * from tbl_category
 where ref_category_code is not null;
 ```
 
+NULL은 "값이 없음"이라서 `= null`로 비교하면 참이 되지 않는다. 그래서 `is null`, `is not null`이라는 별도 문법을 쓴다.
+
 `LIKE`의 `%`는 위치에 따라 의미가 달라진다.
 
 | 패턴 | 의미 |
@@ -153,9 +157,11 @@ where ref_category_code is not null;
 | `'단어%'` | 단어로 시작하는 데이터 |
 | `'%단어%'` | 단어를 포함하는 데이터 |
 
-강의 코드의 주석은 "마늘을 포함하는 메뉴"인데 실제 패턴은 `'생마늘%'`(생마늘로 시작)이었다. 주석의 의도에 맞게 `'%마늘%'`로 바꿔 적었다.
+헷갈렸던 점이 하나 있다. 강의 코드의 주석은 "마늘을 포함하는 메뉴"인데 실제 패턴은 `'생마늘%'`(생마늘로 시작)였다. 주석의 의도에 맞게 `'%마늘%'`로 바꿔 적었다.
 
-## 4. DISTINCT: 중복을 없앤다
+## 4. DISTINCT: 같은 값은 한 번만 보여준다
+
+`tbl_menu`에서 `category_code`만 뽑으면 같은 카테고리가 메뉴 수만큼 반복된다. "어떤 카테고리가 있는가"만 알고 싶을 때 `distinct`를 붙인다.
 
 ```sql
 -- 중복 제거 전
@@ -167,10 +173,9 @@ from tbl_menu
 order by category_code;
 ```
 
-## 5. LIMIT: 개수를 제한한다
+## 5. LIMIT: 필요한 만큼만 가져온다
 
-수백만 건을 한 번에 조회하면 시스템에 큰 부하가 걸린다.  
-`limit`은 "상위 5개만", "한 페이지에 10개만" 같은 조회에 쓰고, 웹 앱의 페이징 구현에 필요하다.
+수백만 건을 한 번에 조회하면 시스템에 큰 부하가 걸린다. `limit`은 "상위 5개만", "한 페이지에 10개만" 같은 조회에 쓰고, 웹 앱의 페이징 구현에 필요하다.
 
 ```sql
 -- limit [offset,] row_count : offset은 건너뛸 행 수 (0부터 시작)
@@ -180,12 +185,12 @@ order by menu_price desc
 limit 1, 5;
 ```
 
-`limit 1, 5`는 정렬된 결과에서 **1행을 건너뛰고 그다음 5행**을 가져온다. 가장 비싼 메뉴를 빼고 2위부터 6위까지가 나온다.  
-강의 코드에는 `from tbl_menutbl_menu`로 테이블 이름이 겹쳐 적혀 있었는데, 오타라서 `tbl_menu`로 고쳤다.
+`limit 1, 5`는 정렬된 결과에서 1행을 건너뛰고 그다음 5행을 가져온다. 가장 비싼 메뉴를 빼고 2위부터 6위까지가 나온다. `limit`은 정렬 뒤에 적용되므로, 순위를 뽑을 때는 `order by`와 함께 써야 의미가 있다.  
+강의 코드에는 `from tbl_menutbl_menu`로 테이블 이름이 겹쳐 적혀 있었다. 오타라서 `tbl_menu`로 고쳤다.
 
-## 6. GROUP BY: 그룹으로 묶어 집계한다
+## 6. GROUP BY: 행을 묶어서 숫자로 요약한다
 
-우리 서비스의 총 사용자 수나 가장 신고를 많이 당한 사람 같은 질문은 집계 함수로 구한다.
+"우리 서비스의 총 사용자 수"나 "가장 신고를 많이 당한 사람" 같은 질문의 답은 행 하나하나가 아니라 여러 행을 요약한 값이다. 이때 집계 함수를 쓴다.
 
 | 함수 | 역할 |
 |---|---|
@@ -210,15 +215,19 @@ from grades;
 
 ### 왜 name과 count(*)를 같이 쓰면 에러가 날까
 
+사용자 이름과 총 사용자 수를 한 번에 보려고 아래처럼 쓰면 에러가 난다.
+
 ```sql
 select name, count(*) as '총 사용자 수'
 from users;
 ```
 
-`count(*)`는 전체를 하나로 묶어 숫자 하나를 만드는데, `name`은 행마다 값이 다르다. 어떤 `name`을 그 숫자와 함께 보여줘야 할지 정할 수 없기 때문이다.  
-MySQL 5.7부터 기본으로 켜진 `ONLY_FULL_GROUP_BY` 모드에서 에러가 나고, 이 모드를 끄면 임의의 값이 나올 수 있다(`확인 필요`: 실습 환경의 설정).
+`count(*)`는 전체를 하나로 묶어 숫자 하나를 만든다. 반면 `name`은 행마다 값이 다르다. 숫자 하나 옆에 어떤 `name`을 보여줘야 할지 정할 수 없어서 에러가 난다.  
+MySQL 5.7부터 기본으로 켜진 `ONLY_FULL_GROUP_BY` 모드에서 이 에러가 발생하고, 모드를 끄면 임의의 값이 나올 수 있다(`확인 필요`: 실습 환경의 설정).
 
-### GROUP BY로 그룹 기준을 정한다
+### GROUP BY로 그룹의 기준을 정한다
+
+이 문제의 해결책이 `group by`다. "무엇을 기준으로 묶을지"를 정하면, 그룹마다 값이 하나로 정해지는 컬럼은 집계 함수와 함께 쓸 수 있다.
 
 ```sql
 -- 상태(status)별 사용자 수
@@ -236,12 +245,12 @@ group by author_id;
 
 ### HAVING은 WHERE와 무엇이 다를까
 
-둘 다 조건을 쓰지만 적용 시점이 다르다.
+둘 다 조건을 쓰지만 적용되는 시점이 다르다. `where`는 묶기 전이라 아직 집계 결과가 없고, 그래서 집계 함수의 결과로 거르려면 `having`을 써야 한다.
 
 | 구분 | 필터링 시점 | 조건에 쓸 수 있는 것 |
 |---|---|---|
-| `WHERE` | 그룹으로 묶기 **전** (행 단위) | 컬럼 값 |
-| `HAVING` | 그룹으로 묶은 **후** (그룹 단위) | 집계 함수 결과 |
+| `WHERE` | 그룹으로 묶기 전 (행 단위) | 컬럼 값 |
+| `HAVING` | 그룹으로 묶은 후 (그룹 단위) | 집계 함수 결과 |
 
 ```sql
 -- 개설 강좌가 3개 이상인 교육자
@@ -258,9 +267,9 @@ group by course_id
 having count(*) >= 2;
 ```
 
-두 번째 쿼리는 `where`로 `completed` 행만 먼저 남기고, 그 행들을 과정별로 묶어 센 뒤, `having`으로 2명 이상인 그룹만 남긴다.
+두 번째 쿼리가 둘을 함께 쓴 예다. `where`로 `completed` 행만 먼저 남기고, 그 행들을 과정별로 묶어 센 뒤, `having`으로 2명 이상인 그룹만 남긴다.
 
-쿼리가 처리되는 논리적인 순서는 다음과 같다.
+쿼리가 처리되는 논리적인 순서는 다음과 같다. 적는 순서와 다르다는 점이 `where`와 `having`의 차이를 설명해 준다.
 
 1. `FROM` : 대상 테이블을 정한다
 2. `WHERE` : 행을 거른다
@@ -270,10 +279,10 @@ having count(*) >= 2;
 6. `ORDER BY` : 정렬한다
 7. `LIMIT` : 개수를 제한한다
 
-## 7. JOIN: 나뉜 테이블을 합친다
+## 7. JOIN: 나뉜 테이블을 공통된 값으로 합친다
 
-실제 DB는 비슷한 의미의 데이터를 테이블별로 나눠 저장한다.  
-`courses.author_id`는 `users.user_id`를 가져온 값인데, 이런 컬럼을 외래키(FK)라고 한다. `JOIN`은 이렇게 공통된 값을 기준으로 테이블을 합쳐 하나의 결과로 만든다.
+실제 DB는 비슷한 의미의 데이터를 테이블별로 나눠 저장한다. 그래서 "과정 제목과 만든 사람 이름"처럼 한 화면에 필요한 정보가 두 테이블에 흩어져 있다.  
+`courses.author_id`는 `users.user_id`를 가져온 값이고, 이런 컬럼을 외래키(FK, Foreign Key)라고 한다. `JOIN`은 이 공통된 값을 기준으로 테이블을 합쳐 하나의 결과로 만든다.
 
 ```sql
 -- 과정 제목과 그 과정을 만든 교육자 이름
@@ -285,7 +294,7 @@ join users as u
 on c.author_id = u.user_id;
 ```
 
-`join`만 쓰면 양쪽 테이블에 짝이 있는 행만 나온다(INNER JOIN).  
+`join`만 쓰면 양쪽 테이블에 짝이 있는 행만 나온다(INNER JOIN). 짝이 없는 행까지 보고 싶으면 `LEFT JOIN`이나 `RIGHT JOIN`을 쓴다.  
 `LEFT JOIN`은 왼쪽 테이블을 기준으로 출력하고, 오른쪽에 짝이 없으면 오른쪽 컬럼을 NULL로 채운다. `RIGHT JOIN`은 반대다.
 
 ```sql
@@ -312,7 +321,7 @@ on u.user_id = uap.user_id;
 | `LEFT JOIN` | 왼쪽 테이블의 모든 행 + 짝이 있으면 오른쪽 값 |
 | `RIGHT JOIN` | 오른쪽 테이블의 모든 행 + 짝이 있으면 왼쪽 값 |
 
-강의에서는 SELF JOIN, OUTER JOIN도 종류로 소개했는데, 이번 실습에서는 다루지 않았다.
+강의에서는 SELF JOIN, OUTER JOIN도 종류로 소개했지만 이번 실습에서는 다루지 않았다.
 
 ## 정리
 
