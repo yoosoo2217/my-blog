@@ -310,9 +310,9 @@ $win95-dither: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'
 
 // --- Weekly study flow (home page) ---------------------------------------
 .win95-weekflow {
-	@include win95-etched();
+	border: 1px solid #7f7d7f;
+	box-shadow: inset 1px 1px 0 #ffffff;
 	background: #fbfaf7;
-	width: min(94%, 1100px);
 	margin: 1rem 10px 2rem;
 	padding: 14px 18px;
 	box-sizing: border-box;
@@ -321,8 +321,8 @@ $win95-dither: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'
 .win95-weekflow-header {
 	display: flex;
 	align-items: center;
-	gap: 8px;
-	margin-bottom: 16px;
+	justify-content: flex-end;
+	margin-bottom: 10px;
 }
 .win95-weekflow-dot {
 	width: 8px;
@@ -339,7 +339,7 @@ $win95-dither: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'
 }
 .win95-weekflow-all {
 	font-size: 11px;
-	color: #444444;
+	color: #0a246a;
 	text-decoration: none;
 	flex-shrink: 0;
 }
@@ -407,8 +407,8 @@ $win95-dither: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'
 	box-sizing: border-box;
 }
 .win95-weekflow-current .win95-weekflow-node {
-	background: #1a9c4b;
-	border-color: #0f7a35;
+	background: #0a246a;
+	border-color: #0a246a;
 }
 .win95-weekflow-date {
 	font-size: 11px;
@@ -1890,7 +1890,7 @@ ul.win95-postbar > li + li {
 
 // --- Main window: type hierarchy -----------------------------------------
 .home-progress {
-	margin: 22px 10px 6px;
+	margin: 12px 10px 6px;
 }
 .home-eyebrow {
 	font-size: 11px;
@@ -1972,6 +1972,12 @@ ul.win95-postbar > li + li {
 	tbody tr:last-child td {
 		border-bottom: 0;
 	}
+}
+// The post-body table rules add their own border and bottom margin, which made
+// the list look like a box inside a box.
+.content .post_content .win95-explorer-list table {
+	margin: 0;
+	border: 0;
 }
 
 // The small floating windows (TODAY IS / Cruise FM / Hit Counter) are styled
