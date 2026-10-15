@@ -128,10 +128,6 @@
 <h2 class="home-section">WEEKLY STUDY FLOW</h2>
 
 <div class="win95-weekflow">
-  <div class="win95-weekflow-header">
-    <a href="#post_list" class="win95-weekflow-all">전체 흐름 ↑</a>
-  </div>
-
   <div class="win95-weekflow-weeks">
     {% assign weeks = site.posts | group_by_exp: "post", "post.date | date: '%Y-%U'" %}
     {% assign weeks_sorted = weeks | sort: "name" | reverse %}
