@@ -1,5 +1,5 @@
 ---
-title: "데이터베이스 설계 5-2: 기본키·외래키·UNIQUE 구현과 참조 무결성 옵션 CASCADE·SET NULL·RESTRICT"
+title: "데이터베이스 설계 5-2: 키와 참조 무결성"
 date: 2026-10-14
 tags:
   - SQL

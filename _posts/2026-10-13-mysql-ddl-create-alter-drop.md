@@ -1,5 +1,5 @@
 ---
-title: "MySQL DDL 정리: CREATE TABLE, 제약조건, ALTER, DROP과 TRUNCATE 차이"
+title: "MySQL DDL 정리"
 date: 2026-10-13
 tags:
   - SQL

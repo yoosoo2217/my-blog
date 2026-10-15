@@ -1,5 +1,5 @@
 ---
-title: "JDBC로 MySQL에 접속하기: Connection 생성부터 JDBCTemplate로 중복 제거까지"
+title: "JDBC로 MySQL에 접속하기"
 date: 2026-10-15
 tags:
   - Java

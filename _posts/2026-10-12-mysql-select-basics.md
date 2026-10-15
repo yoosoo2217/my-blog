@@ -1,5 +1,5 @@
 ---
-title: "MySQL SELECT 기초 정리: WHERE, ORDER BY, GROUP BY, JOIN까지"
+title: "MySQL SELECT 기초 정리"
 date: 2026-10-12
 tags:
   - SQL

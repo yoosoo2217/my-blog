@@ -1,5 +1,5 @@
 ---
-title: "MySQL UNION으로 두 쿼리 결과 합치기: 컬럼 개수 불일치 에러까지"
+title: "MySQL UNION으로 쿼리 결과 합치기"
 date: 2026-10-13
 tags:
   - SQL

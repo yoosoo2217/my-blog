@@ -1,5 +1,5 @@
 ---
-title: "MySQL 트랜잭션 정리: 계좌이체로 보는 START TRANSACTION, COMMIT, ROLLBACK"
+title: "MySQL 트랜잭션 정리"
 date: 2026-10-13
 tags:
   - SQL

@@ -1,5 +1,5 @@
 ---
-title: "Map은 왜 List, Set과 따로 있을까: HashMap과 Properties"
+title: "Map은 왜 List, Set과 따로 있을까"
 date: 2026-10-08
 tags:
   - Java

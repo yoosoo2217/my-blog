@@ -1,5 +1,5 @@
 ---
-title: "MySQL DML 정리: INSERT 에러, UPDATE WHERE 누락, DELETE 외래키 거부"
+title: "MySQL DML 정리"
 date: 2026-10-13
 tags:
   - SQL

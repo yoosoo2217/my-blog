@@ -1,5 +1,5 @@
 ---
-title: "파일 입출력과 try-with-resources: close()를 빼먹지 않는 방법"
+title: "파일 입출력과 try-with-resources"
 date: 2026-10-08
 tags:
   - Java

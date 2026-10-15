@@ -1,5 +1,5 @@
 ---
-title: "MySQL 인덱스(Index) 정리: full table scan, EXPLAIN, CREATE INDEX와 trade-off"
+title: "MySQL 인덱스 정리"
 date: 2026-10-13
 tags:
   - SQL

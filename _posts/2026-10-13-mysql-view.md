@@ -1,5 +1,5 @@
 ---
-title: "MySQL VIEW 정리: CREATE VIEW로 가상 테이블 만들고 수정·삭제하기"
+title: "MySQL VIEW 정리"
 date: 2026-10-13
 tags:
   - SQL
