@@ -2,10 +2,18 @@ name: Guestbook sync
 
 # Refreshes _data/guestbook.json (message count + latest messages shown in the
 # TODAY IS window) from the giscus discussion, then asks Pages to rebuild.
+# Runs right after a comment or reply is created/edited/deleted; the schedule
+# is only a safety net in case an event is missed.
 on:
+  discussion_comment:
+    types: [created, edited, deleted]
   schedule:
     - cron: "0 */6 * * *"
   workflow_dispatch:
+
+concurrency:
+  group: guestbook-sync
+  cancel-in-progress: false
 
 permissions:
   contents: write

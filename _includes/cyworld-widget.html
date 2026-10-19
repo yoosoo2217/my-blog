@@ -43,11 +43,11 @@
 
 				<form class="cy-mg-form" id="cy-mg-form" novalidate>
 					<label class="cy-sr" for="cy-mg-input">방명록 한 줄 메시지</label>
-					<input class="cy-mg-input" id="cy-mg-input" type="text" maxlength="140" autocomplete="off" placeholder="한 줄 메시지 남기기..." />
+					<input class="cy-mg-input" id="cy-mg-input" type="text" autocomplete="off" placeholder="한 줄 메시지 남기기..." />
 					<button class="cy-mg-submit" id="cy-mg-submit" type="submit" title="방명록 페이지에서 GitHub 로그인 후 등록됩니다">등록</button>
 				</form>
 				<div class="cy-mg-foot">
-					<span class="cy-mg-chars" id="cy-mg-chars">0 / 140</span>
+					<span class="cy-mg-chars" id="cy-mg-chars">0자</span>
 					<p class="cy-mg-status" id="cy-mg-status" role="status" aria-live="polite"></p>
 				</div>
 
@@ -355,7 +355,6 @@
 	var chars = document.getElementById('cy-mg-chars');
 	if (!form || !input || !btn || !status) { return; }
 
-	var MAX = 140;
 	var NOTICE_KEY = 'cy-mg-notice';
 	var GB_URL = '{{ site.baseurl }}/guestbook/';
 	var busy = false;
@@ -366,7 +365,7 @@
 		status.textContent = msg;
 		status.className = 'cy-mg-status' + (kind ? ' is-' + kind : '');
 	}
-	function counter() { if (chars) { chars.textContent = input.value.length + ' / ' + MAX; } }
+	function counter() { if (chars) { chars.textContent = input.value.length + '자'; } }
 	function onGuestbookPage() { return trimSlash(location.pathname) === trimSlash(GB_URL); }
 
 	function copy(text) {
@@ -388,10 +387,6 @@
 		if (!text) {
 			show('메시지를 입력해 주세요.', 'error');
 			input.focus();
-			return;
-		}
-		if (text.length > MAX) {
-			show(MAX + '자 이내로 입력해 주세요.', 'error');
 			return;
 		}
 		busy = true;

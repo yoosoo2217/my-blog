@@ -15,7 +15,7 @@ import urllib.request
 repo = sys.argv[1] if len(sys.argv) > 1 else "yoosoo2217/my-blog"
 query = urllib.parse.urlencode({
     "repo": repo, "term": "/guestbook/", "number": 0,
-    "strategy": "pathname", "last": 2,
+    "strategy": "pathname", "last": 10,
 })
 req = urllib.request.Request(
     "https://giscus.app/api/discussions?" + query,
@@ -34,8 +34,16 @@ def plain(body_html):
     return re.sub(r"\s+", " ", html.unescape(text)).strip()
 
 
+# Replies are messages on the guestbook page too, so they are listed and
+# counted together with the top-level comments.
+messages = []
+for c in comments:
+    messages.append(c)
+    messages.extend(c.get("replies") or [])
+messages.sort(key=lambda m: m.get("createdAt") or "", reverse=True)  # newest first
+
 recent = []
-for c in reversed(comments):  # newest first
+for c in messages:
     if c.get("deletedAt") or c.get("isMinimized"):
         continue
     author = c.get("author") or {}
@@ -43,10 +51,11 @@ for c in reversed(comments):  # newest first
         "author": author.get("login") or "ghost",
         "avatar": author.get("avatarUrl") or "",
         "date": (c.get("createdAt") or "")[:10],
-        "body": plain(c.get("bodyHTML"))[:200],
+        "body": plain(c.get("bodyHTML"))[:1000],  # the widget clamps to 2 lines
     })
 
-out = {"count": disc.get("totalCommentCount") or 0, "recent": recent}
+count = (disc.get("totalCommentCount") or 0) + (disc.get("totalReplyCount") or 0)
+out = {"count": count, "recent": recent[:2]}
 with open("_data/guestbook.json", "w", encoding="utf-8", newline="\n") as f:
     json.dump(out, f, ensure_ascii=False, indent=2)
     f.write("\n")
