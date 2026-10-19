@@ -705,6 +705,15 @@ ul.topbar {
 		color: #ffffff;
 		text-decoration: none;
 	}
+	// Images in post text shrink to the content width instead of overflowing
+	// and getting cropped by the scrollable window.
+	img {
+		display: block;
+		max-width: 100%;
+		height: auto;
+		margin: 12px auto 18px;
+		border: 1px solid #7f7d7f;
+	}
 
 	h1 {
 		font-size: 20px;
