@@ -709,7 +709,7 @@ ul.topbar {
 	// and getting cropped by the scrollable window.
 	img {
 		display: block;
-		max-width: 100%;
+		max-width: min(100%, 520px);
 		height: auto;
 		margin: 12px auto 18px;
 		border: 1px solid #7f7d7f;
