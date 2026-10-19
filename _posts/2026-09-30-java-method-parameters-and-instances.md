@@ -23,7 +23,13 @@ tags:
 `int x = 4;`라는 한 줄도 뜯어보면 `int`(정수 자료형), `x`(변수), `=`(대입연산자 — 오른쪽은 값, 왼쪽은 공간), `4`(리터럴, 값)로 나뉜다는 걸 다시 짚었다.  
 오늘은 이 복습에 이어서, 메서드를 호출할 때 값을 어떻게 주고받는지를 배웠다.
 
+![1일차(리터럴, 변수, 연산자)와 2일차(조건문, 반복문, 메서드) 내용을 정리한 복습 판서]({{ site.baseurl }}/assets/img/java-review-day1-day2.png)
+
 ## 1. 매개변수와 전달인자로 값을 주고받으며 메서드 호출하기
+
+수업 판서에서는 "1~10까지 두 개씩 숫자를 더하고 싶다"는 상황으로 시작했다. 같은 일을 반복할 때 하나의 함수 단위로 묶은 것이 메서드이고, `sumTwoNumber(3, 4)`로 넘기는 값이 전달인자, `sumTwoNumber(int a, int b)`에서 받는 자리가 매개변수다.
+
+![Method 판서: sumTwoNumber(3, 4)의 3과 4는 전달인자, 메서드 정의의 int a, int b는 매개변수. 호출은 main, 정의는 main 밖에 있다]({{ site.baseurl }}/assets/img/java-method-parameter-argument.png)
 
 어제 정리한 `sumTwoNumber(int a, int b)`에서도 이미 나왔던 개념이지만, 오늘은 이 둘을 구분하는 용어를 정확히 짚었다.
 

@@ -24,6 +24,10 @@ tags:
 
 필드와 메소드에 `static`을 붙인 경우와 안 붙인 경우를 나란히 비교해보려고 `StaticFieldTest` 클래스를 만들었다.
 
+수업 판서로 메모리를 그리면, `st1`과 `st2`는 Stack의 참조 변수이고 각자 Heap에 서로 다른 인스턴스(`주소1`, `주소2`)를 가리킨다. 인스턴스마다 `nonStaticInt`가 따로 있지만, `static`이 붙은 `staticInt`는 static(method area)에 하나만 있어서 두 인스턴스가 함께 쓴다.
+
+![st1, st2가 Heap의 서로 다른 인스턴스를 가리키고, static int staticInt는 static(method area)에 하나만 존재하는 메모리 판서]({{ site.baseurl }}/assets/img/java-static-field-memory.png)
+
 ```java
 package com.wanted.oop.b_oop.f_keyword.a_static;
 

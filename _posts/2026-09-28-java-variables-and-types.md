@@ -26,6 +26,10 @@ int age = 20;
 - `age` = 변수 이름(공간의 이름)
 - `20` = 값(리터럴)
 
+수업 판서로 `int x = 10;`을 뜯어보면 이렇다. `int`는 자료형, `x`는 변수, `=`는 대입 연산자, `10`은 리터럴(값)이다. 판서 오른쪽 아래의 `long y = 10;`과 `int z = (int) y;`는 [형변환 글]({{ site.baseurl }}/java-type-casting.html)에서 다룬다.
+
+![int x = 10;을 자료형, 변수, 대입 연산자, 리터럴로 나눠 설명한 판서. 아래에는 long y = 10; 과 명시적 형변환 int z = (int) y; 예시가 있다]({{ site.baseurl }}/assets/img/java-variable-anatomy.png)
+
 ## 2. 리터럴: 코드에 직접 쓴 값
 
 리터럴은 코드에 직접 써넣은 값 그 자체다.  

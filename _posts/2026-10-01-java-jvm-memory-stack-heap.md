@@ -49,6 +49,12 @@ Java 애플리케이션은 실행 시 JVM에 의해 크게 **Method 영역, Heap
 | Heap | 객체(인스턴스) | GC가 제거 전까지 | 느리지만 유연 |
 | Stack | 지역 변수, 참조 변수 | 메서드 종료 시 제거 | 빠르고 제한적 |
 
+수업 판서로 보면 세 영역의 관계가 더 선명하다. `int[] iarr = new int[5];`와 `Member member = new Member();`에서 `new`가 만든 객체는 Heap에 놓이고, Stack의 참조 변수(`iarr`, `member`)는 그 객체의 주소(`0x123`, `0x321`)를 가진다.
+
+![stack, heap, static 영역을 그린 판서. Stack의 참조 변수 iarr(0x123), member(0x321)가 Heap의 배열과 객체를 가리킨다]({{ site.baseurl }}/assets/img/java-memory-stack-heap-static.png)
+
+> 판서 맨 위 줄은 `new iarr[5]`로 적혀 있지만, 실제 문법은 `new int[5]`다.
+
 ## 3. `new Student()` 한 줄은 메모리에서 어떻게 처리될까?
 
 다음 코드를 기준으로 JVM 내부에서 메모리가 어떤 순서로 쓰이는지 따라가본다.

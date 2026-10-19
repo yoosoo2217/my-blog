@@ -108,6 +108,10 @@ app2.methodA();
 
 ## 5. 호출이 실제로 일어나는 순서
 
+수업 판서로 보면 호출 흐름이 한눈에 보인다. `main()` 영역에서 `Application01 app = new Application();`으로 접근을 준비하고, `app.sumTwoNumber(5, 6);`을 호출하면 `main()` 밖에 있는 `sumTwoNumber(int a, int b)`로 이동해 매개변수가 `a = 5`, `b = 6`이 된다. `return a + b;`로 계산한 값을 들고 호출한 자리로 돌아온다.
+
+![main() 영역에서 app.sumTwoNumber(5, 6)을 호출하면 main() 밖의 sumTwoNumber(int a, int b)로 이동해 a=5, b=6이 되고 return a + b로 돌아오는 흐름을 그린 판서]({{ site.baseurl }}/assets/img/java-method-call-flow.png)
+
 ```java
 public void methodA() {
     System.out.println("methodA() 호출됨..");
@@ -151,6 +155,8 @@ main() 종료됨..!
 `methodB`가 끝나야 비로소 `methodA`로 돌아와 나머지 코드(`"methodA() 종료됨"`)를 실행한다.  
 즉 **나중에 호출된 메소드가 먼저 끝나고 돌아가는 구조**라서, 먼저 들어온 게 먼저 나가는 FIFO가 아니라 나중에 들어온 게 먼저 나가는 후입선출(LIFO) 방식이다.  
 이 호출 스택(Call Stack) 구조가, 오늘 본 실행 순서(`methodA` 시작 → `methodB` 시작·종료 → `methodA` 종료)가 나오는 이유다.
+
+![CS 지식 판서: 한쪽이 막힌 Stack은 나중에 넣은 것이 먼저 나오는 후입선출(LIFO), 양쪽이 열린 Queue는 먼저 넣은 것이 먼저 나오는 선입선출(FIFO)]({{ site.baseurl }}/assets/img/java-stack-queue-fifo-lifo.png)
 
 ## 정리
 

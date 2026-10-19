@@ -95,6 +95,12 @@ System.out.println("equals() 활용 비교 : " + str1.equals(str2)); // true
 변수는 1개의 값만 담을 수 있는 공간이다.  
 그래서 여러 개의 값을 저장하려면 변수를 여러 개 만들어야 하는데, 이 한계를 해결해주는 게 배열이다.
 
+배열도 `new`로 만들기 때문에 Heap에 놓인다. 수업 판서에서는 `int[] iarr = new int[5];`가 만든 칸 5개(기본값 0)가 Heap에 있고, Stack의 참조 변수 `iarr`에 그 주소(`0x123`)가 담긴다고 그렸다.
+
+![int[] iarr = new int[5]; 가 Heap에 만든 배열과 Stack의 참조 변수 iarr(0x123)의 관계를 그린 판서]({{ site.baseurl }}/assets/img/java-array-memory.png)
+
+> 판서 맨 위 줄은 `new iarr[5]`로 적혀 있지만, 실제 문법은 `new int[5]`다.
+
 ```text
 자료형[] 변수명;        // 선언
 new 자료형[크기];       // 할당
