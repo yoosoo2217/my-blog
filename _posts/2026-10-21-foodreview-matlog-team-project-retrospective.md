@@ -1,5 +1,5 @@
 ---
-title: "[팀프로젝트] 맛집로그(MatLog) - 개발 과정과 회고"
+title: "맛집로그 팀 프로젝트 회고"
 date: 2026-10-21
 tags:
   - project
@@ -97,7 +97,7 @@ erDiagram
 
 ### 구현 목표
 
-리뷰 기능은 실패하는 경우가 많다. 별점 범위 오류, 빈 내용, 이미 쓴 리뷰, 없는 가게, DB 오류까지 여섯 가지다. 이 결과를 계층 규칙(Service는 입출력 금지)을 지키면서 화면까지 전달하는 것이 목표였다. 자세한 비교는 [MVC 계층 규칙을 지키며 리뷰 기능 만들기]({{ site.baseurl }}/java-mvc-review-feature-enum-result.html)에 정리했다.
+리뷰 기능은 실패하는 경우가 많다. 별점 범위 오류, 빈 내용, 이미 쓴 리뷰, 없는 가게, DB 오류까지 여섯 가지다. 이 결과를 계층 규칙(Service는 입출력 금지)을 지키면서 화면까지 전달하는 것이 목표였다. 자세한 비교는 [MVC 계층 규칙과 enum 결과 반환]({{ site.baseurl }}/java-mvc-review-feature-enum-result.html)에 정리했다.
 
 ### 구현 과정
 
@@ -205,7 +205,7 @@ PR을 올리기 직전에 "충돌 없음"을 확인했는데, 올리고 나니 �
 
 ### 해결 결과
 
-병합 직전에 `git merge-tree`로 충돌과 컴파일 여부를 다시 확인하는 습관을 만들었다. 충돌 확인은 확인한 그 순간에만 유효하다는 점도 이번에 알게 됐다. 자세한 과정은 [MainController 한 파일에서 충돌 두 번]({{ site.baseurl }}/git-merge-conflict-checking-before-push.html)에 있다.
+병합 직전에 `git merge-tree`로 충돌과 컴파일 여부를 다시 확인하는 습관을 만들었다. 충돌 확인은 확인한 그 순간에만 유효하다는 점도 이번에 알게 됐다. 자세한 과정은 [MainController 충돌과 병합 전 확인]({{ site.baseurl }}/git-merge-conflict-checking-before-push.html)에 있다.
 
 ### 그 밖에 겪은 문제
 
@@ -256,9 +256,9 @@ IDE에서 직접 실행하면 콘솔의 한글이 깨졌다. 팀에서 `build.gr
 
 - GitHub 저장소: [pokachip-campus-calculator/foodreview](https://github.com/pokachip-campus-calculator/foodreview)
 - 관련 기술 포스팅
-  - [Java MVC 패키지 구조: 메뉴 조회 한 번이 지나가는 길로 책임 나누기]({{ site.baseurl }}/java-mvc-package-responsibility.html)
-  - [MVC 계층 규칙을 지키며 리뷰 기능 만들기]({{ site.baseurl }}/java-mvc-review-feature-enum-result.html)
-  - [MainController 한 파일에서 충돌 두 번]({{ site.baseurl }}/git-merge-conflict-checking-before-push.html)
+  - [Java MVC 패키지 구조]({{ site.baseurl }}/java-mvc-package-responsibility.html)
+  - [MVC 계층 규칙과 enum 결과 반환]({{ site.baseurl }}/java-mvc-review-feature-enum-result.html)
+  - [MainController 충돌과 병합 전 확인]({{ site.baseurl }}/git-merge-conflict-checking-before-push.html)
 - 프로젝트 시연 영상 또는 실행 화면: 위 5번 항목의 실행 결과 참고
 
 ## 참고 자료

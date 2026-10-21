@@ -1,5 +1,5 @@
 ---
-title: "MySQL 서브쿼리 정리: WHERE절·FROM절 서브쿼리와 가상 테이블"
+title: "MySQL 서브쿼리 정리"
 date: 2026-10-13
 tags:
   - SQL

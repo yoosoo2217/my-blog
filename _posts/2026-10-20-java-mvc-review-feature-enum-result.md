@@ -1,5 +1,5 @@
 ---
-title: "MVC 계층 규칙을 지키며 리뷰 기능 만들기: Service는 결과를 enum으로 돌려준다"
+title: "MVC 계층 규칙과 enum 결과 반환"
 date: 2026-10-20
 tags:
   - project

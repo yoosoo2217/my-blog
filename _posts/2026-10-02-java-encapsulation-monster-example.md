@@ -1,5 +1,5 @@
 ---
-title: "캡슐화가 필요한 이유: Monster 예제"
+title: "캡슐화와 Monster 예제"
 date: 2026-10-02 09:00:00
 tags:
   - Java

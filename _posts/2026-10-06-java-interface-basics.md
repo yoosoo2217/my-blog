@@ -1,5 +1,5 @@
 ---
-title: "인터페이스는 왜 new가 안 될까"
+title: "인터페이스와 new 불가 이유"
 date: 2026-10-06
 tags:
   - Java

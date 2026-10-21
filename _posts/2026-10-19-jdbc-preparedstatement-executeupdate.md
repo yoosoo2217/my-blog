@@ -1,5 +1,5 @@
 ---
-title: "JDBC PreparedStatement로 안전하게 조회하고 수정하기"
+title: "JDBC PreparedStatement 조회와 수정"
 date: 2026-10-19
 tags:
   - Java
