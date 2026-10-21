@@ -1,5 +1,5 @@
 ---
-title: "MainController 충돌과 병합 전 확인"
+title: "Git 병합 충돌 확인"
 date: 2026-10-20
 tags:
   - project

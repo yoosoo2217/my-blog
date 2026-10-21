@@ -1,5 +1,5 @@
 ---
-title: "학점 계산기와 과락 조건 처리"
+title: "학점 계산기"
 date: 2026-10-01
 tags:
   - project

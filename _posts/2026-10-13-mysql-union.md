@@ -1,5 +1,5 @@
 ---
-title: "MySQL UNION으로 쿼리 결과 합치기"
+title: "MySQL UNION"
 date: 2026-10-13
 tags:
   - SQL

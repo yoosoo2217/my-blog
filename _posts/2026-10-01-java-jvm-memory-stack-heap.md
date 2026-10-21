@@ -1,5 +1,5 @@
 ---
-title: "JVM 메모리 구조 — Stack과 Heap"
+title: "JVM 메모리 구조"
 date: 2026-10-01 11:00:00
 tags:
   - Java

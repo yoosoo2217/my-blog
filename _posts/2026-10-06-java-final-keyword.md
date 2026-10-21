@@ -1,5 +1,5 @@
 ---
-title: "final 필드 초기화 방법"
+title: "final 필드 초기화"
 date: 2026-10-06
 tags:
   - Java

@@ -1,5 +1,5 @@
 ---
-title: "상속과 오버라이딩: Car와 CapsCar"
+title: "상속과 오버라이딩"
 date: 2026-10-06
 tags:
   - Java

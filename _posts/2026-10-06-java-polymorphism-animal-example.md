@@ -1,5 +1,5 @@
 ---
-title: "다형성과 다운캐스팅: Animal 예제"
+title: "다형성과 다운캐스팅"
 date: 2026-10-06
 tags:
   - Java

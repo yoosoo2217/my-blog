@@ -1,5 +1,5 @@
 ---
-title: "JDBC로 MySQL에 접속하기"
+title: "JDBC MySQL 접속"
 date: 2026-10-15
 tags:
   - Java

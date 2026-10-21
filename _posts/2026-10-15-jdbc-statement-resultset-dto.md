@@ -1,5 +1,5 @@
 ---
-title: "JDBC Statement와 ResultSet으로 조회하기"
+title: "JDBC Statement와 ResultSet"
 date: 2026-10-15
 tags:
   - Java

@@ -1,5 +1,5 @@
 ---
-title: "조건문 if·switch 정리"
+title: "조건문"
 date: 2026-09-29 09:00:00
 tags:
   - Java

@@ -1,5 +1,5 @@
 ---
-title: "MVC 계층 규칙과 enum 결과 반환"
+title: "리뷰 기능 MVC 구현"
 date: 2026-10-20
 tags:
   - project

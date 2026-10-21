@@ -1,5 +1,5 @@
 ---
-title: "Map이 List, Set과 따로 있는 이유"
+title: "Map과 HashMap"
 date: 2026-10-08
 tags:
   - Java

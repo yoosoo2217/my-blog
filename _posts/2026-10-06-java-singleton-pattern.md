@@ -1,5 +1,5 @@
 ---
-title: "싱글톤 패턴: Eager와 Lazy"
+title: "싱글톤 패턴"
 date: 2026-10-06
 tags:
   - Java

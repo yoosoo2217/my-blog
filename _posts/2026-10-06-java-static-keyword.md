@@ -1,5 +1,5 @@
 ---
-title: "static 필드의 값 유지 이유"
+title: "static 필드"
 date: 2026-10-06
 tags:
   - Java
