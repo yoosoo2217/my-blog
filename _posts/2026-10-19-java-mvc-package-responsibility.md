@@ -2,6 +2,7 @@
 title: "Java MVC 패키지 구조: 메뉴 조회 한 번이 지나가는 길로 책임 나누기"
 date: 2026-10-19
 tags:
+  - project
   - Java
   - 개발
 ---
