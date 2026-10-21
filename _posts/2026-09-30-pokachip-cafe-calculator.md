@@ -2,6 +2,7 @@
 title: "포카칩 계산기와 PR 충돌"
 date: 2026-09-30
 tags:
+  - project
   - 개발
 ---
 

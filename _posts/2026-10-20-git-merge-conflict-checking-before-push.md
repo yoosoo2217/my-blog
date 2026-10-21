@@ -2,6 +2,7 @@
 title: "MainController 한 파일에서 충돌 두 번: 병합 전에 미리 확인하는 방법"
 date: 2026-10-20
 tags:
+  - project
   - Git
 ---
 

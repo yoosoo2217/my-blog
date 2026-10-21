@@ -2,6 +2,7 @@
 title: "THE LAST RECORD 개발 정리"
 date: 2026-09-23
 tags:
+  - project
   - 개발
 ---
 

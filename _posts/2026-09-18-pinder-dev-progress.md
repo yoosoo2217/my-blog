@@ -2,6 +2,7 @@
 title: "pinder 9/15~9/17 개발 진행 내역"
 date: 2026-09-18
 tags:
+  - project
   - pinder
 ---
 
