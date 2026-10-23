@@ -814,6 +814,13 @@ ul.topbar {
 			fill: #bfe0c9 !important;
 		}
 
+		// Sequence-diagram lifelines: light dotted gray so the arrows stand out.
+		line[id^="actor"] {
+			stroke: #b0aeb0 !important;
+			stroke-dasharray: 3 3;
+			stroke-width: 1px !important;
+		}
+
 		// Thin navy arrows; the line stays quieter than the cards.
 		.flowchart-link,
 		.edgePath .path,

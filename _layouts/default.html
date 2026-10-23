@@ -546,7 +546,7 @@
 					actorBkg: '#f4f4f4',
 					actorBorder: '#7f7d7f',
 					actorTextColor: '#000000',
-					actorLineColor: '#7f7d7f',
+					actorLineColor: '#b0aeb0',
 					signalColor: '#0a246a',
 					signalTextColor: '#000000',
 					labelBoxBkgColor: '#f4f4f4',
@@ -560,7 +560,7 @@
 				// Curved edges keep opposite arrows (push / pull) apart; extra
 				// spacing leaves room for the arrow labels.
 				flowchart: { htmlLabels: false, useMaxWidth: false, curve: 'basis', nodeSpacing: 36, rankSpacing: 38, padding: 12 },
-				sequence: { useMaxWidth: false }
+				sequence: { useMaxWidth: false, mirrorActors: false, actorMargin: 70, messageMargin: 34, boxMargin: 8, noteMargin: 10 }
 			});
 
 			// A node gets a color role only when its whole label is the name of a
