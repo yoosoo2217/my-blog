@@ -27,6 +27,14 @@ Servlet(서블릿)은 웹 요청을 받아 처리하고 응답을 돌려주는 J
 | 결과 보내기 | `System.out`으로 콘솔 출력 | 응답 객체(`response`)에 써서 브라우저로 보낸다 |
 | 사용자 수 | 한 명 | 여러 명이 동시에 |
 
+![수업 판서: Client가 보낸 요청이 Application 안의 Servlet(초록 상자)을 거쳐 들어가고, Application의 JDBC가 DB와 요청과 응답을 주고받는 그림]({{ site.baseurl }}/assets/img/servlet-client-application-db.png)
+
+위 그림에서 Servlet(초록 상자)은 Client와 Application 사이의 입구에 서 있다. 요청을 가장 먼저 받고 응답을 마지막에 돌려주며, 안쪽에서는 JDBC가 DB와 데이터를 주고받는다.
+
+![수업 판서: Servlet Part에서 주의점으로 Application의 main()은 시작점이 아니고, Servlet은 index.html이 시작점이라고 적은 판서]({{ site.baseurl }}/assets/img/servlet-main-method-note.png)
+
+수업에서는 Servlet 파트의 주의점으로 "Application의 `main()`에서 시작하는 방식이 아니라, Servlet은 `index.html`이 시작점"이라고 정리했다. 콘솔 프로그램은 `main()`을 실행해서 시작하지만, 웹 프로젝트에서는 사용자가 브라우저로 처음 여는 `index.html`에서 흐름이 출발한다는 뜻으로 이해했다. `main()`이 없다는 점은 이 글의 첫 문장과도 이어진다.
+
 서블릿 컨테이너(Servlet Container)는 Tomcat 안에서 Servlet의 생성과 정리, URL에 맞는 Servlet 찾기, `request`와 `response` 객체 만들기, 요청마다 스레드 배정을 맡는다. 개발자는 Servlet을 만들어 두기만 하고 실행은 컨테이너가 한다.
 
 ## 2. URL 매핑: `@WebServlet`
@@ -48,6 +56,10 @@ flowchart LR
     B -->|매핑 표에서 찾기| C[LifeCycleServlet]
     C --> D[service 호출]
 ```
+
+![수업 판서: 브라우저에서 /life-cycle 요청(req)이 오면 WebServer의 정적 파일(index.html 등) 중에는 없어서, WasServer 안의 Servlet 중 /life-cycle을 담당하는 것으로 전달되는 그림]({{ site.baseurl }}/assets/img/servlet-webserver-was-lifecycle.png)
+
+그림처럼 `/life-cycle` 요청이 오면 Web Server에는 이 이름의 파일이 없다. 그래서 요청이 WAS로 넘어가고, WAS 안의 여러 Servlet 중 `/life-cycle`을 맡은 Servlet이 실행된다. `index.html` 같은 정적 파일은 Web Server가 그대로 돌려준다.
 
 ## 3. 생명주기: init → service → destroy
 
