@@ -746,6 +746,48 @@ ul.topbar {
 		padding: 1px 4px;
 	}
 
+	// Markdown tables, drawn like a Windows 95 list view: the whole table is a
+	// sunken white field (same edge as `pre`), the header cells are raised gray
+	// buttons (same bevel as the taskbar buttons), and body rows are separated by
+	// thin etched lines with a faint zebra stripe.
+	table {
+		width: 100%;
+		margin: 12px 0 18px;
+		border-collapse: separate;
+		border-spacing: 0;
+		background: #ffffff;
+		border: 0.8px solid;
+		border-color: $win95-shadow $win95-highlight $win95-highlight $win95-shadow;
+		box-shadow: inset 1px 1px 0 #000000, inset -1px -1px 0 #c0bec0;
+		font-size: 13px;
+		line-height: 1.5;
+	}
+	th, td {
+		padding: 5px 10px;
+		text-align: left;
+		vertical-align: top;
+	}
+	th {
+		background: #c0bec0;
+		font-weight: 700;
+		border: 1px solid;
+		border-color: $win95-highlight $win95-darkshadow $win95-darkshadow $win95-highlight;
+		box-shadow: inset -1px -1px 0 $win95-shadow, inset 1px 1px 0 $win95-light;
+	}
+	td {
+		border-bottom: 1px solid #e0dee0;
+		border-right: 1px solid #e0dee0;
+	}
+	td:last-child {
+		border-right: 0;
+	}
+	tbody tr:last-child td {
+		border-bottom: 0;
+	}
+	tbody tr:nth-child(even) td {
+		background: #f4f3f1;
+	}
+
 	// Mermaid diagrams (scoped to .mermaid only). No outer window or box: the
 	// diagram sits directly on the page. Nodes are small flat cards with a pale
 	// fill and a 1px border taken from colors the blog already uses; arrows are
