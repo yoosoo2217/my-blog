@@ -1,0 +1,835 @@
+- topic: SQL
+  q: "메서드 안에서 선언한 지역변수는 언제 사라질까?"
+  choices:
+    - "JVM이 종료될 때"
+    - "메서드 실행이 끝나 Stack의 프레임이 제거될 때"
+    - "GC가 실행될 때"
+    - "사라지지 않고 계속 남는다"
+  answer: 1
+  explain: "지역변수는 Stack의 프레임 안에 살다가 메서드가 끝나면 프레임과 함께 사라진다. GC는 Heap의 객체를 수거하는 장치라 지역변수와 관계가 없고, JVM 종료는 훨씬 나중이다."
+  post: "database-intro-quiz"
+
+- topic: SQL
+  q: "GC(가비지 컬렉터)가 수거하는 대상은 무엇일까?"
+  choices:
+    - "Stack의 지역변수"
+    - "static 변수"
+    - "Heap에 있으면서 아무도 참조하지 않는 객체"
+    - "디스크에 저장된 파일"
+  answer: 2
+  explain: "GC는 Heap의 객체 중 참조하는 곳이 없어진 것을 회수한다. 지역변수는 메서드가 끝나면 Stack에서 제거되고, static 변수는 JVM이 종료될 때까지 산다."
+  post: "database-intro-quiz"
+
+- topic: SQL
+  q: "회원 목록을 static List에 담아 둔 서비스를 재시작하면 어떻게 될까?"
+  choices:
+    - "static 변수라서 그대로 남는다"
+    - "자동으로 파일에 저장되어 복구된다"
+    - "Heap이 아니므로 GC 대상이 아니어서 남는다"
+    - "새 JVM이 새 리스트를 만들기 때문에 회원이 모두 사라진다"
+  answer: 3
+  explain: "static 변수가 JVM 안에서 가장 오래 살지만 수명의 끝은 JVM 종료다. JVM이 꺼지면 OS가 메모리를 회수하고, 메모리 내용을 자동으로 파일에 옮겨 주는 기능은 없다."
+  post: "database-why-needed"
+
+- topic: SQL
+  q: "회원을 members.txt 파일에 저장하는 방식이 해결해 주는 것은 무엇일까?"
+  choices:
+    - "여러 사람이 동시에 고칠 때의 충돌"
+    - "영속성(프로그램이 꺼져도 데이터가 남는 성질)"
+    - "서버가 여러 대일 때의 데이터 공유"
+    - "저장 도중 서버가 멈출 때 생기는 반쪽짜리 데이터"
+  answer: 1
+  explain: "파일은 영속성만 해결한다. 동시 수정, 빠른 검색, 여러 서버의 공유, 저장 도중의 장애는 직접 해결해야 하고, 이를 모두 맡는 것이 DBMS다."
+  post: "database-why-needed"
+
+- topic: SQL
+  q: "서버 2대가 각자 자기 파일에 회원을 저장하면 어떤 문제가 생길까?"
+  choices:
+    - "서버 A에서 가입한 회원이 서버 B에는 없다"
+    - "파일 저장 속도가 지나치게 빨라진다"
+    - "두 서버가 동시에 시작되지 않는다"
+    - "컴파일 에러가 발생한다"
+  answer: 0
+  explain: "서버마다 저장소가 따로 있으면 데이터가 나뉜다. 모든 서버가 하나의 DB에 네트워크로 접속해 함께 쓰면 해결된다."
+  post: "database-why-needed"
+
+- topic: SQL
+  q: "Java 클래스의 필드는 DB에서 무엇에 대응할까?"
+  choices:
+    - "테이블"
+    - "행(Row)"
+    - "컬럼(Column)"
+    - "데이터베이스"
+  answer: 2
+  explain: "클래스는 테이블, 필드는 컬럼, 객체 하나는 행 하나에 대응한다."
+  post: "database-why-needed"
+
+- topic: SQL
+  q: "MySQL에서 NULL이 들어 있는 컬럼을 asc로 정렬하면 NULL 행은 어디에 나올까?"
+  choices:
+    - "맨 위. NULL을 가장 작은 값으로 취급한다"
+    - "맨 아래. NULL을 가장 큰 값으로 취급한다"
+    - "정렬 결과에서 제외된다"
+    - "에러가 난다"
+  answer: 0
+  explain: "MySQL은 NULL을 가장 작은 값으로 취급하므로 asc에서는 NULL 행이 맨 위에 온다. 맨 아래로 보내려면 order by ref_category_code is null asc 처럼 먼저 정렬한다."
+  post: "mysql-select-basics"
+
+- topic: SQL
+  q: "ref_category_code가 NULL인 행을 조회하려는 쿼리다. 의도대로 동작하게 하려면 어떻게 고쳐야 할까?"
+  code: |
+    select * from tbl_category
+    where ref_category_code = null;
+  choices:
+    - "= 대신 == 를 쓴다"
+    - "null 을 작은따옴표로 감싸 'null' 로 비교한다"
+    - "= null 대신 is null 을 쓴다"
+    - "= null 대신 in (null) 을 쓴다"
+  answer: 2
+  explain: "NULL은 값이 없다는 뜻이라 = 로 비교하면 참이 되지 않는다. NULL 여부는 is null, is not null 이라는 별도 문법으로 확인한다."
+  post: "mysql-select-basics"
+
+- topic: SQL
+  q: "집계 함수의 결과로 그룹을 걸러낼 때 WHERE가 아니라 HAVING을 써야 하는 이유는?"
+  code: |
+    select author_id, count(*)
+    from courses
+    group by author_id
+    having count(*) >= 3;
+  choices:
+    - "HAVING이 WHERE보다 항상 빠르기 때문에"
+    - "WHERE는 숫자 컬럼에는 쓸 수 없기 때문에"
+    - "WHERE는 SELECT가 끝난 뒤에 실행되기 때문에"
+    - "WHERE는 그룹으로 묶기 전에 적용되어 아직 집계 결과가 없기 때문에"
+  answer: 3
+  explain: "처리 순서는 FROM, WHERE, GROUP BY, HAVING, SELECT 순이다. WHERE는 묶기 전의 행 단위 조건이라 집계 결과를 쓸 수 없고, 묶은 뒤의 그룹 조건은 HAVING이 맡는다."
+  post: "mysql-select-basics"
+
+- topic: SQL
+  q: "다음 쿼리가 돌려주는 결과는?"
+  code: |
+    select *
+    from tbl_menu
+    order by menu_price desc
+    limit 1, 5;
+  choices:
+    - "가격이 높은 순으로 1위를 건너뛰고 2위부터 6위까지 5개 행"
+    - "가격이 높은 순으로 1위부터 5위까지 5개 행"
+    - "가격이 1 이상 5 이하인 행"
+    - "가격이 낮은 순으로 5개 행"
+  answer: 0
+  explain: "limit offset, row_count 형태이므로 limit 1, 5 는 1행을 건너뛰고 그다음 5행을 가져온다. limit은 정렬 뒤에 적용된다."
+  post: "mysql-select-basics"
+
+- topic: SQL
+  q: "users를 기준으로 user_auth_providers와 left join 했을 때, 소셜 로그인 정보가 없는 사용자는 어떻게 나올까?"
+  code: |
+    select u.name, uap.provider
+    from users as u
+    left join user_auth_providers as uap
+    on u.user_id = uap.user_id;
+  choices:
+    - "결과에서 빠진다"
+    - "에러가 난다"
+    - "사용자 행은 나오고 provider 컬럼은 NULL로 채워진다"
+    - "provider 컬럼에 'none' 이 채워진다"
+  answer: 2
+  explain: "LEFT JOIN은 왼쪽 테이블의 모든 행을 남기고, 오른쪽에 짝이 없으면 오른쪽 컬럼을 NULL로 채운다. 짝이 있는 행만 나오는 것은 INNER JOIN(join)이다."
+  post: "mysql-select-basics"
+
+- topic: SQL
+  q: "임시 테이블에 truncate table courses_temp; 를 실행한 뒤의 상태는?"
+  choices:
+    - "테이블이 완전히 사라진다"
+    - "테이블 구조는 남고 데이터만 삭제되어 빈 테이블이 된다"
+    - "컬럼 정의만 삭제되고 데이터는 남는다"
+    - "아무 변화가 없다"
+  answer: 1
+  explain: "truncate는 구조를 남기고 데이터만 지운다. 구조와 데이터를 모두 영구 삭제하는 것은 drop이다."
+  post: "mysql-ddl-create-alter-drop"
+
+- topic: SQL
+  q: "tb2.author_id가 tb1.user_id를 참조하는 외래키일 때, 참조 무결성 규칙에 맞는 테이블 삭제 순서는?"
+  choices:
+    - "자식인 tb2를 먼저 지우고 부모인 tb1을 나중에 지운다"
+    - "부모인 tb1을 먼저 지우고 자식인 tb2를 나중에 지운다"
+    - "둘을 한 번에 지워야 한다"
+    - "순서는 상관없다"
+  answer: 0
+  explain: "tb2가 tb1의 user_id를 참조하므로 부모를 먼저 지우면 자식이 가리키는 대상이 사라진다. 자식을 먼저 지우고 부모를 나중에 지우는 것이 맞는 순서다."
+  post: "mysql-ddl-create-alter-drop"
+
+- topic: SQL
+  q: "다음 alter table 문이 하는 일은?"
+  code: |
+    alter table courses_temp
+    modify column price varchar(200) not null default '0원';
+  choices:
+    - "price 컬럼을 삭제한다"
+    - "기존 데이터의 price 값만 '0원'으로 바꾼다"
+    - "price 컬럼의 정의(타입과 기본값 등)를 새로 적은 대로 다시 정한다"
+    - "price라는 새 컬럼을 추가한다"
+  answer: 2
+  explain: "modify는 컬럼 정의 전체를 다시 적는 방식으로 이미 있는 컬럼을 수정한다. 추가는 add column, 삭제는 drop column이다."
+  post: "mysql-ddl-create-alter-drop"
+
+- topic: SQL
+  q: "WHERE 없이 다음 쿼리를 실행하면 어떻게 될까?"
+  code: |
+    update users set `name` = '조평훈';
+  choices:
+    - "아무 행도 바뀌지 않는다"
+    - "첫 번째 행의 name만 바뀐다"
+    - "WHERE가 없어서 에러가 나며 실행되지 않는다"
+    - "users의 모든 행의 name이 '조평훈'으로 바뀐다"
+  answer: 3
+  explain: "UPDATE와 DELETE는 WHERE가 없으면 전체 행이 대상이다. 그래서 PK나 UNIQUE 컬럼처럼 1행을 가리키는 조건을 건다."
+  post: "mysql-dml-insert-update-delete"
+
+- topic: SQL
+  q: "문자열 컬럼인 name 자리에 정수 123을 넣어 insert 하면 어떻게 될까?"
+  choices:
+    - "타입이 달라 항상 에러가 난다"
+    - "NULL로 저장된다"
+    - "저장이 보류되고 확인을 요청한다"
+    - "에러 없이 문자열로 자동 형변환되어 저장된다"
+  answer: 3
+  explain: "DB는 타입이 호환되면 조용히 바꿔서 넣는다. 이름에 숫자가 들어오는 상황을 막는 일은 프런트엔드와 백엔드의 입력 검증이 맡아야 한다."
+  post: "mysql-dml-insert-update-delete"
+
+- topic: SQL
+  q: "users에서 user_id = 1 인 행을 delete 했더니 거부되었다. 가장 알맞은 이유는?"
+  choices:
+    - "PK 컬럼의 행은 어떤 경우에도 삭제할 수 없어서"
+    - "courses.author_id가 1번 회원을 참조 중이라 지우면 고아 데이터가 생기기 때문에"
+    - "DELETE는 자식 테이블에만 쓸 수 있어서"
+    - "email 컬럼이 UNIQUE라서"
+  answer: 1
+  explain: "부모 행을 지우면 그것을 참조하는 자식 행이 가리킬 곳을 잃고 고아 데이터가 된다. 외래키 제약조건이 이를 막기 위해 삭제를 거부한다."
+  post: "mysql-dml-insert-update-delete"
+
+- topic: SQL
+  q: "users에 없는 회원 번호 999로 courses에 insert 하면 실패한다. 이때 작동한 제약조건은?"
+  code: |
+    insert into courses (`author_id`, `title`, `description`)
+    values (999, 'SQL 제약조건!', '제약조건을 확인해보아요~');
+  choices:
+    - "외래키(참조 무결성)"
+    - "NOT NULL"
+    - "UNIQUE"
+    - "CHECK"
+  answer: 0
+  explain: "courses.author_id는 users의 회원을 가리키는 외래키라서 부모에 없는 값은 입력할 수 없다. 작성자가 없는 강의, 즉 고아 데이터가 생기지 않도록 DB가 막아 준다."
+  post: "mysql-dml-insert-update-delete"
+
+- topic: SQL
+  q: "users 테이블에서 쿼리를 바꾸지 않고 name 컬럼에 인덱스만 만들었더니 explain의 scan row가 120개에서 1개로 줄었다. 어떤 문장을 실행했을까?"
+  choices:
+    - "alter table users limit 1;"
+    - "select name from users limit 1;"
+    - "create index idx_users_name on users(name);"
+    - "delete from users where name != '홍길동';"
+  answer: 2
+  explain: "create index 인덱스이름 on 테이블명(컬럼명) 으로 인덱스를 만들면, 같은 쿼리라도 전체를 훑는 대신 목차를 통해 위치를 바로 찾는다. 인덱스는 쿼리를 고치지 않아도 실행 계획을 바꾼다."
+  post: "mysql-index"
+
+- topic: SQL
+  q: "인덱스를 만들 때 치르는 대가로 글이 설명한 것은?"
+  choices:
+    - "SELECT가 느려진다"
+    - "저장 공간을 더 쓰고 INSERT, UPDATE, DELETE가 느려진다"
+    - "PRIMARY KEY를 만들 수 없게 된다"
+    - "테이블 구조를 바꿀 수 없게 된다"
+  answer: 1
+  explain: "인덱스는 데이터와 별도의 공간을 차지하고, 데이터를 변경할 때 인덱스도 함께 갱신해야 한다. 그래서 조회가 압도적으로 많고 수정이 드문 컬럼에 건다."
+  post: "mysql-index"
+
+- topic: SQL
+  q: "PRIMARY KEY나 UNIQUE가 걸린 컬럼은 테이블을 만들 때 자동으로 인덱스가 적용되므로, 같은 컬럼에 create index를 또 만들 필요가 없다."
+  choices:
+    - "O"
+    - "X"
+  answer: 0
+  explain: "유일성이 보장되어야 하는 PK와 UNIQUE 컬럼에는 자동으로 인덱스가 만들어진다."
+  post: "mysql-index"
+
+- topic: SQL
+  q: "FROM절 서브쿼리에 대한 설명으로 맞는 것은?"
+  choices:
+    - "별칭을 붙일 수 없다"
+    - "한 행만 돌려줘야 한다"
+    - "WHERE절에서만 쓸 수 있다"
+    - "결과를 가상 테이블처럼 쓰며, 별칭(as)이 필수다"
+  answer: 3
+  explain: "FROM절 서브쿼리는 SELECT 결과를 가상 테이블로 쓴다. 이름이 있어야 바깥 쿼리에서 aut.course_count 처럼 가리킬 수 있어서 별칭은 선택이 아니라 필수다."
+  post: "mysql-subqueries"
+
+- topic: SQL
+  q: "홍길동과 같은 해에 가입한 사용자를 구하는 쿼리에서, WHERE절의 안쪽 서브쿼리는 무슨 일을 할까?"
+  code: |
+    select name, created_at
+    from users
+    where year(created_at) = (
+        select year(created_at)
+        from users
+        where name = '홍길동'
+    );
+  choices:
+    - "홍길동의 가입 년도를 구해 = 오른쪽 자리에 값으로 넣어 준다"
+    - "홍길동을 제외한 사용자만 골라낸다"
+    - "users 테이블을 복제한다"
+    - "결과를 가입일 순으로 정렬한다"
+  answer: 0
+  explain: "안쪽 쿼리가 1단계(홍길동의 가입 년도)이고, 그 결과가 바깥 쿼리의 비교값이 된다. 이름이 홍길동인 사용자가 여러 명일 때는 글에서 다루지 않았다."
+  post: "mysql-subqueries"
+
+- topic: SQL
+  q: "교육자별 개설 과정 수를 users와 합칠 때 FROM절 서브쿼리를 쓴 이유로 알맞은 것은?"
+  choices:
+    - "users에는 count 함수를 쓸 수 없어서"
+    - "서브쿼리를 써야만 join을 쓸 수 있어서"
+    - "courses에는 이름 열이 없고 author_id만 있어서, 집계(count)와 합치기(join)를 한 쿼리에서 하려고"
+    - "서브쿼리를 쓰면 인덱스가 자동으로 만들어져서"
+  answer: 2
+  explain: "courses를 author_id별로 집계한 결과를 가상 테이블로 만들고, 이름이 있는 users와 join 해야 교육자 이름과 과정 수를 함께 볼 수 있다."
+  post: "mysql-subqueries"
+
+- topic: SQL
+  q: "accouts 테이블에서 id = 99 인 계좌는 없다. 다음 update를 실행하면 어떻게 될까?"
+  code: |
+    update accouts
+    set balance = balance + 3000
+    where id = 99;
+  choices:
+    - "존재하지 않는 계좌라는 에러가 난다"
+    - "id = 1 계좌의 잔액이 바뀐다"
+    - "id = 99 인 행이 새로 만들어진다"
+    - "에러 없이 0 rows affected로 끝난다"
+  answer: 3
+  explain: "조건에 맞는 행이 없으면 에러가 아니라 적용된 행 0개로 조용히 끝난다. DB 입장에서는 정상 실행이라 이체가 의도대로 끝났는지는 사용하는 쪽이 판단하고 rollback 해야 한다."
+  post: "mysql-transaction"
+
+- topic: SQL
+  q: "홍길동 10000, 김짱구 5000 에서 다음 트랜잭션을 실행했다. 마지막 select 결과는?"
+  code: |
+    start transaction;
+    update accouts set balance = balance - 3000 where id = 1;
+    update accouts set balance = balance + 3000 where id = 2;
+    commit;
+    select * from accouts;
+  choices:
+    - "홍길동 7000, 김짱구 8000"
+    - "홍길동 10000, 김짱구 5000"
+    - "홍길동 7000, 김짱구 5000"
+    - "홍길동 13000, 김짱구 2000"
+  answer: 0
+  explain: "홍길동은 10000에서 3000을 빼 7000, 김짱구는 5000에 3000을 더해 8000이 되고 commit으로 확정된다."
+  post: "mysql-transaction"
+
+- topic: SQL
+  q: "홍길동 7000, 김짱구 8000 상태에서 다음을 실행했다. 마지막 select에서 홍길동의 잔액은?"
+  code: |
+    start transaction;
+    update accouts set balance = balance - 3000 where id = 1;
+    update accouts set balance = balance + 3000 where id = 99;
+    rollback;
+    select * from accouts;
+  choices:
+    - "4000"
+    - "1000"
+    - "7000"
+    - "10000"
+  answer: 2
+  explain: "첫 update로 홍길동은 4000이 되지만 id = 99 update는 0행이다. rollback이 트랜잭션 시작 시점으로 되돌리므로 7000으로 복구된다."
+  post: "mysql-transaction"
+
+- topic: SQL
+  q: "트랜잭션 안에서 commit 하기 전에 select로 보이는 변경된 값은 영구 반영된 값이다."
+  choices:
+    - "O"
+    - "X"
+  answer: 1
+  explain: "commit 전의 select 결과는 트랜잭션 안에서 본 임시 상태다. rollback을 하면 그 값은 사라진다."
+  post: "mysql-transaction"
+
+- topic: SQL
+  q: "UNION과 UNION ALL의 차이로 맞는 것은?"
+  choices:
+    - "UNION ALL은 중복 행을 제거하고 UNION은 그대로 남긴다"
+    - "UNION은 select마다 컬럼 개수가 달라도 된다"
+    - "둘은 완전히 같다"
+    - "UNION은 중복 행을 제거하고 UNION ALL은 중복을 제거하지 않고 모두 반환한다"
+  answer: 3
+  explain: "UNION은 수학의 합집합처럼 중복 행을 제거한다. UNION ALL은 중복을 제거하지 않는다. 둘 다 select의 컬럼 개수가 같아야 한다."
+  post: "mysql-union"
+
+- topic: SQL
+  q: "다음 쿼리가 실행되지 않는 이유는?"
+  code: |
+    select `email`, `status` from users where status = 'active'
+    union
+    select `name`, `email`, `status` from users where status = 'suspended';
+  choices:
+    - "union 앞에 order by가 있어야 해서"
+    - "두 select가 조회하는 컬럼 개수가 2개와 3개로 달라서"
+    - "같은 테이블을 두 번 조회할 수 없어서"
+    - "status 컬럼은 union에 쓸 수 없어서"
+  answer: 1
+  explain: "합치려면 모든 select의 컬럼 개수가 같아야 한다. 첫 select에 name을 추가해 name, email, status 세 컬럼으로 맞추면 된다."
+  post: "mysql-union"
+
+- topic: SQL
+  q: "UNION이 두 select의 결과를 이어 붙일 때 같은 열로 맞추는 기준은?"
+  choices:
+    - "컬럼 이름이 같은 것끼리"
+    - "컬럼 이름의 알파벳 순서"
+    - "컬럼의 위치(순서)"
+    - "PK로 지정된 컬럼"
+  answer: 2
+  explain: "UNION은 컬럼 이름이 아니라 위치를 기준으로 이어 붙인다. 그래서 같은 위치의 컬럼은 데이터 타입이 호환되어야 하고, 컬럼 목록을 두 쿼리에서 똑같이 쓰는 편이 안전하다."
+  post: "mysql-union"
+
+- topic: SQL
+  q: "create or replace view v_coureses_stats as ... 를 실행하면 어떻게 될까?"
+  choices:
+    - "같은 이름의 뷰가 이미 있으면 에러만 난다"
+    - "같은 이름의 뷰가 있으면 새 쿼리로 교체하고, 없으면 새로 만든다"
+    - "뷰의 결과 데이터를 별도 테이블에 복사해 저장한다"
+    - "원본 테이블이 수정된다"
+  answer: 1
+  explain: "create or replace view는 같은 이름의 뷰가 있으면 바꾸고 없으면 새로 만든다. 삭제는 drop view로 한다."
+  post: "mysql-view"
+
+- topic: SQL
+  q: "마케팅팀에 사용자의 이메일과 이름만 담은 뷰를 전달하는 가장 큰 이유는?"
+  choices:
+    - "원본 테이블을 복제해 따로 저장하려고"
+    - "조회 속도를 항상 보장하려고"
+    - "트랜잭션을 자동으로 처리하려고"
+    - "허용한 컬럼만 공개해 원본 테이블의 민감한 정보를 숨기려고(보안성)"
+  answer: 3
+  explain: "뷰를 쓰는 이유는 편의성, 보안성, 가독성이다. 속도가 빨라진다는 설명은 글에서 단정하지 않고 확인이 필요하다고 남겼다."
+  post: "mysql-view"
+
+- topic: SQL
+  q: "뷰 안에서 별칭 '등록 학생 수'를 붙였다. 뷰를 조회할 때 이 별칭을 WHERE에 바로 쓸 수 있는 이유는?"
+  code: |
+    select * from v_coureses_stats
+    where `등록 학생 수` >= 3;
+  choices:
+    - "WHERE는 항상 SELECT의 별칭을 쓸 수 있어서"
+    - "백틱으로 감싸면 어떤 이름이든 쓸 수 있어서"
+    - "뷰의 컬럼 이름이 정의에서 붙인 별칭이 되기 때문에"
+    - "뷰에서만 별칭 사용이 예외로 허용되어서"
+  answer: 2
+  explain: "뷰 안에서 count(...) as '등록 학생 수' 로 붙인 별칭이 뷰의 컬럼 이름이 된다. 공백이 있는 이름이라 백틱으로 감쌌다."
+  post: "mysql-view"
+
+- topic: SQL
+  q: "글의 수강신청 표에서 컴퓨터공학과 번호 02-760-1000 은 몇 칸에 적혀 있을까?"
+  choices:
+    - "2칸"
+    - "3칸"
+    - "5칸"
+    - "6칸"
+  answer: 2
+  explain: "컴퓨터공학과인 김민수 2행과 최현우 3행에 번호가 반복되어 모두 5칸이다. 하나를 놓치면 같은 학과에 전화번호가 두 개가 된다."
+  post: "db-design-normalization-why"
+
+- topic: SQL
+  q: "수강생이 없는 새 과목을 수강신청 표에 등록할 수 없는 현상을 무엇이라 할까?"
+  choices:
+    - "삽입 이상"
+    - "갱신 이상"
+    - "삭제 이상"
+    - "참조 이상"
+  answer: 0
+  explain: "넣고 싶은 정보가 있는데 관계없는 정보(학번)가 없어서 넣을 수 없는 것이 삽입 이상이다. 기본키가 (학번, 과목코드)라서 학번 없는 행은 저장할 수 없다."
+  post: "db-design-normalization-why"
+
+- topic: SQL
+  q: "정규화에서 섞인 표를 나눈 구조가 맞는지 검증하는 기준은 무엇일까?"
+  choices:
+    - "표의 행 개수"
+    - "컬럼 이름의 길이"
+    - "인덱스의 개수"
+    - "함수 종속(어떤 값이 무엇에 의해 정해지는가)"
+  answer: 3
+  explain: "모델링이 섞인 대상을 나누는 일이라면 정규화는 그 구조를 함수 종속 기준으로 검증하는 절차다. 예를 들어 학과전화는 학과에 의해 정해진다."
+  post: "db-design-normalization-why"
+
+- topic: SQL
+  q: "회원 5건에서 이름과 생년월일 조합이 지금은 겹치지 않는다. 이 조합을 후보키로 볼 수 있을까?"
+  choices:
+    - "지금 모든 행이 구분되므로 후보키다"
+    - "후보키는 업무 규칙으로 정하는데, 동명이인이 같은 날 태어날 수 있어 후보키가 아니다"
+    - "생년월일은 날짜 타입이라 후보키가 될 수 없다"
+    - "컬럼이 두 개라서 후보키가 될 수 없다"
+  answer: 1
+  explain: "후보키는 현재 데이터가 아니라 업무 규칙으로 유일성이 보장되어야 한다. 이름과 생년월일은 다른 회원과 같을 수 있어 조합도 규칙으로 보장되지 않는다."
+  post: "db-design-attributes-identifiers"
+
+- topic: SQL
+  q: "연락처를 여러 개 가질 수 있는 다가 속성은 정규화에서 어떻게 처리할까?"
+  choices:
+    - "한 컬럼에 쉼표로 이어 붙여 저장한다"
+    - "VARCHAR 길이를 늘려 담는다"
+    - "별도 엔티티로 분리한다"
+    - "속성을 삭제한다"
+  answer: 2
+  explain: "제1정규형에 따라 한 칸에는 값이 하나만 들어가야 한다. 복합 속성은 하위 속성으로 쪼개고 다가 속성은 별도 엔티티로 분리한다."
+  post: "db-design-attributes-identifiers"
+
+- topic: SQL
+  q: "고객과 상품의 N:M 관계를 푼 장바구니 엔티티(고객번호, 상품번호, 수량)의 기본키로 알맞은 것은?"
+  choices:
+    - "고객번호 단독"
+    - "수량"
+    - "상품번호 단독"
+    - "(고객번호, 상품번호) 복합키"
+  answer: 3
+  explain: "고객번호만으로도 상품번호만으로도 행을 구분할 수 없지만 둘을 묶으면 이 고객이 담은 이 상품이 하나로 정해진다. 복합키를 이루는 속성은 각각 외래키 역할도 겸한다."
+  post: "db-design-attributes-identifiers"
+
+- topic: SQL
+  q: "전화번호나 이메일을 기본키로 쓰기 부적합한 대표적인 이유는?"
+  choices:
+    - "바뀔 수 있어서(불변성). 바뀌면 이를 참조하는 외래키도 모두 바꿔야 한다"
+    - "여러 회원이 같은 값을 가질 수 있어서"
+    - "문자열은 기본키로 쓸 수 없어서"
+    - "NULL을 항상 허용해야 해서"
+  answer: 0
+  explain: "기본키는 한 번 정해지면 바뀌지 않아야 한다. 전화번호와 이메일은 바뀔 수 있고 중복 방지용 대체키(UNIQUE)로 두는 것이 일반적이다."
+  post: "db-design-attributes-identifiers"
+
+- topic: SQL
+  q: "주문 한 건에 메뉴가 여러 개 들어가는 주문과 메뉴의 N:M 관계는 어떻게 풀까?"
+  choices:
+    - "주문 테이블에 menu_code 칸을 하나만 둔다"
+    - "menu_code1, menu_code2 처럼 칸을 늘린다"
+    - "주문과 메뉴 사이에 교차 엔티티(주문상세)를 두어 1:N 관계 두 개로 나눈다"
+    - "메뉴 테이블에 order_code 칸을 하나만 둔다"
+  answer: 2
+  explain: "N:M은 그대로 둘 수 없고 교차 엔티티로 해소한다. 칸을 하나만 두면 주문 1건이 여러 행이 되어 주문번호를 기본키로 쓸 수 없고, 칸을 늘리는 방법은 메뉴 수를 알 수 없어 한계가 있다."
+  post: "db-design-conceptual-modeling-erd"
+
+- topic: SQL
+  q: "메뉴가 반드시 어떤 카테고리에 속해야 한다는 필수 관계일 때, tbl_menu.category_code는 어떻게 정의해야 할까?"
+  choices:
+    - "NULL을 허용하는 외래키"
+    - "외래키 없이 일반 컬럼"
+    - "UNIQUE 컬럼"
+    - "NOT NULL 외래키"
+  answer: 3
+  explain: "필수(Mandatory) 관계는 자식이 부모 없이는 의미가 없는 경우로 외래키가 NOT NULL이다. 선택(Optional) 관계라면 NULL을 허용한다."
+  post: "db-design-conceptual-modeling-erd"
+
+- topic: SQL
+  q: "IE(Crow's Foot) 표기법에서 관계선 끝의 갈라진 선(까마귀 발)은 무엇을 뜻할까?"
+  choices:
+    - "N(여러 개)"
+    - "1(하나)"
+    - "0(없음)"
+    - "PK(기본키)"
+  answer: 0
+  explain: "IE 표기법에서 |는 1, ○는 0, 갈라진 선은 N을 나타낸다. 이 모양 때문에 Crow's Foot이라고 부른다."
+  post: "db-design-conceptual-modeling-erd"
+
+- topic: SQL
+  q: "도서관 대출 시스템의 요구사항에서 '도서관'이 엔티티 후보에서 제외된 이유는?"
+  choices:
+    - "도서관은 사람이 아니라 장소라서"
+    - "이 시스템에서는 도서관이 하나뿐이라 인스턴스가 여러 개가 아니어서"
+    - "도서관에는 이름 속성이 없어서"
+    - "도서관은 명사가 아니어서"
+  answer: 1
+  explain: "엔티티는 식별 가능, 여러 인스턴스, 의미 있는 속성, 독립적 존재의 요건을 만족해야 한다. 사람, 사물, 사건, 장소 모두 엔티티가 될 수 있지만 여기서는 인스턴스가 하나뿐이다."
+  post: "db-design-conceptual-modeling-erd"
+
+- topic: SQL
+  q: "tbl_user가 user_grade를 외래키로 참조하고 있다. 외래키에 ON DELETE CASCADE를 지정하고 grade_code 20인 등급을 삭제하면(등급 20을 가진 회원이 2명) 어떻게 될까?"
+  choices:
+    - "삭제가 거부된다"
+    - "등급 20과 함께 그 등급을 가진 회원 행 2개도 삭제된다"
+    - "등급 20은 삭제되고 두 회원의 grade_code는 NULL이 된다"
+    - "등급 20은 삭제되고 두 회원의 grade_code는 20으로 남는다"
+  answer: 1
+  explain: "CASCADE는 부모가 변경되거나 삭제되면 자식도 함께 변경, 삭제한다. 첫 번째는 RESTRICT, 세 번째는 SET NULL의 동작이다."
+  post: "db-design-physical-modeling-keys-referential-integrity"
+
+- topic: SQL
+  q: "NOT NULL로 선언된 외래키 컬럼에 ON DELETE SET NULL 을 지정하면 어떻게 될까?"
+  choices:
+    - "테이블 생성 자체가 실패한다"
+    - "정상적으로 생성되고 삭제 시 NULL이 들어간다"
+    - "정상적으로 생성되고 삭제 시 거부된다"
+    - "경고만 나오고 NOT NULL이 해제된다"
+  answer: 0
+  explain: "SET NULL은 NULL을 허용하는 컬럼에만 쓸 수 있다. NOT NULL 컬럼에 지정하면 테이블 생성이 실패한다."
+  post: "db-design-physical-modeling-keys-referential-integrity"
+
+- topic: SQL
+  q: "외래키를 걸면서 ON DELETE, ON UPDATE 옵션을 하나도 쓰지 않고 부모 행을 삭제하면 어떻게 동작할까?"
+  choices:
+    - "CASCADE처럼 자식 행도 함께 삭제된다"
+    - "SET NULL처럼 자식의 외래키가 NULL이 된다"
+    - "옵션이 없으면 외래키가 무시된다"
+    - "RESTRICT처럼 참조 중인 부모는 삭제할 수 없다"
+  answer: 3
+  explain: "아무 옵션도 쓰지 않으면 RESTRICT처럼 동작한다. 에러가 나는 것은 오류가 아니라 기본 안전 설정이 작동한 결과다."
+  post: "db-design-physical-modeling-keys-referential-integrity"
+
+- topic: SQL
+  q: "MySQL에서 UUID를 기본키로 쓸 때 글이 권장한 저장 방식은?"
+  choices:
+    - "CHAR(36) 문자열"
+    - "TEXT"
+    - "BINARY(16)"
+    - "INT AUTO_INCREMENT"
+  answer: 2
+  explain: "MySQL에는 UUID 전용 타입이 없어 BINARY(16)으로 저장하는 것을 권장한다. CHAR(36)보다 저장 공간이 절반 이하다."
+  post: "db-design-physical-modeling-keys-referential-integrity"
+
+- topic: SQL
+  q: "TIMESTAMP 컬럼에 '2040-01-01 00:00:00' 을 넣으면 에러가 나는 이유는?"
+  choices:
+    - "TIMESTAMP는 2038-01-19까지만 표현할 수 있어서"
+    - "TIMESTAMP에는 시각을 저장할 수 없어서"
+    - "날짜 형식이 잘못되어서"
+    - "TIMESTAMP는 NOT NULL이어야 해서"
+  answer: 0
+  explain: "TIMESTAMP는 1970년부터의 초를 32비트 정수로 저장해 2038년 1월 19일까지만 표현한다(2038년 문제). 구독 만료일처럼 미래 날짜는 DATETIME을 쓴다."
+  post: "db-design-physical-modeling-table-types"
+
+- topic: SQL
+  q: "서울(+09:00)에서 같은 시각을 DATETIME과 TIMESTAMP 컬럼에 저장한 뒤 세션 타임존을 바꿔 조회하면 어떻게 보일까?"
+  choices:
+    - "두 컬럼 모두 값이 달라 보인다"
+    - "두 컬럼 모두 입력한 값 그대로 보인다"
+    - "DATETIME 컬럼만 값이 달라 보인다"
+    - "TIMESTAMP 컬럼만 값이 달라 보이고 DATETIME은 넣은 값 그대로 나온다"
+  answer: 3
+  explain: "TIMESTAMP는 저장 시 UTC로 변환하고 조회 시 세션 타임존으로 다시 변환한다. DATETIME은 타임존 변환 없이 입력한 값을 그대로 저장한다."
+  post: "db-design-physical-modeling-table-types"
+
+- topic: SQL
+  q: "다음 문장이 문법 오류가 나는 이유와 해결 방법으로 알맞은 것은?"
+  code: |
+    CREATE TABLE order ( ... );
+  choices:
+    - "order가 대문자라서 오류가 난다. 소문자로 쓰면 된다"
+    - "order가 예약어라서 오류가 난다. 백틱으로 감싸거나 tbl_ 같은 접두어를 붙인다"
+    - "단수형 이름은 허용되지 않는다. 복수형 orders로 바꾼다"
+    - "테이블 이름은 접두어가 필수다"
+  answer: 1
+  explain: "order는 ORDER BY의 예약어와 충돌한다. 백틱으로 감싸면 쓸 수 있지만 모든 쿼리에서 매번 감싸야 하므로 tbl_order처럼 접두어를 붙이기도 한다."
+  post: "db-design-physical-modeling-table-types"
+
+- topic: SQL
+  q: "MySQL 8.0에서 DEFAULT에 함수를 쓸 때 괄호 없이 쓸 수 있는 것은?"
+  choices:
+    - "DATE 컬럼의 DEFAULT CURRENT_DATE"
+    - "UUID 컬럼의 DEFAULT UUID()"
+    - "DATETIME 컬럼의 DEFAULT CURRENT_TIMESTAMP"
+    - "DATE 컬럼의 DEFAULT NOW() + 1"
+  answer: 2
+  explain: "DATETIME과 TIMESTAMP 컬럼의 DEFAULT CURRENT_TIMESTAMP만 예외적으로 괄호 없이 쓴다. 그 외 함수나 수식은 DEFAULT (CURRENT_DATE) 처럼 괄호로 감싼다(8.0.13 이상)."
+  post: "db-design-physical-modeling-table-types"
+
+- topic: SQL
+  q: "country 컬럼이 DEFAULT '한국' 으로 정의되어 있다. insert 할 때 country에 NULL을 직접 넣으면 어떻게 될까?"
+  choices:
+    - "DEFAULT가 적용되어 '한국'이 저장된다"
+    - "NULL이 그대로 저장된다"
+    - "에러가 난다"
+    - "빈 문자열이 저장된다"
+  answer: 1
+  explain: "DEFAULT는 값을 생략했을 때만 적용된다. NULL을 직접 넣으면 NULL이 저장되고, 빈 문자열을 넣으면 빈 문자열이 저장된다."
+  post: "db-design-requirements-constraints"
+
+- topic: SQL
+  q: "데이터베이스 설계의 4단계 순서로 맞는 것은?"
+  choices:
+    - "개념적 모델링, 요구사항 분석, 물리적 모델링, 논리적 모델링"
+    - "요구사항 분석, 물리적 모델링, 논리적 모델링, 개념적 모델링"
+    - "논리적 모델링, 요구사항 분석, 개념적 모델링, 물리적 모델링"
+    - "요구사항 분석, 개념적 모델링, 논리적 모델링, 물리적 모델링"
+  answer: 3
+  explain: "요구사항 분석(요구사항 정의서), 개념적 모델링(ERD), 논리적 모델링(논리 데이터 모델, 정규화), 물리적 모델링(DDL) 순이다. 앞 단계의 산출물이 다음 단계의 입력이 된다."
+  post: "db-design-requirements-constraints"
+
+- topic: SQL
+  q: "JDBC로 MySQL에 접속하는 데 필요한 4가지로 알맞은 것은?"
+  choices:
+    - "driver, url, user, password"
+    - "driver, port, table, sql"
+    - "url, sql, Statement, ResultSet"
+    - "user, password, schema, index"
+  answer: 0
+  explain: "드라이버 클래스, 접속 url(jdbc:mysql://localhost/menudb), 계정, 비밀번호를 DriverManager.getConnection()에 넘기면 Connection을 돌려받는다."
+  post: "jdbc-connection-jdbctemplate"
+
+- topic: SQL
+  q: "finally 블록에서 con = null 을 실행하면 DB 연결이 닫힌다."
+  choices:
+    - "O"
+    - "X"
+  answer: 1
+  explain: "변수가 객체를 가리키던 참조를 끊을 뿐이고 DB와의 연결은 그대로 남는다. 연결을 끝내려면 con.close()를 호출해야 한다."
+  post: "jdbc-connection-jdbctemplate"
+
+- topic: SQL
+  q: "JDBCTemplate에서 설정 파일 경로를 매개변수로 받는 getConnection(String configPath)를 오버로딩으로 추가했을 때의 이점은?"
+  choices:
+    - "접속 성능이 빨라진다"
+    - "비밀번호가 자동으로 암호화된다"
+    - "close()를 호출하지 않아도 된다"
+    - "기존 getConnection()을 쓰던 코드를 바꾸지 않고 employeedb 같은 다른 DB도 접속할 수 있다"
+  answer: 3
+  explain: "기존 getConnection()은 menudb용 경로를 넣어 새 메서드를 호출하게 하여 기존 호출 코드를 그대로 쓴다. 새 요구사항이 생겨도 호출부를 건드리지 않는 것이 이점이다."
+  post: "jdbc-connection-jdbctemplate"
+
+- topic: SQL
+  q: "ResultSet의 커서는 처음에 어디를 가리키고, next()는 무엇을 돌려줄까?"
+  choices:
+    - "첫 번째 행을 가리키고, next()는 항상 true를 돌려준다"
+    - "마지막 행을 가리키고, next()는 이전 행으로 이동한다"
+    - "아무 행도 가리키지 않고, next()는 행 개수를 돌려준다"
+    - "첫 번째 행의 앞을 가리키고, next()는 다음 행이 있으면 true, 없으면 false를 돌려준다"
+  answer: 3
+  explain: "next()를 부르면 커서가 다음 행으로 움직이고 행이 있으면 true를 돌려준다. 그래서 while (rset.next())가 모든 행을 처음부터 끝까지 읽는다."
+  post: "jdbc-statement-resultset-dto"
+
+- topic: SQL
+  q: "입력값을 이어 붙인 다음 쿼리에서 사용자가 ' OR '1'='1 을 입력하면 어떻게 될까?"
+  code: |
+    rset = stmt.executeQuery(
+        "SELECT * FROM TBL_MENU WHERE MENU_NAME = '" + menuName + "'"
+    );
+  choices:
+    - "조건이 MENU_NAME = '' OR '1'='1' 이 되어 모든 행이 조건에 맞는다"
+    - "문법 오류로 항상 예외가 발생한다"
+    - "MENU_NAME이 빈 문자열인 행만 조회된다"
+    - "입력값이 자동으로 걸러져 아무 행도 나오지 않는다"
+  answer: 0
+  explain: "입력값이 SQL 문장의 일부가 되어 SQL 구조가 바뀐다. 이것이 SQL 인젝션의 가장 단순한 형태이고, 입력값을 SQL과 분리해 전달하는 PreparedStatement로 해결한다."
+  post: "jdbc-statement-resultset-dto"
+
+- topic: SQL
+  q: "BONUS 컬럼이 NULL일 수 있을 때 rset.getFloat(\"BONUS\")를 쓰면 생기는 문제는?"
+  choices:
+    - "NullPointerException이 항상 발생한다"
+    - "NULL을 0으로 돌려줘서 보너스 0과 보너스 없음을 구분할 수 없다"
+    - "컬럼이 존재하지 않는다는 SQLException이 난다"
+    - "Float 값이 문자열로 바뀐다"
+  answer: 1
+  explain: "getFloat()는 NULL을 0으로 돌려준다. 그래서 필드를 Float 래퍼 타입으로 선언하고 getObject(\"BONUS\", Float.class)로 읽어 값이 없음을 표현한다."
+  post: "jdbc-statement-resultset-dto"
+
+- topic: SQL
+  q: "SELECT MENU_CODE, MENU_PRICE, ORDERABLE_STATUS 만 조회한 ResultSet에서 rset.getString(\"MENU_NAME\")을 호출하면?"
+  choices:
+    - "SQLException(해당 컬럼이 없다는 오류)이 난다"
+    - "null이 반환된다"
+    - "빈 문자열이 반환된다"
+    - "테이블에서 자동으로 다시 조회한다"
+  answer: 0
+  explain: "조회하지 않은 컬럼 이름을 넘기면 SQLException이 난다. DTO의 모든 필드를 채우려면 SELECT *로 바꾸거나 필요한 컬럼을 모두 적는다."
+  post: "jdbc-statement-resultset-dto"
+
+- topic: SQL
+  q: "pstmt.setString(1, menuName); 에서 1이 뜻하는 것은?"
+  choices:
+    - "menuName의 첫 번째 글자"
+    - "조회 결과의 첫 번째 행"
+    - "SQL 안에서 첫 번째로 나오는 ? 의 번호"
+    - "컬럼 번호"
+  answer: 2
+  explain: "1은 문자열의 위치가 아니라 SQL에서 첫 번째로 나오는 ? 의 번호다. 번호는 1부터 시작하고 ? 가 나온 순서를 따른다."
+  post: "jdbc-preparedstatement-executeupdate"
+
+- topic: SQL
+  q: "INSERT, UPDATE, DELETE를 PreparedStatement로 실행할 때 쓰는 메서드와 반환값은?"
+  choices:
+    - "executeQuery(), ResultSet"
+    - "executeUpdate(), 영향받은 행의 수(int)"
+    - "executeUpdate(), ResultSet"
+    - "execute(), boolean만 반환하며 행 수는 알 수 없다"
+  answer: 1
+  explain: "SELECT는 executeQuery()로 ResultSet을 받고, DML은 executeUpdate()로 영향받은 행의 수를 int로 받는다. 수정에는 ResultSet이 필요 없다."
+  post: "jdbc-preparedstatement-executeupdate"
+
+- topic: SQL
+  q: "UPDATE 문을 실행한 executeUpdate()가 0을 반환했다. 무슨 뜻일까?"
+  choices:
+    - "SQLException이 발생했다"
+    - "DB 연결이 끊어졌다"
+    - "한 행이 성공적으로 수정되었다"
+    - "SQL은 오류 없이 실행됐지만 WHERE 조건에 맞는 행이 없었다"
+  answer: 3
+  explain: "0은 조건에 맞는 행이 없어 영향받은 행이 없다는 뜻이다. 메뉴 이름을 잘못 입력한 경우가 해당하고, 예외가 나지 않아도 실패일 수 있으므로 result > 0 인지 확인한다."
+  post: "jdbc-preparedstatement-executeupdate"
+
+- topic: SQL
+  q: "아래 코드는 예외도 없이 실행되지만 입력과 상관없이 결과가 비어 있다. 원인은?"
+  code: |
+    pstmt.setString(1, "menuName");
+    rset = pstmt.executeQuery();
+  choices:
+    - "setString의 번호는 0부터 시작해야 해서"
+    - "setString은 값을 반환해야 해서"
+    - "? 가 SQL에 없어서"
+    - "변수 menuName이 아니라 문자열 \"menuName\"을 넣어 그 이름의 메뉴를 찾기 때문에"
+  answer: 3
+  explain: "따옴표 때문에 사용자가 입력한 값이 아니라 글자 그대로 menuName이라는 메뉴를 찾는다. 문법 오류도 예외도 없고 rset.next()가 false일 뿐이라 찾기 어렵다."
+  post: "jdbc-preparedstatement-executeupdate"
+
+- topic: SQL
+  q: "가게 상세 조회에서 JOIN이 아니라 LEFT JOIN으로 리뷰를 합친 이유는?"
+  code: |
+    FROM restaurant r
+    LEFT JOIN review v ON r.restaurant_id = v.restaurant_id
+  choices:
+    - "LEFT JOIN이 JOIN보다 항상 빠르기 때문에"
+    - "리뷰가 없는 가게의 행도 남기기 위해서. JOIN이면 가게 행이 사라져 존재하지 않는 가게처럼 처리된다"
+    - "AVG를 쓰려면 반드시 LEFT JOIN이어야 해서"
+    - "리뷰를 최신 10개로 제한하기 위해서"
+  answer: 1
+  explain: "JOIN은 짝이 없는 행을 지워 리뷰가 없는 가게가 조회되지 않는다. LEFT JOIN은 가게 행을 남기고 리뷰가 없으면 AVG가 NULL이 되어 평점 없음으로 연결된다."
+  post: "java-mvc-review-feature-enum-result"
+
+- topic: SQL
+  q: "평균 별점이 NULL일 수 있을 때, rs.getDouble() 대신 먼저 getObject()로 NULL인지 확인한 이유는?"
+  choices:
+    - "getDouble()은 NULL이면 0.0을 돌려줘서 평점 없음과 0점을 구분할 수 없어서"
+    - "getDouble()은 정수만 읽을 수 있어서"
+    - "getObject()가 더 빠르게 읽어서"
+    - "getDouble()은 컬럼 이름으로는 읽을 수 없어서"
+  answer: 0
+  explain: "getDouble()은 NULL이면 0.0을 돌려준다. 그래서 getObject()로 NULL 여부를 먼저 보고, NULL이면 null을 담아 View에서 평점 없음으로 출력한다."
+  post: "java-mvc-review-feature-enum-result"
+
+- topic: SQL
+  q: "리뷰 작성 Service가 결과를 enum으로 돌려주고 문구는 View가 정하게 한 이유로 알맞은 것은?"
+  choices:
+    - "enum을 쓰면 SQL이 빨라져서"
+    - "Service가 System.out으로 직접 출력할 수 있어서"
+    - "boolean 하나로 모든 실패 이유를 구분할 수 있어서"
+    - "Service에 화면 출력을 두지 않으면서도 실패 이유를 구분해 전달할 수 있어서"
+  answer: 3
+  explain: "Service는 사실은 알지만 화면에 출력할 수 없다. enum으로 이유를 전달하면 문구는 View가 정하므로 입출력 분리가 지켜진다. boolean은 별점 오류, 중복, 없는 가게를 구분할 수 없다."
+  post: "java-mvc-review-feature-enum-result"
+
+- topic: SQL
+  q: "리뷰 수정 SQL에서 review_id와 함께 member_id를 조건으로 걸었을 때, 남의 리뷰 번호를 수정하려 하면 executeUpdate()는 무엇을 돌려줄까?"
+  code: |
+    UPDATE review SET rating = ?, content = ?
+    WHERE review_id = ? AND member_id = ?
+  choices:
+    - "0 (내 리뷰가 아니거나 없는 리뷰)"
+    - "1"
+    - "SQLException"
+    - "수정된 리뷰의 번호"
+  answer: 0
+  explain: "조건에 맞는 행이 없으면 오류 없이 0행이 반영된다. member_id 조건은 남의 데이터를 바꾸는 일을 DB 단계에서 막는 마지막 방어선이다."
+  post: "java-mvc-review-feature-enum-result"
