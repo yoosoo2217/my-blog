@@ -1,0 +1,413 @@
+---
+layout: default
+title: 퀴즈
+permalink: /quiz/
+show_profile: true
+---
+{% comment %}
+Quiz page. Questions live in _data/quiz/*.yml (one list per file, each item has
+topic / q / choices / answer / explain / post). Everything below runs in the
+browser; results are kept in this browser's localStorage only.
+`</` is escaped to `<\/` so a question that mentions a closing script tag can't
+end the inline <script> early.
+{% endcomment %}
+
+<div class="quiz" id="quiz">
+  <noscript><p>퀴즈는 JavaScript가 켜져 있어야 풀 수 있어요.</p></noscript>
+</div>
+
+<script>
+(function () {
+  var QUIZ_DATA = {{ site.data.quiz | jsonify | replace: '</', '<\/' }};
+  var POSTS = {
+  {%- for p in site.posts %}
+    {{ p.slug | jsonify }}: { t: {{ p.title | jsonify | replace: '</', '<\/' }}, u: {{ p.url | prepend: site.baseurl | jsonify }} }{% unless forloop.last %},{% endunless %}
+  {%- endfor %}
+  };
+  var STATS_KEY = 'yusu-quiz-stats';
+  var TOPIC_ORDER = ['Java', 'Spring', 'Git', 'SQL', 'HTML', 'CSS', 'Markdown'];
+
+  var root = document.getElementById('quiz');
+
+  // ---- data ---------------------------------------------------------------
+  var ALL = [];
+  Object.keys(QUIZ_DATA || {}).forEach(function (file) {
+    (QUIZ_DATA[file] || []).forEach(function (item) {
+      if (item && item.q && item.choices && item.choices.length > 1) { ALL.push(item); }
+    });
+  });
+
+  var topics = [];
+  ALL.forEach(function (item) { if (topics.indexOf(item.topic) < 0) { topics.push(item.topic); } });
+  topics.sort(function (a, b) {
+    var ia = TOPIC_ORDER.indexOf(a), ib = TOPIC_ORDER.indexOf(b);
+    return (ia < 0 ? 99 : ia) - (ib < 0 ? 99 : ib) || (a < b ? -1 : 1);
+  });
+
+  function countOf(topic) {
+    return ALL.filter(function (item) { return item.topic === topic; }).length;
+  }
+
+  // ---- small helpers ------------------------------------------------------
+  function el(tag, cls, text) {
+    var node = document.createElement(tag);
+    if (cls) { node.className = cls; }
+    if (text !== undefined && text !== null) { node.textContent = text; }
+    return node;
+  }
+  function clear(node) { while (node.firstChild) { node.removeChild(node.firstChild); } }
+  function shuffle(list) {
+    var a = list.slice();
+    for (var i = a.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = a[i]; a[i] = a[j]; a[j] = t;
+    }
+    return a;
+  }
+  function loadStats() {
+    try { return JSON.parse(localStorage.getItem(STATS_KEY) || '{}') || {}; } catch (e) { return {}; }
+  }
+  function saveStats(stats) {
+    try { localStorage.setItem(STATS_KEY, JSON.stringify(stats)); } catch (e) { /* private mode etc. */ }
+  }
+  function postLink(slug, label) {
+    var info = POSTS[slug];
+    if (!info) { return null; }
+    var a = el('a', null, label || ('📄 ' + info.t));
+    a.href = info.u;
+    return a;
+  }
+
+  // ---- state --------------------------------------------------------------
+  var state = null;
+  var keyHandler = null;
+
+  function setKeyHandler(fn) {
+    if (keyHandler) { document.removeEventListener('keydown', keyHandler); }
+    keyHandler = fn;
+    if (fn) { document.addEventListener('keydown', fn); }
+  }
+
+  // ---- setup screen -------------------------------------------------------
+  function showSetup() {
+    setKeyHandler(null);
+    clear(root);
+
+    if (ALL.length === 0) {
+      root.appendChild(el('p', null, '아직 등록된 퀴즈가 없어요.'));
+      return;
+    }
+
+    var stats = loadStats();
+
+    root.appendChild(el('p', 'quiz-lead',
+      '블로그 글을 바탕으로 만든 문제예요. 풀고 싶은 주제를 고르세요. (총 ' + ALL.length + '문제)'));
+
+    // topics
+    var g1 = el('fieldset', 'quiz-group');
+    g1.appendChild(el('legend', null, '주제 선택'));
+    var boxes = [];
+    topics.forEach(function (topic) {
+      var label = el('label', 'quiz-topic');
+      var box = document.createElement('input');
+      box.type = 'checkbox';
+      box.value = topic;
+      box.checked = (topics.length === 1);
+      label.appendChild(box);
+      label.appendChild(el('span', 'quiz-topic-name', topic));
+      label.appendChild(el('span', 'quiz-topic-count', countOf(topic) + '문제'));
+      var s = stats[topic];
+      if (s && s.done > 0) {
+        label.appendChild(el('span', 'quiz-topic-stat',
+          '정답률 ' + Math.round((s.correct / s.done) * 100) + '%'));
+      }
+      boxes.push(box);
+      g1.appendChild(label);
+    });
+    var allBtn = el('button', 'quiz-btn quiz-btn-small', '전체 선택 / 해제');
+    allBtn.type = 'button';
+    allBtn.addEventListener('click', function () {
+      var allOn = boxes.every(function (b) { return b.checked; });
+      boxes.forEach(function (b) { b.checked = !allOn; });
+      refresh();
+    });
+    g1.appendChild(el('div', 'quiz-topic-actions')).appendChild(allBtn);
+    root.appendChild(g1);
+
+    // options
+    var g2 = el('fieldset', 'quiz-group');
+    g2.appendChild(el('legend', null, '옵션'));
+    var row = el('div', 'quiz-option');
+    row.appendChild(el('label', null, '문제 수'));
+    var sel = document.createElement('select');
+    [5, 10, 20, 30, 0].forEach(function (n) {
+      var o = document.createElement('option');
+      o.value = String(n);
+      o.textContent = n === 0 ? '전부' : n + '문제';
+      if (n === 10) { o.selected = true; }
+      sel.appendChild(o);
+    });
+    row.appendChild(sel);
+    g2.appendChild(row);
+    var row2 = el('label', 'quiz-option quiz-check');
+    var shuf = document.createElement('input');
+    shuf.type = 'checkbox';
+    shuf.checked = true;
+    row2.appendChild(shuf);
+    row2.appendChild(el('span', null, '보기 순서 섞기'));
+    g2.appendChild(row2);
+    root.appendChild(g2);
+
+    // start
+    var bar = el('div', 'quiz-actions');
+    var start = el('button', 'quiz-btn quiz-btn-primary', '▶ 퀴즈 시작');
+    start.type = 'button';
+    var hint = el('span', 'quiz-hint');
+    bar.appendChild(start);
+    bar.appendChild(hint);
+    root.appendChild(bar);
+
+    function picked() {
+      return boxes.filter(function (b) { return b.checked; }).map(function (b) { return b.value; });
+    }
+    function refresh() {
+      var chosen = picked();
+      var n = ALL.filter(function (item) { return chosen.indexOf(item.topic) >= 0; }).length;
+      start.disabled = (n === 0);
+      hint.textContent = n === 0 ? '주제를 하나 이상 선택하세요.' : '선택한 주제에 ' + n + '문제가 있어요.';
+    }
+    boxes.forEach(function (b) { b.addEventListener('change', refresh); });
+    refresh();
+
+    start.addEventListener('click', function () {
+      var chosen = picked();
+      var pool = ALL.filter(function (item) { return chosen.indexOf(item.topic) >= 0; });
+      var n = parseInt(sel.value, 10);
+      pool = shuffle(pool);
+      if (n > 0) { pool = pool.slice(0, n); }
+      startRun(pool, shuf.checked);
+    });
+  }
+
+  // ---- run ----------------------------------------------------------------
+  function prepare(item, doShuffle) {
+    var order = item.choices.map(function (_, i) { return i; });
+    // Two-choice O/X questions keep their natural order.
+    if (doShuffle && item.choices.length > 2) { order = shuffle(order); }
+    return {
+      src: item,
+      choices: order.map(function (i) { return item.choices[i]; }),
+      answer: order.indexOf(item.answer)
+    };
+  }
+
+  function startRun(pool, doShuffle) {
+    state = {
+      shuffle: doShuffle,
+      items: pool.map(function (item) { return prepare(item, doShuffle); }),
+      index: 0,
+      results: []   // { src, correct }
+    };
+    showQuestion();
+  }
+
+  function showQuestion() {
+    clear(root);
+    var q = state.items[state.index];
+    var total = state.items.length;
+    var locked = false;
+
+    var meta = el('div', 'quiz-meta');
+    meta.appendChild(el('span', 'quiz-count', 'Q ' + (state.index + 1) + ' / ' + total));
+    meta.appendChild(el('span', 'quiz-tag', q.src.topic));
+    root.appendChild(meta);
+
+    var track = el('div', 'quiz-progress');
+    var fill = el('div', 'quiz-progress-fill');
+    fill.style.width = Math.round((state.index / total) * 100) + '%';
+    track.appendChild(fill);
+    root.appendChild(track);
+
+    root.appendChild(el('p', 'quiz-q', q.src.q));
+    if (q.src.code) {
+      var pre = el('pre', 'quiz-code');
+      pre.textContent = String(q.src.code).replace(/\n+$/, '');
+      root.appendChild(pre);
+    }
+
+    var list = el('div', 'quiz-choices');
+    var buttons = [];
+    q.choices.forEach(function (text, i) {
+      var b = el('button', 'quiz-choice');
+      b.type = 'button';
+      b.appendChild(el('span', 'quiz-choice-no', String(i + 1)));
+      b.appendChild(el('span', 'quiz-choice-text', String(text)));
+      b.addEventListener('click', function () { choose(i); });
+      buttons.push(b);
+      list.appendChild(b);
+    });
+    root.appendChild(list);
+
+    var feedbackBox = el('div', 'quiz-feedback');
+    feedbackBox.hidden = true;
+    root.appendChild(feedbackBox);
+
+    var actions = el('div', 'quiz-actions');
+    var quit = el('button', 'quiz-btn', '그만하기');
+    quit.type = 'button';
+    quit.addEventListener('click', function () {
+      if (state.results.length === 0) { showSetup(); } else { showResult(); }
+    });
+    var next = el('button', 'quiz-btn quiz-btn-primary',
+      state.index + 1 < total ? '다음 문제 ▶' : '결과 보기 ▶');
+    next.type = 'button';
+    next.hidden = true;
+    next.addEventListener('click', advance);
+    actions.appendChild(quit);
+    actions.appendChild(next);
+    root.appendChild(actions);
+
+    function choose(i) {
+      if (locked) { return; }
+      locked = true;
+      var ok = (i === q.answer);
+      state.results.push({ src: q.src, correct: ok });
+
+      buttons.forEach(function (b, k) {
+        b.disabled = true;
+        if (k === q.answer) {
+          b.classList.add('is-correct');
+          b.firstChild.textContent = '✔';
+        } else if (k === i) {
+          b.classList.add('is-wrong');
+          b.firstChild.textContent = '✘';
+        } else {
+          b.classList.add('is-dim');
+        }
+      });
+
+      feedbackBox.hidden = false;
+      feedbackBox.className = 'quiz-feedback ' + (ok ? 'is-correct' : 'is-wrong');
+      feedbackBox.appendChild(el('div', 'quiz-feedback-title', ok ? '✔ 정답입니다!' : '✘ 오답입니다'));
+      if (!ok) {
+        feedbackBox.appendChild(el('div', 'quiz-feedback-answer', '정답: ' + q.choices[q.answer]));
+      }
+      if (q.src.explain) { feedbackBox.appendChild(el('div', 'quiz-feedback-text', q.src.explain)); }
+      var link = postLink(q.src.post);
+      if (link) {
+        var src = el('div', 'quiz-feedback-src', '출처: ');
+        src.appendChild(link);
+        feedbackBox.appendChild(src);
+      }
+      next.hidden = false;
+      next.focus();
+    }
+
+    function advance() {
+      state.index += 1;
+      if (state.index < total) { showQuestion(); } else { showResult(); }
+    }
+
+    setKeyHandler(function (e) {
+      if (e.ctrlKey || e.metaKey || e.altKey) { return; }
+      if (!locked && /^[1-9]$/.test(e.key)) {
+        var n = parseInt(e.key, 10) - 1;
+        if (n < q.choices.length) { choose(n); }
+      } else if (locked && (e.key === 'ArrowRight' || e.key === 'n')) {
+        advance();
+      }
+    });
+  }
+
+  // ---- result screen ------------------------------------------------------
+  function recordStats() {
+    var stats = loadStats();
+    state.results.forEach(function (r) {
+      var s = stats[r.src.topic] || { done: 0, correct: 0 };
+      s.done += 1;
+      if (r.correct) { s.correct += 1; }
+      stats[r.src.topic] = s;
+    });
+    saveStats(stats);
+  }
+
+  function showResult() {
+    setKeyHandler(null);
+    clear(root);
+    var results = state.results;
+    var total = results.length;
+    var right = results.filter(function (r) { return r.correct; }).length;
+    var wrong = results.filter(function (r) { return !r.correct; });
+    recordStats();
+
+    var pct = total ? Math.round((right / total) * 100) : 0;
+    var box = el('div', 'quiz-score-box');
+    box.appendChild(el('div', 'quiz-score-label', 'RESULT'));
+    var score = el('div', 'quiz-score');
+    score.appendChild(el('strong', null, String(right)));
+    score.appendChild(document.createTextNode(' / ' + total));
+    score.appendChild(el('span', 'quiz-score-pct', pct + '%'));
+    box.appendChild(score);
+    var track = el('div', 'quiz-progress');
+    var fill = el('div', 'quiz-progress-fill');
+    fill.style.width = pct + '%';
+    track.appendChild(fill);
+    box.appendChild(track);
+    root.appendChild(box);
+
+    // per topic
+    var byTopic = {};
+    results.forEach(function (r) {
+      var t = byTopic[r.src.topic] || (byTopic[r.src.topic] = { done: 0, correct: 0 });
+      t.done += 1;
+      if (r.correct) { t.correct += 1; }
+    });
+    var names = Object.keys(byTopic);
+    if (names.length > 1) {
+      var g = el('fieldset', 'quiz-group');
+      g.appendChild(el('legend', null, '주제별 결과'));
+      names.forEach(function (name) {
+        var t = byTopic[name];
+        g.appendChild(el('div', 'quiz-topic-row', name + '  ' + t.correct + ' / ' + t.done));
+      });
+      root.appendChild(g);
+    }
+
+    // wrong list
+    if (wrong.length > 0) {
+      var wg = el('fieldset', 'quiz-group');
+      wg.appendChild(el('legend', null, '틀린 문제 (' + wrong.length + ')'));
+      var ol = el('ol', 'quiz-wrong');
+      wrong.forEach(function (r) {
+        var li = el('li');
+        li.appendChild(el('div', 'quiz-wrong-q', r.src.q));
+        li.appendChild(el('div', 'quiz-wrong-a', '정답: ' + r.src.choices[r.src.answer]));
+        var link = postLink(r.src.post, '📄 다시 읽기: ' + (POSTS[r.src.post] ? POSTS[r.src.post].t : ''));
+        if (link) { li.appendChild(link); }
+        ol.appendChild(li);
+      });
+      wg.appendChild(ol);
+      root.appendChild(wg);
+    } else {
+      root.appendChild(el('p', 'quiz-lead', '전부 맞혔어요! 🎉'));
+    }
+
+    var actions = el('div', 'quiz-actions');
+    if (wrong.length > 0) {
+      var retry = el('button', 'quiz-btn quiz-btn-primary', '틀린 문제만 다시 풀기');
+      retry.type = 'button';
+      retry.addEventListener('click', function () {
+        startRun(shuffle(wrong.map(function (r) { return r.src; })), state.shuffle);
+      });
+      actions.appendChild(retry);
+    }
+    var again = el('button', 'quiz-btn', '처음으로');
+    again.type = 'button';
+    again.addEventListener('click', showSetup);
+    actions.appendChild(again);
+    root.appendChild(actions);
+  }
+
+  showSetup();
+})();
+</script>
