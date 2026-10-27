@@ -93,6 +93,14 @@ public class PaymentService {
 
 `PaymentService`를 만드는 쪽도 결국 코드다. 이 일을 스프링의 IoC 컨테이너(Inversion of Control, 제어의 역전)에 맡긴다. 객체를 만들고 연결하는 제어권이 개발자 코드에서 컨테이너로 넘어간다는 뜻이다.
 
+![기존 방식에서는 Application이 Payment p = new Payment()로 직접 객체를 만들어 메서드를 호출하고, Spring 방식에서는 IoC Container가 Payment를 관리하며 Application에 넣어 주는 판서]({{ site.baseurl }}/assets/img/spring-new-vs-ioc-container.png)
+
+왼쪽 기존 방식에서는 Application이 Payment를 직접 만들고 호출한다. 오른쪽 Spring 방식에서는 Payment가 IoC 컨테이너 쪽에 있고, 컨테이너가 Application에 연결해 준다.
+
+IoC 컨테이너가 Spring 전체에서 어디에 있는지는 아래 판서로 정리했다. 서블릿 컨테이너가 HTTP 요청을 받아 filter를 거쳐 넘기면, IoC 컨테이너 안의 Controller → Service → dao가 요청을 처리하고 응답이 같은 길로 돌아간다.
+
+![Spring 생태계 판서. Servlet Container 안의 filter와 Servlet이 HTTP 요청을 받고, IoC Container 안의 Controller, Service, dao로 요청이 이어졌다가 응답이 되돌아가는 흐름]({{ site.baseurl }}/assets/img/spring-ecosystem-servlet-ioc.png)
+
 수업에서 정리한 용어는 다음과 같다.
 
 | 용어 | 뜻 |
