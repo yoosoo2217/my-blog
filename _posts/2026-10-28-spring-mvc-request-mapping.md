@@ -1,6 +1,6 @@
 ---
 title: "Spring MVC 요청 매핑"
-date: 2026-10-29
+date: 2026-10-28
 tags:
   - Java
   - Spring
