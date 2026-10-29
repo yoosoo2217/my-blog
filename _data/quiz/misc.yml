@@ -738,3 +738,374 @@
   answer: 1
   explain: "표는 |로 칸을 나누고 두 번째 줄에 ---를 넣어 머리글과 본문을 구분한다."
   post: "markdown-syntax"
+
+- topic: Spring
+  q: "아래 두 핸들러가 있을 때 PUT /menu/regist 요청을 보내면 글의 실행 결과는?"
+  code: |
+    @RequestMapping("/menu/regist")
+    public String registMenu(Model model) { ... }
+
+    @RequestMapping(value = "/menu/regist", method = RequestMethod.POST)
+    public String postRegistMenu(Model model) { ... }
+  choices:
+    - "405가 나오고 Allow 헤더에 GET, POST가 담긴다"
+    - "404가 나온다"
+    - "200이 나온다. method 없는 첫 메서드가 PUT도 받는다"
+    - "400이 나온다"
+  answer: 2
+  explain: "method를 지정하지 않은 @RequestMapping은 GET 전용이 아니라 모든 HTTP 메서드를 받는다. 글에서도 PUT /menu/regist가 200이었다."
+  post: "spring-mvc-request-mapping"
+
+- topic: Spring
+  q: "ClassController에는 GET /order/regist 핸들러만 있다. POST /order/regist를 요청했을 때 응답은?"
+  choices:
+    - "405, Allow 헤더는 GET"
+    - "404, Allow 헤더 없음"
+    - "400, Allow 헤더 없음"
+    - "200, GET 핸들러가 대신 처리"
+  answer: 0
+  explain: "주소는 일치하지만 HTTP 메서드가 달라서 405가 나오고, 서버가 허용 메서드를 Allow: GET 헤더로 알려 준다."
+  post: "spring-mvc-request-mapping"
+
+- topic: Spring
+  q: "GET /order/detail/abc 요청이 500이 아니라 400으로 응답한 이유는?"
+  code: |
+    @GetMapping("/detail/{orderNo}")
+    public String pathVariable(Model model, @PathVariable("orderNo") int no) { ... }
+  choices:
+    - "/order/detail 주소에 매핑된 핸들러가 없어서"
+    - "GET이 아닌 다른 HTTP 메서드로 요청해서"
+    - "클래스에 붙인 /order/* 접두사가 맞지 않아서"
+    - "abc를 int로 바꿀 수 없어 잘못된 요청으로 처리돼서"
+  answer: 3
+  explain: "주소와 메서드는 매핑에 맞지만 경로 변수 abc를 int로 변환할 수 없다. 글의 실행 결과는 변환 실패가 500이 아니라 400이었다."
+  post: "spring-mvc-request-mapping"
+
+- topic: Spring
+  q: "GET /order/detail/3 요청이 들어오면 pathVariable 메서드의 no에는 어떤 일이 일어나는가?"
+  code: |
+    @Controller
+    @RequestMapping("/order/*")
+    public class ClassController {
+        @GetMapping("/detail/{orderNo}")
+        public String pathVariable(Model model, @PathVariable("orderNo") int no) { ... }
+    }
+  choices:
+    - "no에는 아무 값도 들어오지 않아 0이 된다"
+    - "요청 주소의 문자열 \"3\"이 int 3으로 자동 변환되어 들어온다"
+    - "no 대신 orderNo라는 이름의 변수가 자동 생성된다"
+    - "요청 파라미터 orderNo=3이 있어야만 값이 들어온다"
+  answer: 1
+  explain: "{orderNo}는 요청 주소에 들어 있는 값이고, @PathVariable이 그 값을 매개변수에 넣어 준다. 문자열 \"3\"은 int로 자동 변환된다."
+  post: "spring-mvc-request-mapping"
+
+- topic: Spring
+  q: "핸들러 메서드가 \"mappingResult\"를 반환하면 스프링은 무엇을 하는가?"
+  choices:
+    - "그 문자열을 뷰 이름으로 보고 templates/mappingResult.html을 찾아 응답한다"
+    - "문자열 mappingResult를 응답 본문 그대로 내려보낸다"
+    - "mappingResult 주소로 새 요청을 보내라고 브라우저에 알린다"
+    - "mappingResult라는 이름의 컨트롤러 메서드를 다시 호출한다"
+  answer: 0
+  explain: "String을 반환하면 그 문자열이 뷰 이름이 된다. 글의 실습에서는 templates/mappingResult.html을 찾아 응답한다."
+  post: "spring-mvc-request-mapping"
+
+- topic: Spring
+  q: "application.yaml에 server.port를 7777로 적었는데 로그에는 Tomcat이 8080으로 뜬 이유로 글이 설명한 것은?"
+  code: |
+    spring:
+      application:
+        name: chap01-request-mapping
+
+      server:
+        port:7777
+  choices:
+    - "7777은 Tomcat이 쓸 수 없는 예약된 포트라서"
+    - "application.name이 먼저 선언되어 포트 설정을 덮어써서"
+    - "스프링이 설정 오류를 감지하고 경고와 함께 8080으로 바꿔서"
+    - "server가 spring 아래에 들어가 키가 달라졌고, port:7777도 키: 값으로 읽히지 않아서"
+  answer: 3
+  explain: "server:가 spring: 아래라서 spring.server.port라는 다른 키가 되고, 콜론 뒤 공백이 없어 값도 인식되지 않는다. 경고 없이 기본값 8080이 쓰였다."
+  post: "spring-mvc-request-mapping"
+
+- topic: Spring
+  q: "GET /request/regist 핸들러 regist()의 반환 타입이 void인데도 request/regist 뷰가 보이는 이유는?"
+  choices:
+    - "void 메서드는 항상 index 페이지를 보여 주기 때문"
+    - "void이면 요청 경로에서 앞쪽 /를 뗀 request/regist가 뷰 이름이 되기 때문"
+    - "메서드 이름 regist가 그대로 뷰 이름이 되기 때문"
+    - "void 메서드는 POST 핸들러의 뷰를 그대로 가져다 쓰기 때문"
+  answer: 1
+  explain: "void이면 기본 뷰 이름 선택이 적용되어 요청 경로(/request/regist)에서 앞쪽 /를 뗀 이름이 뷰 이름이 된다."
+  post: "spring-handler-method-parameter"
+
+- topic: Spring
+  q: "WebRequest 방식의 registMenu에서 가격 칸을 비우고 POST로 등록하면 어떻게 되는가?"
+  code: |
+    int menuPrice = Integer.parseInt(request.getParameter("price"));
+  choices:
+    - "price가 0으로 채워져 200이 나온다"
+    - "스프링이 400 Bad Request를 돌려준다"
+    - "price가 null이 되어 menuPrice에 그대로 들어간다"
+    - "parseInt에서 NumberFormatException이 나고 처리하지 않아 500이 된다"
+  answer: 3
+  explain: "getParameter(\"price\")가 빈 문자열을 돌려주고 Integer.parseInt(\"\")에서 NumberFormatException이 난다. 예외를 처리하지 않았으므로 500이다."
+  post: "spring-handler-method-parameter"
+
+- topic: Spring
+  q: "아래 메서드는 요청에서 어떤 이름의 파라미터를 찾는가?"
+  code: |
+    public String modifyMenu(Model model,
+                             @RequestParam("modifyName") String name,
+                             @RequestParam int modifyPrice) { ... }
+  choices:
+    - "modifyName과 modifyPrice"
+    - "name과 modifyPrice"
+    - "modifyName과 price"
+    - "name과 price"
+  answer: 0
+  explain: "괄호 안에 이름을 쓰면 그 값(modifyName)을, 쓰지 않으면 변수명(modifyPrice)을 요청 파라미터 이름으로 쓴다."
+  post: "spring-handler-method-parameter"
+
+- topic: Spring
+  q: "MenuDTO(name, price, categoryCode, orderableStatus)를 @ModelAttribute로 받는 search 요청에서 price 파라미터를 아예 보내지 않으면?"
+  code: |
+    @PostMapping("search")
+    public String searchMenu(@ModelAttribute("menu") MenuDTO menu) { ... }
+  choices:
+    - "MissingServletRequestParameterException과 함께 400이 나온다"
+    - "NumberFormatException이 나서 500이 된다"
+    - "price는 int 기본값 0으로 남고 200이 나온다"
+    - "404 Not Found가 나온다"
+  answer: 2
+  explain: "@ModelAttribute는 값이 없으면 필드를 기본값으로 남겨 두므로 int는 0이다. 글에서도 200이었다. 변환할 수 없는 price=abc일 때만 바인딩 오류로 400이 난다."
+  post: "spring-handler-method-parameter"
+
+- topic: Spring
+  q: "@ModelAttribute에 이름을 주지 않고 MenuDTO 객체를 받으면, 뷰에서 이 객체를 꺼낼 때 쓰는 이름은?"
+  choices:
+    - "menu"
+    - "menuDTO"
+    - "MenuDTO"
+    - "dto"
+  answer: 1
+  explain: "이름을 주지 않으면 클래스 이름 MenuDTO의 첫 글자를 소문자로 바꾼 menuDTO가 이름이 된다."
+  post: "spring-handler-method-parameter"
+
+- topic: Spring
+  q: "@RequestParam String modifyName이 선언된 핸들러에 modifyName 파라미터 없이 요청하면 400이 나오는 이유는?"
+  choices:
+    - "String 타입은 빈 값을 변환할 수 없어서"
+    - "@RequestParam은 값이 없으면 항상 null을 넣기 때문에 NullPointerException이 나서"
+    - "@RequestParam은 기본이 필수(required=true)라 값이 없으면 오류가 나서"
+    - "GET 요청에는 @RequestParam을 쓸 수 없어서"
+  answer: 2
+  explain: "@RequestParam은 기본값이 필수라서 폼의 name과 이름이 맞지 않아 값이 없으면 400이 된다. 글의 로그 예외는 MissingServletRequestParameterException이었다."
+  post: "spring-handler-method-parameter"
+
+- topic: Spring
+  q: "컨트롤러가 \"result\"라는 문자열만 반환하는데 templates/result.html이 화면에 나온다. 이 변환을 맡는 것은?"
+  choices:
+    - "DispatcherServlet이 문자열을 그대로 파일 경로로 사용한다"
+    - "브라우저가 result라는 이름으로 파일을 요청한다"
+    - "ViewResolver가 접두사 templates/와 접미사 .html을 붙인다"
+    - "Model에 담긴 값이 파일 경로를 알려 준다"
+  answer: 2
+  explain: "ViewResolver가 뷰 이름 문자열 앞뒤에 접두사와 접미사를 붙여 실제 템플릿 파일로 바꿔 준다. 이번 실습에서는 Boot의 기본값이 적용되었다."
+  post: "spring-view-resolver"
+
+- topic: Spring
+  q: "forward가 기본인 뷰 반환에서 redirect:를 붙이면 Model에 담은 값이 사라지는 이유는?"
+  choices:
+    - "요청이 두 번 일어나 두 번째 요청에는 첫 요청의 Model이 이어지지 않기 때문"
+    - "redirect에서는 Model 객체를 만들 수 없기 때문"
+    - "redirect는 응답 본문에 Model을 쓰지 않기 때문"
+    - "Thymeleaf가 redirect 응답에서는 ${} 표현식을 읽지 못하기 때문"
+  answer: 0
+  explain: "redirect는 서버가 다른 주소로 다시 요청하라고 응답하고 브라우저가 새 요청을 보내는 방식이다. 새 요청이므로 첫 요청의 Model은 사라진다."
+  post: "spring-view-resolver"
+
+- topic: Spring
+  q: "/string-redirect 요청을 처리한 뒤, flashMessage가 화면에 출력되는 곳은?"
+  code: |
+    @GetMapping("/string-redirect")
+    public String redirect(RedirectAttributes rttr) {
+        rttr.addFlashAttribute("flashMessage", "리다이랙트 된 페이지에서도 유지되는 값!");
+        return "redirect:/";
+    }
+  choices:
+    - "result.html"
+    - "출력되지 않는다"
+    - "/string-redirect를 처리하는 첫 번째 응답"
+    - "redirect:/ 로 이동한 뒤 / 요청이 그리는 main.html"
+  answer: 3
+  explain: "flash 속성은 redirect 이후의 다음 요청으로 전달된다. 글에서는 /로 이동한 뒤 main.html이 flashMessage를 꺼내 출력한다."
+  post: "spring-view-resolver"
+
+- topic: Spring
+  q: "build.gradle에 thymeleaf 스타터만 있고 ViewResolver를 등록하는 설정 클래스가 없는데도 뷰가 찾아지는 이유는?"
+  choices:
+    - "컨트롤러 주석이 접두사와 접미사를 직접 설정하기 때문"
+    - "Spring Boot의 자동 설정이 Thymeleaf용 ViewResolver를 등록해 주기 때문"
+    - "application.yaml에 접두사와 접미사를 적어 두었기 때문"
+    - "@Controller를 붙이면 모든 뷰 이름이 파일명으로 간주되기 때문"
+  answer: 1
+  explain: "글에 따르면 application.yaml에는 spring.application.name만 있고, 접두사와 접미사 기본값은 Boot의 기본 설정에서 온다."
+  post: "spring-view-resolver"
+
+- topic: Spring
+  q: "MainController의 mainPage()에 다음 매핑을 썼다. 이 매핑의 동작은?"
+  code: |
+    @RequestMapping(value = {"/", "/main"})
+    public String mainPage() {
+        return "main";
+    }
+  choices:
+    - "/ 만 처리되고 /main은 404가 된다"
+    - "/main 요청은 / 로 redirect된다"
+    - "/ 와 /main 두 경로 모두 이 메서드가 처리해 main 뷰를 반환한다"
+    - "배열을 쓰면 컴파일 오류가 난다"
+  answer: 2
+  explain: "value에 배열을 넘기면 경로 두 개를 한 메서드에 연결할 수 있다. 두 경로 모두 main 뷰 이름을 반환한다."
+  post: "spring-view-resolver"
+
+- topic: Spring
+  q: "TimerInterceptor를 구현하고 @Component만 붙인 채 addInterceptors()에서 등록하지 않으면 어떻게 되는가?"
+  choices:
+    - "빈으로만 만들어질 뿐 인터셉터로 동작하지 않는다"
+    - "Spring Boot가 HandlerInterceptor 빈을 자동으로 등록한다"
+    - "모든 요청에서 preHandle()이 호출된다"
+    - "컴파일 단계에서 오류가 난다"
+  answer: 0
+  explain: "@Component는 빈을 만들 뿐이다. 이 객체를 인터셉터로 쓰겠다고 알리는 것은 registry.addInterceptor() 호출이며, Boot에서도 자동 등록되지 않는다."
+  post: "spring-interceptor"
+
+- topic: Spring
+  q: "인터셉터를 등록하고 curl localhost:8089/stopwatch를 호출했을 때 서버 콘솔의 출력 순서는? (컨트롤러는 \"stopwatch 요청을 처리하는 핸들러 메서드 동작..\"을 출력한다)"
+  choices:
+    - "핸들러 메서드 → preHandle → postHandle"
+    - "preHandle → postHandle → 핸들러 메서드"
+    - "postHandle → preHandle → 핸들러 메서드"
+    - "preHandle → 핸들러 메서드 → postHandle"
+  answer: 3
+  explain: "preHandle이 컨트롤러 전에, postHandle이 컨트롤러 실행 후 화면을 그리기 전에 호출된다. 글의 실행 결과도 이 순서였다."
+  post: "spring-interceptor"
+
+- topic: Spring
+  q: "TimerInterceptor가 시작 시각을 필드가 아니라 request.setAttribute()에 저장하는 이유는?"
+  choices:
+    - "필드에는 long 타입 값을 저장할 수 없기 때문"
+    - "@Component 빈은 하나뿐이라 동시에 들어온 요청이 같은 필드를 덮어쓰기 때문"
+    - "postHandle()에서는 필드를 읽을 수 없기 때문"
+    - "request 속성에 담아야 preHandle()이 true를 반환하기 때문"
+  answer: 1
+  explain: "빈이 하나뿐이어서 필드에 저장하면 동시 요청끼리 값이 섞인다. 요청마다 따로 존재하는 request 속성에 담아 postHandle()에서 꺼낸다."
+  post: "spring-interceptor"
+
+- topic: Spring
+  q: "실습 코드 그대로 /index.html을 요청하면 NullPointerException이 로그에 찍힌다. 원인으로 알맞은 것은?"
+  code: |
+    public void postHandle(..., @Nullable ModelAndView modelAndView) throws Exception {
+        ...
+        modelAndView.addObject("interval", endTime - startTime);
+    }
+  choices:
+    - "startTime 속성이 request에 저장되지 않았기 때문"
+    - "preHandle()이 false를 반환했기 때문"
+    - "정적 파일 요청은 ModelAndView가 null인데 인터셉터가 그대로 실행되기 때문"
+    - "/css/** 패턴이 index.html에도 적용되기 때문"
+  answer: 2
+  explain: "정적 파일을 내려주는 핸들러는 ModelAndView를 만들지 않아 null이 전달된다. excludePathPatterns에 루트의 index.html이 없어 인터셉터가 실행되었고, 그래서 null 검사가 필요하다."
+  post: "spring-interceptor"
+
+- topic: Spring
+  q: "preHandle()이 false를 반환하면 어떻게 되는가?"
+  choices:
+    - "컨트롤러는 실행되지만 postHandle()만 건너뛴다"
+    - "컨트롤러가 호출되지 않고 요청 처리가 중단된다"
+    - "컨트롤러가 두 번 호출된다"
+    - "같은 요청으로 preHandle()이 다시 호출된다"
+  answer: 1
+  explain: "false를 반환하면 컨트롤러가 호출되지 않는다. 글에서는 로그인하지 않은 사용자를 여기서 돌려보내는 식으로 쓴다고 설명한다."
+  post: "spring-interceptor"
+
+- topic: Spring
+  q: "글의 실행 결과에서 interval이 2039ms로 나왔다. 이 값에 대한 설명으로 맞는 것은?"
+  choices:
+    - "postHandle()이 화면을 그리기 전에 호출되므로 뷰 렌더링 시간은 포함되지 않는다"
+    - "뷰 렌더링 시간까지 포함된 값이다"
+    - "Thread.sleep(2000)과 정확히 같아야 하는데 오차가 난 버그다"
+    - "필터가 계산해서 ModelAndView에 담은 값이다"
+  answer: 0
+  explain: "postHandle()은 뷰를 그리기 전에 호출되므로 렌더링 시간은 빠진다. 뷰까지 포함하려면 afterCompletion()에서 계산해야 한다."
+  post: "spring-interceptor"
+
+- topic: Spring
+  q: "컨트롤러 클래스 안에 선언한 @ExceptionHandler(NullPointerException.class) 메서드가 처리할 수 있는 예외는?"
+  choices:
+    - "애플리케이션 안 모든 컨트롤러에서 발생한 NullPointerException"
+    - "그 핸들러가 선언된 컨트롤러 클래스의 메서드에서 발생한 NullPointerException"
+    - "서비스 계층에서 발생한 모든 예외"
+    - "요청 매핑이 없을 때 발생하는 모든 예외"
+  answer: 1
+  explain: "컨트롤러 안에 선언한 @ExceptionHandler는 선언된 클래스에서 나는 예외만 대상으로 한다. 다른 컨트롤러의 예외까지 받으려면 @ControllerAdvice 클래스에 선언한다."
+  post: "spring-mvc-exception-handler"
+
+- topic: Spring
+  q: "컨트롤러가 열 개인 프로젝트에서 모든 컨트롤러의 NullPointerException을 한 곳에서 처리하려면?"
+  choices:
+    - "열 개의 컨트롤러에 같은 @ExceptionHandler 메서드를 복사해 넣는다"
+    - "컨트롤러마다 try-catch로 감싼다"
+    - "@ControllerAdvice가 붙은 클래스에 @ExceptionHandler 메서드를 둔다"
+    - "application.yaml에 예외 클래스 이름을 적는다"
+  answer: 2
+  explain: "@ControllerAdvice 클래스에 선언한 @ExceptionHandler는 모든 컨트롤러에 적용된다. 글에서는 이를 AOP의 Advice처럼 공통 코드를 한곳에 모은 클래스로 설명한다."
+  post: "spring-mvc-exception-handler"
+
+- topic: Spring
+  q: "같은 컨트롤러에 NullPointerException용 @ExceptionHandler가 있고, @ControllerAdvice 클래스에도 NullPointerException용 핸들러가 있다. 그 컨트롤러에서 NPE가 나면?"
+  choices:
+    - "전역 핸들러가 먼저 실행되고 컨트롤러 내부 핸들러는 무시된다"
+    - "두 핸들러가 모두 실행된다"
+    - "같은 예외를 처리하는 핸들러가 둘이라 오류가 발생한다"
+    - "컨트롤러 내부 핸들러가 실행되고 전역 핸들러는 실행되지 않는다"
+  answer: 3
+  explain: "글에서는 전역 핸들러에 출력문을 넣고 NPE 요청 두 건을 보냈는데, 출력은 전역 핸들러를 쓰는 요청에서만 한 번 찍혔다. 같은 클래스 내부 핸들러가 전역 핸들러보다 먼저 적용된다."
+  post: "spring-mvc-exception-handler"
+
+- topic: Spring
+  q: "매핑이 없는 주소(/nothing)를 요청했는데 @ControllerAdvice에 @ExceptionHandler(Exception.class) 핸들러가 있다. 글의 실행 결과는?"
+  choices:
+    - "404 상태 코드와 함께 기본 오류 응답이 나온다"
+    - "200 상태 코드로 전역 핸들러가 반환한 기본 예외 페이지가 나온다"
+    - "500 상태 코드가 나온다"
+    - "서버가 시작되지 않는다"
+  answer: 1
+  explain: "매핑이 없으면 NoResourceFoundException이 던져지고, 이 예외도 Exception의 하위 타입이라 기본 핸들러가 잡는다. 핸들러가 뷰를 반환하므로 상태 코드는 200이 된다."
+  post: "spring-mvc-exception-handler"
+
+- topic: Spring
+  q: "default.html이 모델 키 message를 ${Message}로 잘못 썼다. 이때 화면에 나타나는 결과는?"
+  code: |
+    model.addAttribute("message", e.getMessage());
+    // default.html
+    // th:text="| ${class} 에러 발생 원인: ${Message}"
+  choices:
+    - "TemplateInputException이 발생한다"
+    - "원인: null 이 출력된다"
+    - "message 값이 정상 출력된다"
+    - "Message 라는 글자가 그대로 출력된다"
+  answer: 1
+  explain: "모델 키는 대소문자를 구분한다. 없는 키를 참조해도 오류가 나지 않고 null로 평가되어, 글의 실행 결과에는 '원인: null'이 출력되었다."
+  post: "spring-mvc-exception-handler"
+
+- topic: Spring
+  q: "컨트롤러에서 NullPointerException이 발생했을 때, 핸들러에서 e.getMessage()로 꺼낸 값이 Cannot invoke \"String.toLowerCase(java.util.Locale)\" because \"str\" is null 처럼 상세하게 나오는 이유는?"
+  choices:
+    - "JDK가 null이었던 변수를 알려주는 상세 메시지를 NPE에 붙여 주기 때문이다"
+    - "@ExceptionHandler가 메시지를 자동으로 만들어 주기 때문이다"
+    - "Thymeleaf가 템플릿 단계에서 오류 메시지를 보강하기 때문이다"
+    - "@ControllerAdvice가 스택 트레이스를 분석해서 메시지를 만들기 때문이다"
+  answer: 0
+  explain: "헬프풀 NPE 메시지(JEP 358)는 JDK 14에서 도입되고 JDK 15부터 기본으로 켜진다. 그보다 오래된 JDK에서는 getMessage()가 null일 수 있다."
+  post: "spring-mvc-exception-handler"
